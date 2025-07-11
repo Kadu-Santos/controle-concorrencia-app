@@ -1,0 +1,58 @@
+.integrante-card {
+  display: flex;
+  align-items: center;
+  background-color: #f7f7f7;
+  border-radius: 20px;
+  padding: 10px;
+  width: 40%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 10px auto;
+  transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+}
+
+.integrante-foto {
+  width: 25%;
+  aspect-ratio: 1/1;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.integrante-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.integrante-nome {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+}
+
+.integrante-funcao {
+  font-size: 1rem;
+  color: #666;
+  margin: 5px 0 10px 0;
+  text-align: center;
+}
+
+.integrante-redes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.integrante-redes a {
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.integrante-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}

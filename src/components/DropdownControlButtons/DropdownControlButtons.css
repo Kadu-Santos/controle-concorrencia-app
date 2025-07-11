@@ -1,0 +1,41 @@
+.control-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.btn {
+  padding: 4px 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add.enabled {
+  background-color: #007bff;
+  color: white;
+  width: 30px;
+}
+
+.btn-add.disabled {
+  background-color: #ccc;
+  color: white;
+  cursor: not-allowed;
+  width: 30px;
+}
+
+.btn-remove.enabled {
+  background-color: #dc3545;
+  color: white;
+  width: 30px;
+}
+
+.btn-remove.disabled {
+  background-color: #ccc;
+  color: white;
+  cursor: not-allowed;
+  width: 30px;
+}

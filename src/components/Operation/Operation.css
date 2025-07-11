@@ -1,0 +1,27 @@
+.operacao-montagem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 5px;
+  height: 32px;
+}
+
+.campo-select, .operador-select, .campo-input {
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  max-width: 80px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.campo-select:focus, .operador-select:focus, .campo-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.campo-select:hover, .operador-select:hover, .campo-input:hover {
+  border-color: #888;
+}

@@ -1,0 +1,14 @@
+.variaveis-toggle {
+  margin-bottom: 10px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 5px;
+}
+
+.radio-group label {
+  font-size: 0.95rem;
+  cursor: pointer;
+}

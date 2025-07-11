@@ -1,0 +1,26 @@
+.runPage-container {
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: #ffffff;
+  width: 80%;
+}
+
+.dropdowns-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.dropdown-item {
+    display: flex;
+}
+
+.Excution {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin: 20px;
+}

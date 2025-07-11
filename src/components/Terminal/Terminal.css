@@ -1,0 +1,77 @@
+.terminal {
+  color: #fff;
+  font-family: monospace;
+  border-radius: 8px;
+  height: 430px;
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(to bottom right, #1c1f26, #2b2f38);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+
+  width: 35%;
+}
+
+.terminal-header {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  margin: 15px;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  background: #111c26;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.terminal-body p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.cursor {
+  color: #ccc;
+  white-space: pre;
+}
+
+
+.terminal-body p {
+  font-family: monospace;
+  margin: 2px 0;
+}
+
+
+.terminal-body p.commit {
+  color: #007bff; /* Azul */
+  font-weight: bold;
+}
+
+.terminal-body p.unlock {
+  color: #28a745; /* Verde */
+  font-weight: bold;
+}
+
+.terminal-body p.erro {
+  color: #ff4d4f; /* Vermelho */
+  font-weight: bold;
+}

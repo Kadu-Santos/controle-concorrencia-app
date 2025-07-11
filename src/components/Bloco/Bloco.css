@@ -1,0 +1,69 @@
+.operacao-bloco {
+  padding: 6px 12px;
+  background-color: #ededed;
+  border-radius: 5px;
+  text-align: center;
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  min-width: 160px;
+  transform: translateX(0);
+  height: 34px;
+}
+
+.operacao-bloco:hover {
+  transform: scale(1.005);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Animações de entrada */
+
+@keyframes slideFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-from-left {
+  animation: slideFromLeft 0.5s ease forwards;
+}
+
+.slide-from-right {
+  animation: slideFromRight 0.5s ease forwards;
+}
+
+.pulsando {
+  animation: pulse 1s infinite;
+  background-color: #ffcccc;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+}

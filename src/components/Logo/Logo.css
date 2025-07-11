@@ -1,0 +1,21 @@
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  margin-bottom: 100px;
+}
+
+.logo-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.logo-text {
+  font-size: 36px;
+  color: #0051ad;
+  font-weight: bold;
+  font-size: 2.3rem;
+  margin: 0;
+}

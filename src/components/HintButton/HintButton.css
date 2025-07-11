@@ -1,0 +1,49 @@
+.hint-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hint-button {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.hint-button:hover {
+  background-color: #f2f2f2;
+}
+
+.hint-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #ffffff;
+  color: #000000;
+  text-align: left;
+  border-radius: 8px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.98);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-size: 13px;
+  min-width: 180px;
+  pointer-events: none;
+  font-size: 1.2em;
+}
+
+.hint-container:hover .hint-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}

@@ -1,0 +1,28 @@
+.input-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-item input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  width: 60px;
+}
+
+.disabled-input {
+  background-color: #f0f0f0;
+  color: #888;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

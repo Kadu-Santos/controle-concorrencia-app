@@ -1,0 +1,51 @@
+.tabela-resultado {
+  margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+  width: 94%;
+  margin: auto;
+}
+
+.tabela-resultado.desativada {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.tabela-resultado table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+}
+
+.tabela-resultado th {
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-resultado td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Estilo para linhas de execução */
+.linha-simultanea {
+  background-color: #e3f2fd; /* azul claro */
+}
+
+.linha-sequencial:nth-child(odd) {
+  background-color: #fffde7; /* amarelo claro */
+}
+
+.linha-sequencial:nth-child(even) {
+  background-color: #fff8e1;
+}
+
+/* Hover suave */
+.tabela-resultado tr:hover {
+  background-color: #f1f1f1;
+}
