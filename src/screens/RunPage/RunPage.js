@@ -136,97 +136,114 @@ function RunPage() {
 
   return (
     <div className="runPage-container">
-      <Logo />
-
-      <div className="container-values">
-        <h2>Configuração de execução</h2>
-
-        <div className="insert-content">
-          <p>Número de transações:</p>
-          <HintButton texto="Aqui você pode visualizar detalhes do controle de concorrência." />
-          <NumericDropdown
-            opcoes={nOpTransacao}
-            onChange={(v) => setNumTransacoes(parseInt(v))}
-          />
-        </div>
-
-        <div className="insert-content">
-          <p>Número de variáveis:</p>
-          <HintButton texto="Número de variáveis" />
-          <NumericDropdown
-            opcoes={nOpVarivavel}
-            onChange={(v) => setNumVariaveis(parseInt(v))}
-            largura="110px"
-          />
-        </div>
-
-        <div className="toggle-values">
-          <p>Preencher valores iniciais das variáveis?</p>
-          <Toggle
-            valor={valor}
-            onChange={(novoValor) => {
-              setValor(novoValor);
-              if (novoValor) {
-                setValoresVariaveis([]);
-              }
-            }}
-          />
-        </div>
-        <div className="variables-values">
-          <p>Valores iniciais das variáveis:</p>
-          <InputList quantidade={withNum} onChange={setValoresVariaveis} />
-        </div>
+      <div className="not" style={{ marginBottom: -80 }}>
+        <Logo />
       </div>
 
-      <div className="dropdowns-container">
-        {operacoes.map((opStr, i) => {
-          const isOp = isOperacaoMatematica(opStr, numVariaveis);
-          return (
-            <div key={i} className="dropdown-item">
-              <MultiLevelDropdown
-                numTransacoes={numTransacoes}
-                numVariaveis={numVariaveis}
-                onSelecionar={(val) => atualizarOperacao(i, val)}
-                valorSelecionado={opStr}
-                disabled={!(valoresVariaveis.length === numVariaveis)}
+      <div className="container">
+        <div className="container-values">
+          {/* <h2>Configuração de execução</h2> */}
+
+          <div className="insert-content">
+            <p className="label">Número de transações </p>
+
+            <div className="content-option">
+              <NumericDropdown
+                opcoes={nOpTransacao}
+                onChange={(v) => setNumTransacoes(parseInt(v))}
               />
-              {isOp && (
-                <Operation
-                  numVariaveis={numVariaveis}
-                  onOperacaoChange={handleOperacaoChange(i)}
-                  disabled={!numVariaveis}
-                />
-              )}
-              {i === operacoes.length - 1 && (
-                <DropdownControlButtons
-                  onAdd={() => {
-                    if (opStr && opStr.trim() !== "") adicionarOperacao();
-                  }}
-                  onRemove={() => {
-                    if (operacoes.length > 1) removerOperacao(i);
-                  }}
-                  podeAdicionar={
-                    !!opStr &&
-                    opStr.trim() !== "" &&
-                    (!isOp || (expressoes[i] && expressoes[i].trim() !== ""))
-                  }
-                  podeRemover={operacoes.length > 1}
-                />
-              )}
+              <HintButton
+                className="hint-button"
+                texto="Aqui você pode visualizar detalhes do controle de concorrência."
+              />
             </div>
-          );
-        })}
+          </div>
+
+          <div className="insert-content">
+            <p className="label">Número de variáveis </p>
+
+            <div className="content-option">
+              <NumericDropdown
+                opcoes={nOpVarivavel}
+                onChange={(v) => setNumVariaveis(parseInt(v))}
+                largura="90px"
+              />
+              <HintButton className="hint-button" texto="Número de variáveis" />
+            </div>
+          </div>
+
+          <div className="toggle-values">
+            <p className="label">Preencher valores iniciais das variáveis?</p>
+            <div className="toggle">
+              <Toggle
+                valor={valor}
+                onChange={(novoValor) => {
+                  setValor(novoValor);
+                  if (novoValor) {
+                    setValoresVariaveis([]);
+                  }
+                }}
+              />
+            </div>
+          </div>
+          <div className="variables-values">
+            <p className="label">Valores iniciais das variáveis:</p>
+            <InputList quantidade={withNum} onChange={setValoresVariaveis} />
+          </div>
+        </div>
       </div>
 
-      <ButtonC
-        texto="GERAR"
-        corFundo="#409b40"
-        corTexto="#fff"
-        onClick={() => {
-          iniciarExecucao();
-        }}
-        ativo={botaoAtivo}
-      />
+      <div className="dropdown-main">
+        <div className="dropdowns-container">
+          {operacoes.map((opStr, i) => {
+            const isOp = isOperacaoMatematica(opStr, numVariaveis);
+            return (
+              <div key={i} className="dropdown-item">
+                <MultiLevelDropdown
+                  numTransacoes={numTransacoes}
+                  numVariaveis={numVariaveis}
+                  onSelecionar={(val) => atualizarOperacao(i, val)}
+                  valorSelecionado={opStr}
+                  disabled={!(valoresVariaveis.length === numVariaveis)}
+                />
+                {isOp && (
+                  <Operation
+                    numVariaveis={numVariaveis}
+                    onOperacaoChange={handleOperacaoChange(i)}
+                    disabled={!numVariaveis}
+                  />
+                )}
+                {i === operacoes.length - 1 && (
+                  <DropdownControlButtons
+                    onAdd={() => {
+                      if (opStr && opStr.trim() !== "") adicionarOperacao();
+                    }}
+                    onRemove={() => {
+                      if (operacoes.length > 1) removerOperacao(i);
+                    }}
+                    podeAdicionar={
+                      !!opStr &&
+                      opStr.trim() !== "" &&
+                      (!isOp || (expressoes[i] && expressoes[i].trim() !== ""))
+                    }
+                    podeRemover={operacoes.length > 1}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <ButtonC
+          texto="GERAR"
+          corFundo="#409b40"
+          corTexto="#fff"
+          onClick={() => {
+            iniciarExecucao();
+          }}
+          ativo={botaoAtivo}
+        />
+      </div>
 
       <div className="Excution">
         <Table
@@ -240,13 +257,15 @@ function RunPage() {
 
       {console.log(format(operacoes, expressoes, numVariaveis))}
 
-      <p>Resultado da execução</p>
+      <div className="execution-label">
+        <p className="label">Resultado da execução</p>
 
-      <ResultTable
-        ativa={withNum}
-        operacoes={format(operacoes, expressoes, numVariaveis)}
-        valoresIniciais={valoresVariaveis}
-      />
+        <ResultTable
+          ativa={withNum}
+          operacoes={format(operacoes, expressoes, numVariaveis)}
+          valoresIniciais={valoresVariaveis}
+        />
+      </div>
 
       <br />
       <br />

@@ -1,32 +1,97 @@
 .runPage-container {
   justify-content: center;
   align-items: center;
-  margin: auto;
+  margin: 2% auto;
   background-color: #ffffff;
   width: 80%;
   border: 1px solid black;
+  border-radius: 20px;
+  padding: 7px;
+}
+
+.container {
+  width: 100%;
+  /* border: 1px solid orange; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container-values {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  flex-direction: column;
-  border: 1px solid blue;
+  flex-direction: row;
+  /* border: 2px solid grey; */
+  border-radius: 20px;
+  flex-wrap: wrap;
+  width: 40%;
+  gap: 20px;
+  padding: 20px;
+   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.container-values  {
+.container-values .insert-content {
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid red; */
+  width: 90%;
+}
+
+.container-values .insert-content .content-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.label {
+  margin: 0;
+  margin-bottom: 3px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.toggle-values {
+  display: flex;
+  /* border: 1px solid blue ; */
+  align-items: start;
+  gap: 2px;
+  flex-direction: column;
+  margin-bottom: -10px;
+}
+
+.variables-values {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  /* border: 1px solid red; */
+  flex-direction: column;
+  
+}
+
+.dropdown-main {
+  display: flex;
+  /* border: 1px solid black; */
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  
 }
 
 .dropdowns-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  align-items: center;
+  /* border: 1px solid royalblue; */
+  width: fit-content;
+  
 }
 
 .dropdown-item {
-    display: flex;
+  display: flex;
 }
 
 .Excution {
@@ -35,4 +100,15 @@
   justify-content: center;
   gap: 25px;
   margin: 20px;
+}
+
+.execution-label {
+  display: flex;
+  /* border: 1px solid black; */
+  flex-direction: column;
+  gap: 20px;
+}
+
+.execution-label p {
+  margin-left: 4%;
 }
