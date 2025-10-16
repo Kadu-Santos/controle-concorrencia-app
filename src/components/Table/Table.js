@@ -31,6 +31,27 @@ function interpretarOperacao(op) {
 }
 
 function Table({ operacoes, passoAtual, errors }) {
+
+  // ✅ ADICIONE ESTE BLOCO LOGO AQUI
+  if (!operacoes || operacoes.length === 0) {
+    return (
+      <div className="janela-tabela">
+        <div className="barra-superior">
+          <span className="circulo vermelho" />
+          <span className="circulo amarelo" />
+          <span className="circulo verde" />
+        </div>
+        <div className="conteudo-tabela vazio">
+          <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
+            Nenhuma execução iniciada ainda.
+          </p>
+        </div>
+      </div>
+    );
+  }
+  // 🔺 FIM DO BLOCO NOVO
+
+
   const transacoes = Array.from(new Set(operacoes.map(op => op.split(':')[0])));
   const linhas = [];
   const totalLinhas = Math.max(9, passoAtual + 1);
@@ -77,17 +98,19 @@ function Table({ operacoes, passoAtual, errors }) {
         <div className="execucao-tabela">
           <div className="header-linha">
             {transacoes.map(t => (
-              <div key={t} style={{ flex: 1, color: coresTransacoes[t], textAlign: 'center' }}>{t}</div>
+              <div
+                key={t}
+                style={{ flex: 1, color: coresTransacoes[t], textAlign: 'center' }}
+              >
+                {t}
+              </div>
             ))}
           </div>
           {linhas}
         </div>
       </div>
     </div>
-
   );
 }
 
 export default Table;
-
-

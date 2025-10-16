@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Operation.css';
 
-function Operation({ numVariaveis, onOperacaoChange }) {
+function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
   const baseVariaveis = ['X', 'Y', 'Z', 'W', 'V'];
   const variaveis = baseVariaveis.slice(0, numVariaveis);
   const opcoes = [...variaveis, 'Digite...'];
@@ -13,6 +13,38 @@ function Operation({ numVariaveis, onOperacaoChange }) {
   const [direitaManual, setDireitaManual] = useState(false);
 
   const ultimaExpressaoValidaRef = useRef(null);
+
+  useEffect(() => {
+    if (valorInicial && valorInicial !== ultimaExpressaoValidaRef.current) {
+      const match = valorInicial.match(/^(.+?)([+\-*/])(.+)$/);
+      if (match) {
+        const left = match[1].trim();
+        const op = match[2].trim();
+        const right = match[3].trim();
+
+        setOperador(op);
+
+        // Esquerda
+        if (variaveis.includes(left)) {
+          setEsquerda(left);
+          setEsquerdaManual(false);
+        } else {
+          setEsquerda(left);
+          setEsquerdaManual(true);
+        }
+
+        // Direita
+        if (variaveis.includes(right)) {
+          setDireita(right);
+          setDireitaManual(false);
+        } else {
+          setDireita(right);
+          setDireitaManual(true);
+        }
+      }
+    }
+  }, [valorInicial, variaveis]);
+
 
   useEffect(() => {
     const camposPreenchidos = esquerda.trim() !== '' && direita.trim() !== '';

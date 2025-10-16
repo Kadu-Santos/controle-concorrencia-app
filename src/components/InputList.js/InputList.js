@@ -3,16 +3,21 @@ import './InputList.css';
 
 const letras = ['X:', 'Y:', 'Z:', 'W:', 'A:', 'B:', 'C:', 'D:'];
 
-function InputList({ quantidade, onChange }) {
+function InputList({ quantidade, onChange, valoresIniciais = [] }) {
+
   const isDisabled = quantidade === 0;
   const campos = isDisabled ? 3 : quantidade;
 
   const [valores, setValores] = useState(() => Array(campos).fill(''));
 
   useEffect(() => {
-    setValores(Array(campos).fill(''));
-  }, [campos]);
-  
+    const novosValores = valoresIniciais.length === quantidade
+      ? valoresIniciais
+      : Array(quantidade).fill('');
+    setValores(novosValores);
+  }, [valoresIniciais, quantidade]);
+
+
   useEffect(() => {
     const preenchidos = valores.every(v => v.trim() !== '');
     if (preenchidos) {
