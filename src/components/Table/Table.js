@@ -1,4 +1,3 @@
-import React from 'react';
 import './Table.css';
 import Bloco from '../Bloco/Bloco';
 
@@ -8,6 +7,16 @@ const coresTransacoes = {
   T3: '#8e44ad',
   T4: '#2a9d8f',
 };
+
+function BarraSuperior() {
+  return (
+    <div className="barra-superior">
+      <span className="circulo vermelho" />
+      <span className="circulo amarelo" />
+      <span className="circulo verde" />
+    </div>
+  );
+}
 
 function interpretarOperacao(op) {
   const partes = op.split(':');
@@ -32,15 +41,10 @@ function interpretarOperacao(op) {
 
 function Table({ operacoes, passoAtual, errors }) {
 
-  // ✅ ADICIONE ESTE BLOCO LOGO AQUI
   if (!operacoes || operacoes.length === 0) {
     return (
       <div className="janela-tabela">
-        <div className="barra-superior">
-          <span className="circulo vermelho" />
-          <span className="circulo amarelo" />
-          <span className="circulo verde" />
-        </div>
+        <BarraSuperior />
         <div className="conteudo-tabela vazio">
           <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
             Nenhuma execução iniciada ainda.
@@ -49,7 +53,6 @@ function Table({ operacoes, passoAtual, errors }) {
       </div>
     );
   }
-  // 🔺 FIM DO BLOCO NOVO
 
 
   const transacoes = Array.from(new Set(operacoes.map(op => op.split(':')[0])));
@@ -89,11 +92,7 @@ function Table({ operacoes, passoAtual, errors }) {
 
   return (
     <div className="janela-tabela">
-      <div className="barra-superior">
-        <span className="circulo vermelho" />
-        <span className="circulo amarelo" />
-        <span className="circulo verde" />
-      </div>
+      <BarraSuperior />
       <div className="conteudo-tabela">
         <div className="execucao-tabela">
           <div className="header-linha">

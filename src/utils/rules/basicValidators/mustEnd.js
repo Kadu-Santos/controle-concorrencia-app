@@ -5,7 +5,7 @@ export default function mustEnd(instructions = []) {
 
   instructions.forEach((instruction, index) => {
     const [transactionId, actionWithData] = instruction.split(':');
-    const action = actionWithData.split('(')[0].toLowerCase();
+    const action = (actionWithData?.split('(')[0] || '').toLowerCase();
 
     if (!transactions[transactionId]) {
       transactions[transactionId] = {
@@ -31,10 +31,8 @@ export default function mustEnd(instructions = []) {
     }
   });
 
-  return errors.length > 0
-    ? {
-        nome: errors.map(e => e.texto),
-        indices: errors.map(e => e.index)
-      }
-    : null;
+  return errors.map(e => ({
+    name: e.texto,
+    indices: [e.index]
+  }));
 }

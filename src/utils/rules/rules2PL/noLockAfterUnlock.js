@@ -5,25 +5,25 @@ export default function noLockAfterUnlock(instructions = []) {
 
   instructions.forEach((instruction, index) => {
     const [tid, op] = instruction.split(':');
+    const opNorm = op?.toUpperCase();
 
     if (!released[tid]) released[tid] = false;
 
-    if (op === 'U') {
+    if (opNorm === 'U') {
       released[tid] = true;
     }
 
-    if ((op === 'RL' || op === 'WL') && released[tid]) {
+    if ((opNorm === 'RL' || opNorm === 'WL') && released[tid]) {
       errors.push({
         index,
-        texto: `${tid} solicitou ${op} após ter iniciado liberação de bloqueios`
+        texto: `${tid} solicitou ${opNorm} após ter iniciado liberação de bloqueios`
       });
     }
   });
 
-  return errors.length > 0
-    ? {
-        nome: errors.map(e => e.texto),
-        indices: errors.map(e => e.index)
-      }
-    : null;
+  return errors.map(e => ({
+    name: e.texto,
+    indices: [e.index]
+  }));
+
 }

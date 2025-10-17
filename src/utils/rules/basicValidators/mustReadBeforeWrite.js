@@ -1,38 +1,38 @@
 // Transação deve ler o dado antes de escrever
 export default function mustReadBeforeWrite(instructions = []) {
-  const transactions = {}; // Armazena os dados lidos por cada transação
+  const transactions = {};
   const errors = [];
 
   instructions.forEach((instruction, index) => {
-    const partes = instruction.split(':');
+    const partes = instruction.split(':').map(p => p.trim());
+    
     if (partes.length !== 3) return;
 
     const [transactionId, action, data] = partes;
 
     if (!transactions[transactionId]) {
-      transactions[transactionId] = {
-        readData: new Set(),
-      };
+      transactions[transactionId] = { readData: new Set() };
     }
 
     const tx = transactions[transactionId];
+    const actionNorm = action.toUpperCase();
 
-    if (action === 'W' && !tx.readData.has(data)) {
+    // Escrever sem ter lido antes
+    if (actionNorm === 'W' && !tx.readData.has(data)) {
       errors.push({
         index,
-        texto: `${transactionId} escreveu ${data} sem ler antes na linha ${index + 1}`
+        texto: `Transação ${transactionId} tentou escrever em ${data} sem leitura prévia (linha ${index + 1})`
       });
     }
 
-    if (action === 'R') {
+    // Registrar leitura
+    if (actionNorm === 'R') {
       tx.readData.add(data);
     }
   });
 
-  return errors.length > 0
-    ? {
-        nome: errors.map(e => e.texto),
-        indices: errors.map(e => e.index),
-      }
-    : null;
+  return errors.map(e => ({
+    name: e.texto,
+    indices: [e.index]
+  }));
 }

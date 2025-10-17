@@ -46,8 +46,8 @@ export default function mustHaveWriteLockForWrite(instructions = []) {
 
   if (errors.length === 0) return null;
 
-  return {
-    nome: errors.map(e => e.text).join('; '),
-    indices: errors.map(e => e.index)
-  };
+  return errors.map(e => ({
+    name: e.text,
+    indices: [e.index]
+  }));
 }

@@ -3,7 +3,7 @@
   align-items: center;
   margin: auto;
   background-color: #ffffff;
-  width: 80%;
+  width: 95%;
 }
 
 .dropdowns-container {
@@ -56,9 +56,13 @@
     margin-top: 25px;
 }
 
-#ButtonC{
-    margin-left: 500px;
-    
+.buttonsBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .dropdown-item {

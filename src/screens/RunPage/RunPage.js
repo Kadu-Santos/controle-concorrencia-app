@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import './RunPage.css';
 
 import Logo from '../../components/Logo/Logo';
@@ -26,6 +26,8 @@ function RunPage() {
     const [expressoes, setExpressoes] = useState({});
     const [valor, setValor] = useState(false);
     const [operacoesExecucao, setOperacoesExecucao] = useState([]);
+    const [executando, setExecutando] = useState(false);
+    const executandoRef = useRef(false);
 
     const [passoAtual, setPassoAtual] = useState(-1);
     const [linhasTerminal, setLinhasTerminal] = useState([]);
@@ -47,6 +49,17 @@ function RunPage() {
         setValor(temValores);
 
     };
+
+    const limparTudo = () => {
+        setOperacoes([""]);
+        setExpressoes({});
+        setOperacoesExecucao([]);
+        setLinhasTerminal([]);
+        setErrors([]);
+        setPassoAtual(-1);
+        setExecutando(false);
+    };
+
 
     const atualizarOperacao = (index, valor) => {
         const ops = [...operacoes];
@@ -72,19 +85,33 @@ function RunPage() {
         setExpressoes(novasExpressoes);
     };
 
-    const iniciarExecucao = () => {
-        const instrucoes = format(operacoes, expressoes, numVariaveis)
+    const timerRef = useRef(null);
 
+    const iniciarExecucao = () => {
+        const instrucoes = format(operacoes, expressoes, numVariaveis);
         if (instrucoes.length === 0) return;
 
-        const { errors: resultadoErros, indicesWithError } = verificador(instrucoes);
+        // marca início
+        setExecutando(true);
+        executandoRef.current = true;
 
         setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
-        setErrors(indicesWithError);
+        setErrors([]);            // opcional: setar indicesWithError se necessário
         setPassoAtual(-1);
 
+        const { errors: resultadoErros, indicesWithError } = verificador(instrucoes);
+        setErrors(indicesWithError);
+
         let i = 0;
+
         const executarPasso = () => {
+            // se foi pedido para parar, encerra
+            if (!executandoRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+                return;
+            }
+
             if (i >= instrucoes.length) {
                 const houveErros = resultadoErros.length > 0;
                 setLinhasTerminal(prev => [
@@ -94,44 +121,40 @@ function RunPage() {
                         isErro: houveErros
                     }
                 ]);
-
+                setExecutando(false);
+                executandoRef.current = false;
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
                 return;
             }
 
             const instrucao = instrucoes[i];
             const errosNoPasso = resultadoErros.filter(e => e.indices.includes(i));
-
             const mensagensErro = [];
+
             errosNoPasso.forEach(e => {
-                if (Array.isArray(e.nome)) {
-                    e.nome.forEach((msg, idx) => {
-                        if (e.indices[idx] === i) {
-                            mensagensErro.push(`⚠️ Erro: ${msg}`);
-                        }
-                    });
-                } else {
-                    mensagensErro.push(`⚠️ Erro: ${e.nome}`);
+                if (e.indices.includes(i)) {
+                    mensagensErro.push(`⚠️ Erro: ${e.name}`);
                 }
             });
 
-            setPassoAtual(i)
 
-            const novasLinhas = [
-                ...mensagensErro.map(texto => ({ texto, isErro: true }))
-            ];
+            setPassoAtual(i);
 
-            if (mensagensErro.length === 0) {
-                novasLinhas.unshift({ texto: instrucao, isErro: false });
-            }
-
+            const novasLinhas = [...mensagensErro.map(texto => ({ texto, isErro: true }))];
+            if (mensagensErro.length === 0) novasLinhas.unshift({ texto: instrucao, isErro: false });
 
             setLinhasTerminal(prev => [...prev, ...novasLinhas]);
 
             i++;
-            setTimeout(executarPasso, 1500);
+            timerRef.current = setTimeout(executarPasso, 1500);
         };
-        executarPasso();
+
+        // inicia o loop
+        timerRef.current = setTimeout(executarPasso, 1000);
     };
+
+
 
     const botaoAtivo = useMemo(() => {
         if (numVariaveis === 0 || numTransacoes === 0) return false;
@@ -241,7 +264,7 @@ function RunPage() {
                                     numVariaveis={numVariaveis}
                                     onSelecionar={(val) => atualizarOperacao(i, val)}
                                     valorSelecionado={opStr}
-                                    disabled={valor && !(valoresVariaveis.length === numVariaveis)}
+                                    disabled={executando || (valor && !(valoresVariaveis.length === numVariaveis))}
                                 />
 
                                 {isOp && (
@@ -275,18 +298,38 @@ function RunPage() {
                     })}
                 </div>
 
-                <ButtonC
-                    texto="GERAR"
-                    corFundo="#409b40"
-                    corTexto="#fff"
-                    onClick={() => {
-                        const instr = format(operacoes, expressoes, numVariaveis);
-                        setOperacoesExecucao(instr);
-                        iniciarExecucao();
-                    }}
-                    ativo={botaoAtivo}
-                />
+                <div className='buttonsBox'>
+                    <ButtonC
+                        texto="GERAR"
+                        corFundo="#409b40"
+                        corTexto="#fff"
+                        onClick={() => {
+                            const instr = format(operacoes, expressoes, numVariaveis);
+                            setOperacoesExecucao(instr);
+                            iniciarExecucao();
+                        }}
+                        ativo={botaoAtivo}
+                    />
 
+                    <ButtonC
+                        texto={executando ? "PARAR" : "LIMPAR"}
+                        corFundo={executando ? "#dc3545" : "#6c757d"}
+                        corTexto="#fff"
+                        onClick={() => {
+                            if (executando) {
+                                setExecutando(false);
+                                executandoRef.current = false;
+                                if (timerRef.current) {
+                                    clearTimeout(timerRef.current);
+                                    timerRef.current = null;
+                                }
+                            } else {
+                                limparTudo();
+                            }
+                        }}
+                        ativo={executando || operacoes.some(op => op.trim() !== "")}
+                    />
+                </div>
             </div>
 
 

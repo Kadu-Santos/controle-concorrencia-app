@@ -5,29 +5,31 @@ export default function noUnlockWithoutLock(instructions = []) {
 
   instructions.forEach((instruction, index) => {
     const [tid, op, item] = instruction.split(':');
+    const opNorm = op?.toUpperCase();
 
     if (!txLocks[tid]) {
       txLocks[tid] = new Set();
     }
 
-    if (op === 'RL' || op === 'WL') {
+    if (opNorm === 'RL' || opNorm === 'WL') {
       txLocks[tid].add(item);
     }
 
-    if (op === 'U') {
+    if (opNorm === 'U') {
       if (!txLocks[tid].has(item)) {
         errors.push({
           index,
           texto: `${tid} tentou liberar ${item} sem tê-lo bloqueado`
         });
+      } else {
+        txLocks[tid].delete(item);
       }
     }
   });
 
-  return errors.length > 0
-    ? {
-        nome: errors.map(e => e.texto),
-        indices: errors.map(e => e.index)
-      }
-    : null;
+  return errors.map(e => ({
+    name: e.texto,
+    indices: [e.index]
+  }));
+
 }

@@ -5,7 +5,7 @@ export default function noCommitOrAbortFirst(instructions = []) {
 
   instructions.forEach((instruction, index) => {
     const [transactionId, actionWithData] = instruction.split(':');
-    const action = actionWithData.split('(')[0].toLowerCase();
+    const action = (actionWithData?.split('(')[0] || '').toLowerCase();
 
     // Se for a primeira operação da transação
     if (!firstOps.hasOwnProperty(transactionId)) {
@@ -14,7 +14,7 @@ export default function noCommitOrAbortFirst(instructions = []) {
       if (action === 'commit' || action === 'abort') {
         errors.push({
           index,
-          message: `A transação ${transactionId} iniciou com ${action} na linha ${index + 1}`
+          message: `A transação ${transactionId} iniciou com ${action} (linha ${index + 1})`
         });
       }
     }
@@ -22,8 +22,9 @@ export default function noCommitOrAbortFirst(instructions = []) {
 
   if (errors.length === 0) return null;
 
-  return {
-    nome: errors.map(e => e.message),
-    indices: errors.map(e => e.index),
-  };
+  return errors.map(e => ({
+    name: e.message,
+    indices: [e.index]
+  }));
+
 }
