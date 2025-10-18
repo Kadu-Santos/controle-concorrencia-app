@@ -1,5 +1,6 @@
 import './Table.css';
 import Bloco from '../Bloco/Bloco';
+import WaitMessage from '../WaitMessage/WaitMessage';
 
 const coresTransacoes = {
   T1: '#0066ff',
@@ -39,7 +40,15 @@ function interpretarOperacao(op) {
   return op;
 }
 
-function Table({ operacoes, passoAtual, errors }) {
+/**
+ * Table
+ * @param {Array} operacoes - lista de operações formatadas
+ * @param {number} passoAtual - índice atual da execução
+ * @param {Array|Object} errors - índices com erro
+ * @param {Object} estadoOperacoes - estado de cada operação: { 5: "esperando", 6: "executado" }
+ * @param {Object} mensagensEspera - mensagens de espera por índice: { 5: "T3 aguardando liberação de X por T1" }
+ */
+function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensEspera = {} }) {
 
   if (!operacoes || operacoes.length === 0) {
     return (
@@ -54,7 +63,6 @@ function Table({ operacoes, passoAtual, errors }) {
     );
   }
 
-
   const transacoes = Array.from(new Set(operacoes.map(op => op.split(':')[0])));
   const linhas = [];
   const totalLinhas = Math.max(9, passoAtual + 1);
@@ -64,20 +72,34 @@ function Table({ operacoes, passoAtual, errors }) {
     const transacao = op.split(':')[0];
     const texto = i <= passoAtual ? interpretarOperacao(op) : '';
     const cor = coresTransacoes[transacao] || 'black';
+    const status = estadoOperacoes[i]; // "esperando" | "executado" | undefined
 
     const linha = transacoes.map((t, index) => {
       if (t === transacao && texto) {
         const direcao = index < transacoes.length / 2 ? 'slide-from-left' : 'slide-from-right';
 
-        return (
-          <Bloco
-            key={`${i}-${t}`}
-            texto={texto}
-            cor={cor}
-            animacao={direcao}
-            pulsando={errors?.[i] === true}
-          />
-        );
+        // Se a operação está em espera → mostra mensagem no lugar do bloco
+        if (status === "esperando") {
+          return (
+            <WaitMessage
+              key={`${i}-${t}`}
+              texto={mensagensEspera[i] || `${transacao} aguardando...`}
+            />
+          );
+        }
+
+        // Se já executou normalmente → mostra o bloco
+        if (status === "executado" || !status) {
+          return (
+            <Bloco
+              key={`${i}-${t}`}
+              texto={texto}
+              cor={cor}
+              animacao={direcao}
+              pulsando={errors?.[i] === true}
+            />
+          );
+        }
       }
       return <div key={`${i}-${t}`}></div>;
     });

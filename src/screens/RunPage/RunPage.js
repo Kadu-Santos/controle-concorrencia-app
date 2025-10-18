@@ -308,7 +308,7 @@ function RunPage() {
                             setOperacoesExecucao(instr);
                             iniciarExecucao();
                         }}
-                        ativo={botaoAtivo}
+                        ativo={botaoAtivo && !executando}
                     />
 
                     <ButtonC

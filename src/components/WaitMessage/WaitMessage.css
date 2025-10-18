@@ -1,0 +1,14 @@
+.wait-message {
+  margin-left: 8px;
+  padding: 4px 8px;
+  background-color: #fff3cd; /* amarelo claro */
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #856404;
+  display: inline-block;
+}
+
+.message {
+  margin: 0;
+}
