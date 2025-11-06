@@ -65,7 +65,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
 
   const transacoes = Array.from(new Set(operacoes.map(op => op.split(':')[0])));
   const linhas = [];
-  const totalLinhas = Math.max(9, passoAtual + 1);
+  const totalLinhas = operacoes.length === 0 ? 9 : operacoes.length;
 
   for (let i = 0; i < totalLinhas; i++) {
     const op = operacoes[i] || '';
@@ -93,6 +93,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
           return (
             <Bloco
               key={`${i}-${t}`}
+              index={i} 
               texto={texto}
               cor={cor}
               animacao={direcao}

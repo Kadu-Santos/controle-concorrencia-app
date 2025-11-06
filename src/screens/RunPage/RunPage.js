@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import './RunPage.css';
 
 import Logo from '../../components/Logo/Logo';
@@ -12,13 +12,20 @@ import Operation from '../../components/Operation/Operation';
 import Table from '../../components/Table/Table';
 import Toggle from '../../components/Toggle/Toggle';
 import Terminal from '../../components/Terminal/Terminal';
+import Footer from '../../components/Footer/Footer';
 import { exemplos } from '../../data/exemples';
 
+import { useExecutionEngine } from '../../hooks/useExecutionEngine';
+
 import { format, isOperacaoMatematica } from '../../utils/Valid';
-import verificador from '../../utils/verifier';
-import ResultTable from '../../components/ResultTable/ResultTable'
+import ResultTable from '../../components/ResultTable/ResultTable';
+
 
 function RunPage() {
+
+    const [speedMs, setSpeedMs] = useState(1200); // ms por passo padrão
+
+
     const [numVariaveis, setNumVariaveis] = useState(0);
     const [numTransacoes, setNumTransacoes] = useState(0);
     const [valoresVariaveis, setValoresVariaveis] = useState([]);
@@ -26,40 +33,70 @@ function RunPage() {
     const [expressoes, setExpressoes] = useState({});
     const [valor, setValor] = useState(false);
     const [operacoesExecucao, setOperacoesExecucao] = useState([]);
-    const [executando, setExecutando] = useState(false);
-    const executandoRef = useRef(false);
 
-    const [passoAtual, setPassoAtual] = useState(-1);
-    const [linhasTerminal, setLinhasTerminal] = useState([]);
-    const [errors, setErrors] = useState([]);
+    const { iniciarExecucao,
+        pararExecucao,
+        resetUI,
+        linhasTerminal,
+        passoAtual,
+        errors,
+        executando,
+        estadoOperacoes,
+        mensagensEspera,
+        setStepDelay
+    } = useExecutionEngine();
+
+    // Opções numéricas para dropdowns
+    const nOpTransacao = [1, 2, 3, 4];
+    const nOpVarivavel = ['1 (x)', '2 (x, y)', '3 (x, y, z)', '4 (x, y, z, w)'];
+
+    // Garantir valor numérico para numVariaveis (compatibilidade com dropdowns que possam devolver string)
+    const numVarsParsed = typeof numVariaveis === 'number'
+        ? numVariaveis
+        : parseInt(String(numVariaveis).replace(/\D/g, ''), 10) || 0;
+
+    const withNum = valor ? numVarsParsed : 0;
+
+    const onSpeedChange = (newMs) => {
+        setSpeedMs(newMs);
+        if (setStepDelay) setStepDelay(newMs);
+    };
+
+    const getStatus = () => {
+        if (withNum === 0) return "desativado";
+        if (executando) return "executando";
+
+        const instr = format(operacoes, expressoes, numVarsParsed);
+        const houveAlteracao = JSON.stringify(instr) !== JSON.stringify(operacoesExecucao);
+
+        if (operacoesExecucao.length === 0 || houveAlteracao) {
+            return "desativado";
+        }
+
+        return "ativo";
+    };
 
 
-    const withNum = valor ? numVariaveis : 0;
 
     const executarExemploAleatorio = () => {
         const exemplo = exemplos[Math.floor(Math.random() * exemplos.length)];
 
         setNumTransacoes(exemplo.numTransacoes);
         setNumVariaveis(exemplo.numVariaveis);
-        setValoresVariaveis(exemplo.valoresVariaveis);
-        setOperacoes(exemplo.operacoes);
-        setExpressoes(exemplo.expressoes);
+        setValoresVariaveis(exemplo.valoresVariaveis || []);
+        setOperacoes(exemplo.operacoes || [""]);
+        setExpressoes(exemplo.expressoes || {});
 
         const temValores = exemplo.valoresVariaveis?.length > 0;
         setValor(temValores);
-
     };
 
     const limparTudo = () => {
         setOperacoes([""]);
         setExpressoes({});
         setOperacoesExecucao([]);
-        setLinhasTerminal([]);
-        setErrors([]);
-        setPassoAtual(-1);
-        setExecutando(false);
+        resetUI(); // limpa terminal e erros do hook
     };
-
 
     const atualizarOperacao = (index, valor) => {
         const ops = [...operacoes];
@@ -85,97 +122,23 @@ function RunPage() {
         setExpressoes(novasExpressoes);
     };
 
-    const timerRef = useRef(null);
-
-    const iniciarExecucao = () => {
-        const instrucoes = format(operacoes, expressoes, numVariaveis);
-        if (instrucoes.length === 0) return;
-
-        // marca início
-        setExecutando(true);
-        executandoRef.current = true;
-
-        setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
-        setErrors([]);            // opcional: setar indicesWithError se necessário
-        setPassoAtual(-1);
-
-        const { errors: resultadoErros, indicesWithError } = verificador(instrucoes);
-        setErrors(indicesWithError);
-
-        let i = 0;
-
-        const executarPasso = () => {
-            // se foi pedido para parar, encerra
-            if (!executandoRef.current) {
-                clearTimeout(timerRef.current);
-                timerRef.current = null;
-                return;
-            }
-
-            if (i >= instrucoes.length) {
-                const houveErros = resultadoErros.length > 0;
-                setLinhasTerminal(prev => [
-                    ...prev,
-                    {
-                        texto: houveErros ? "❌ Execução finalizada com erros." : "🏁 Execução finalizada com sucesso.",
-                        isErro: houveErros
-                    }
-                ]);
-                setExecutando(false);
-                executandoRef.current = false;
-                clearTimeout(timerRef.current);
-                timerRef.current = null;
-                return;
-            }
-
-            const instrucao = instrucoes[i];
-            const errosNoPasso = resultadoErros.filter(e => e.indices.includes(i));
-            const mensagensErro = [];
-
-            errosNoPasso.forEach(e => {
-                if (e.indices.includes(i)) {
-                    mensagensErro.push(`⚠️ Erro: ${e.name}`);
-                }
-            });
-
-
-            setPassoAtual(i);
-
-            const novasLinhas = [...mensagensErro.map(texto => ({ texto, isErro: true }))];
-            if (mensagensErro.length === 0) novasLinhas.unshift({ texto: instrucao, isErro: false });
-
-            setLinhasTerminal(prev => [...prev, ...novasLinhas]);
-
-            i++;
-            timerRef.current = setTimeout(executarPasso, 1500);
-        };
-
-        // inicia o loop
-        timerRef.current = setTimeout(executarPasso, 1000);
-    };
-
-
-
     const botaoAtivo = useMemo(() => {
-        if (numVariaveis === 0 || numTransacoes === 0) return false;
+        if (numVarsParsed === 0 || numTransacoes === 0) return false;
 
         const variaveisPreenchidas =
-            valoresVariaveis.length === numVariaveis &&
+            valoresVariaveis.length === numVarsParsed &&
             valoresVariaveis.every(v => v.trim() !== '');
 
         const variaveisOk = valor ? variaveisPreenchidas : true;
 
         const operacoesOk = operacoes.every((op, index) => {
             if (!op?.trim()) return false;
-            const precisaExpressao = isOperacaoMatematica(op, numVariaveis);
+            const precisaExpressao = isOperacaoMatematica(op, numVarsParsed);
             return !precisaExpressao || (expressoes[index]?.trim() !== '');
         });
 
         return variaveisOk && operacoesOk;
-    }, [numVariaveis, numTransacoes, valoresVariaveis, operacoes, expressoes, valor]);
-
-    const nOpTransacao = [1, 2, 3, 4]
-    const nOpVarivavel = ['1 (x)', '2 (x,y)', '3 (x,y,z)']
+    }, [numVarsParsed, numTransacoes, valoresVariaveis, operacoes, expressoes, valor]);
 
     return (
         <div className="runPage-container">
@@ -190,18 +153,17 @@ function RunPage() {
                     <HintButton texto="Aqui você pode visualizar detalhes do controle de concorrência." />
 
                     <NumericDropdown
-                        opcoes={nOpTransacao}
-                        onChange={(v) => setNumTransacoes(v)}
-                        value={numTransacoes}
+                        options={nOpTransacao}
+                        onSelect={(v) => setNumTransacoes(v)}
+                        selectedValue={numTransacoes}
                     />
 
                     <p>Número de variáveis:</p>
                     <HintButton texto="Número de variáveis" />
                     <NumericDropdown
-                        opcoes={nOpVarivavel}
-                        onChange={(v) => setNumVariaveis(v)}
-                        value={numVariaveis}
-                        largura="110px"
+                        options={nOpVarivavel}
+                        onSelect={(v) => setNumVariaveis(v)}
+                        selectedValue={numVariaveis}
                     />
 
                 </div>
@@ -213,11 +175,10 @@ function RunPage() {
                         onChange={(novoValor) => {
                             setValor(novoValor);
                             if (novoValor) {
-                                setValoresVariaveis(Array(numVariaveis).fill(''));
+                                setValoresVariaveis(Array(numVarsParsed).fill(''));
                             }
                         }}
                     />
-
 
                     <p>Valores iniciais das variáveis:</p>
                     <InputList
@@ -225,6 +186,26 @@ function RunPage() {
                         onChange={setValoresVariaveis}
                         valoresIniciais={valoresVariaveis}
                     />
+
+                    <div className="speed-control">
+                        <p>Velocidade da execução:</p>
+                        <div className="speed-row">
+                            <span>Lento</span>
+                            <input
+                                type="range"
+                                min={100}
+                                max={3000}
+                                step={50}
+                                value={3000 - (speedMs - 100)}
+                                onChange={(e) => {
+                                    const val = Number(e.target.value);
+                                    onSpeedChange(3000 - (val - 100));
+                                }}
+                                disabled={executando}
+                            />
+                            <span>Rápido</span>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -256,25 +237,30 @@ function RunPage() {
                 <div className="dropdowns-container">
                     <p>S1:</p>
                     {operacoes.map((opStr, i) => {
-                        const isOp = isOperacaoMatematica(opStr, numVariaveis);
+                        const isOp = isOperacaoMatematica(opStr, numVarsParsed);
                         return (
-                            <div key={i} className="dropdown-item">
+                            <div key={i} className="dropdown-item" id={`dropdown-${i}`}> {/* 👈 id único */}
                                 <MultiLevelDropdown
-                                    numTransacoes={numTransacoes}
-                                    numVariaveis={numVariaveis}
-                                    onSelecionar={(val) => atualizarOperacao(i, val)}
-                                    valorSelecionado={opStr}
-                                    disabled={executando || (valor && !(valoresVariaveis.length === numVariaveis))}
+                                    transactionCount={numTransacoes}
+                                    variableCount={numVarsParsed}
+                                    onSelect={(val) => atualizarOperacao(i, val)}
+                                    selectedValue={opStr}
+                                    disabled={executando || (valor && !(valoresVariaveis.length === numVarsParsed))}
                                 />
 
                                 {isOp && (
-                                    <Operation
-                                        numVariaveis={numVariaveis}
-                                        onOperacaoChange={handleOperacaoChange(i)}
-                                        valorInicial={expressoes[i]}
-                                        disabled={!numVariaveis}
-                                    />
+                                    <>
+                                        <Operation
+                                            numVariaveis={numVarsParsed}
+                                            onOperacaoChange={handleOperacaoChange(i)}
+                                            valorInicial={expressoes[i]}
+                                            disabled={!numVarsParsed}
+                                        />
+                                        <span style={{ marginLeft: 6 }}>;</span>
+                                    </>
                                 )}
+
+                                {!isOp && <span style={{ marginLeft: 6 }}>;</span>}
 
                                 {i === operacoes.length - 1 && (
                                     <DropdownControlButtons
@@ -289,7 +275,6 @@ function RunPage() {
                                             opStr.trim() !== '' &&
                                             (!isOp || (expressoes[i] && expressoes[i].trim() !== ''))
                                         }
-
                                         podeRemover={operacoes.length > 1}
                                     />
                                 )}
@@ -298,18 +283,20 @@ function RunPage() {
                     })}
                 </div>
 
+
                 <div className='buttonsBox'>
                     <ButtonC
                         texto="GERAR"
                         corFundo="#409b40"
                         corTexto="#fff"
                         onClick={() => {
-                            const instr = format(operacoes, expressoes, numVariaveis);
+                            const instr = format(operacoes, expressoes, numVarsParsed);
                             setOperacoesExecucao(instr);
-                            iniciarExecucao();
+                            iniciarExecucao(instr);
                         }}
                         ativo={botaoAtivo && !executando}
                     />
+
 
                     <ButtonC
                         texto={executando ? "PARAR" : "LIMPAR"}
@@ -317,22 +304,16 @@ function RunPage() {
                         corTexto="#fff"
                         onClick={() => {
                             if (executando) {
-                                setExecutando(false);
-                                executandoRef.current = false;
-                                if (timerRef.current) {
-                                    clearTimeout(timerRef.current);
-                                    timerRef.current = null;
-                                }
+                                pararExecucao();
                             } else {
                                 limparTudo();
                             }
                         }}
                         ativo={executando || operacoes.some(op => op.trim() !== "")}
                     />
+
                 </div>
             </div>
-
-
 
 
             <div className='Excution'>
@@ -340,31 +321,26 @@ function RunPage() {
                     operacoes={operacoesExecucao}
                     errors={errors}
                     passoAtual={passoAtual}
+                    estadoOperacoes={estadoOperacoes}
+                    mensagensEspera={mensagensEspera}
                 />
 
                 <Terminal linhas={linhasTerminal} />
             </div>
 
-            {console.log(format(operacoes, expressoes, numVariaveis))}
-
-            <br />
             <br />
             <h3 className='SubTitle'>Resultado da execução</h3>
             <br />
 
             <ResultTable
-                ativa={withNum}
-                operacoes={format(operacoes, expressoes, numVariaveis)}
+                status={getStatus()}
+                operacoes={operacoesExecucao}
                 valoresIniciais={valoresVariaveis}
             />
 
             <br />
             <br />
-            <br />
-            <br />
-            <br />
-            <br />
-
+            <Footer />
 
         </div>
     );

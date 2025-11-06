@@ -134,7 +134,6 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
           ))}
         </select>
       )}
-      <p>;</p>
     </div>
   );
 }

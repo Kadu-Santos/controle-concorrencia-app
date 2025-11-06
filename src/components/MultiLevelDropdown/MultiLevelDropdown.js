@@ -1,100 +1,136 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MultiLevelDropdown.css';
 
-const acoes = ['R', 'W', 'RL', 'WL', 'U', 'Operacão', 'Commit'];
+import downIcon from '../../assets/icons/down.png';
+import upIcon from '../../assets/icons/up.png';
+import threadIcon from '../../assets/icons/traco.png';
+import rightIcon from '../../assets/icons/right.png';
 
-function MultiLevelDropdown({ numTransacoes, numVariaveis, onSelecionar, valorSelecionado, disabled = false }) {
-  const [hoveredTransacao, setHoveredTransacao] = useState(null);
-  const [hoveredAcao, setHoveredAcao] = useState(null);
-  const [menuAberto, setMenuAberto] = useState(false);
+// Actions (mantém "Operação" em português porque é texto exibido)
+const actions = ['R', 'W', 'RL', 'WL', 'U', 'Operação', 'Commit'];
+
+function MultiLevelDropdown({
+  transactionCount,
+  variableCount,
+  onSelect,
+  selectedValue,
+  disabled = false,
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState({ tx: null, action: null });
   const dropdownRef = useRef(null);
 
-  const transacoes = Array.from({ length: numTransacoes }, (_, i) => `T${i + 1}`);
-  const variaveis = ['X', 'Y', 'Z'].slice(0, numVariaveis);
+  const transactions = Array.from({ length: transactionCount }, (_, i) => `T${i + 1}`);
+  const variables = ['X', 'Y', 'Z', 'W'].slice(0, variableCount);
 
-  // 🔹 Fecha o menu se clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setMenuAberto(false);
+        setMenuOpen(false);
+        setSubmenuOpen({ tx: null, action: null });
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 🔹 Reseta o estado de menu quando o valor muda externamente
-  useEffect(() => {
-    setMenuAberto(false);
-    setHoveredTransacao(null);
-    setHoveredAcao(null);
-  }, [valorSelecionado]);
-
-  const handleClick = (transacao, acao, variavel = null) => {
-    let resultado;
-
-    if (acao === 'Operacão' && variavel) {
-      resultado = `${transacao}:${variavel}`;
-    } else if (variavel) {
-      resultado = `${transacao}:${acao}:${variavel}`;
+  const handleClick = (transaction, action, variable = null) => {
+    let result;
+    if (action === 'Operação' && variable) {
+      result = `${transaction}:${variable}`;
+    } else if (variable) {
+      result = `${transaction}:${action}:${variable}`;
     } else {
-      resultado = `${transacao}:${acao}`;
+      result = `${transaction}:${action}`;
     }
-
-    onSelecionar(resultado);
-    setMenuAberto(false);
+    onSelect(result);
+    setMenuOpen(false);
+    setSubmenuOpen({ tx: null, action: null });
   };
 
   return (
     <div className="multi-dropdown" ref={dropdownRef}>
-      <button
-        className="dropdown-button"
-        onClick={() => !disabled && setMenuAberto((prev) => !prev)}
-        disabled={disabled}
+      <div
+        className={`dropdown-display ${disabled ? 'disabled' : ''}`}
+        onClick={() => !disabled && setMenuOpen((prev) => !prev)}
       >
-        {valorSelecionado || "Selecione"}
-      </button>
+        <span className={`dropdown-placeholder ${selectedValue ? 'active' : ''}`}>
+          {selectedValue || 'Selecione'}
+        </span>
+        <img
+          src={menuOpen ? upIcon : downIcon}
+          alt="Toggle menu"
+          className="icon-arrow"
+        />
+      </div>
 
-      {menuAberto && (
+      {menuOpen && (
         <div className="dropdown-menu">
-          {transacoes.map((t) => (
-            <div
-              className="dropdown-item relative"
-              key={t}
-              onMouseEnter={() => setHoveredTransacao(t)}
-              onMouseLeave={() => setHoveredTransacao(null)}
-            >
-              {t}
-              {hoveredTransacao === t && (
-                <div className="submenu absolute">
-                  {acoes.map((a) => (
-                    <div
-                      className="dropdown-item relative"
-                      key={a}
-                      onMouseEnter={() => setHoveredAcao(a)}
-                      onMouseLeave={() => setHoveredAcao(null)}
-                      onClick={a === 'Commit' ? () => handleClick(t, a) : undefined}
-                    >
-                      {a}
-                      {a !== 'Commit' && hoveredAcao === a && (
-                        <div className="submenu absolute">
-                          {variaveis.map((v) => (
-                            <div
-                              className="dropdown-item"
-                              key={v}
-                              onClick={() => handleClick(t, a, v)}
-                            >
-                              {v}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+          {transactions.map((tx) => {
+            const isTransactionActive = submenuOpen.tx === tx;
+
+            return (
+              <div
+                key={tx}
+                className="dropdown-item relative"
+                onMouseEnter={() => setSubmenuOpen({ tx, action: null })}
+                onMouseLeave={() => setSubmenuOpen({ tx: null, action: null })}
+              >
+                <div className="tx-label">
+                  <span>{tx}</span>
+                  <img
+                    src={isTransactionActive ? threadIcon : rightIcon}
+                    alt="Submenu"
+                    className="icon-arrow"
+                  />
                 </div>
-              )}
-            </div>
-          ))}
+
+                {isTransactionActive && (
+                  <div className="submenu">
+                    {actions.map((a) => {
+                      const isActionActive = submenuOpen.tx === tx && submenuOpen.action === a;
+
+                      return (
+                        <div
+                          key={a}
+                          className={`dropdown-item ${a !== 'Commit' ? 'relative' : 'commit'}`}
+                        >
+                          <div
+                            className="action-item"
+                            onMouseEnter={() => setSubmenuOpen({ tx, action: a })}
+                            onClick={a === 'Commit' ? () => handleClick(tx, a) : undefined}
+                          >
+                            <span>{a}</span>
+                            {a !== 'Commit' && (
+                              <img
+                                src={isActionActive ? threadIcon : rightIcon}
+                                alt="Submenu"
+                                className="icon-arrow"
+                              />
+                            )}
+                          </div>
+
+                          {a !== 'Commit' && isActionActive && (
+                            <div className="submenu">
+                              {variables.map((v) => (
+                                <div
+                                  key={v}
+                                  className="dropdown-item"
+                                  onClick={() => handleClick(tx, a, v)}
+                                >
+                                  {v}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

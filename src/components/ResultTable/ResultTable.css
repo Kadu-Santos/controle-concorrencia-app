@@ -18,18 +18,30 @@
   border-collapse: collapse;
   font-size: 14px;
   text-align: center;
+  table-layout: fixed; /* largura estável por coluna */
+}
+
+.tabela-resultado .col-ordem {
+  width: 50%; /* fixa a coluna "Ordem" */
+}
+
+.tabela-resultado .col-var {
+  width: auto; /* restantes dividem igualmente */
+}
+
+.tabela-resultado th,
+.tabela-resultado td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;       /* evita quebra acidental */
+  overflow: hidden;          /* previne expansão */
+  text-overflow: ellipsis;   /* elipses se necessário */
 }
 
 .tabela-resultado th {
   background-color: #f4f4f4;
   color: #333;
-  padding: 10px;
   border-bottom: 1px solid #ddd;
-}
-
-.tabela-resultado td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
 }
 
 /* Estilo para linhas de execução */
@@ -46,6 +58,60 @@
 }
 
 /* Hover suave */
-.tabela-resultado tr:hover {
+.tabela-resultado tbody tr:hover {
   background-color: #f1f1f1;
+}
+
+.celula-erro {
+  background-color: #ffe6e6;
+  color: #d8000c;
+  font-weight: bold;
+}
+
+/* Placeholders (linhas vazias e mensagens de estado) */
+.linha-placeholder td {
+  background-color: #f9f9f9;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Mensagens com colSpan ocupam mais altura */
+.linha-placeholder td[colspan] {
+  padding: 28px 0;
+  font-weight: 500;
+}
+
+/* Texto aguardando com animação */
+.aguardando-text {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dots::after {
+  content: '';
+  display: inline-block;
+  animation: dotsAnimation 1.5s infinite steps(3);
+}
+
+@keyframes dotsAnimation {
+  0%   { content: ''; }
+  33%  { content: '.'; }
+  66%  { content: '..'; }
+  100% { content: '...'; }
+}
+
+/* Transição suave para entrada dos resultados */
+.fade-in {
+  opacity: 0;
+  transform: scale(0.98);
+  animation: fadeInAnim 0.4s forwards ease-in;
+}
+
+@keyframes fadeInAnim {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
