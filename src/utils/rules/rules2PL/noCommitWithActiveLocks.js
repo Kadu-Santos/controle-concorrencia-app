@@ -20,7 +20,8 @@ export default function noCommitWithActiveLocks(instructions = []) {
     }
 
     // Se der commit, verifica se ainda tem locks ativos
-    if (opNorm === 'Commit' && txLocks[tid].size > 0) {
+    if (opNorm === 'COMMIT' && txLocks[tid].size > 0) {
+      console.log(`Erro: ${tid} tentou Commit com locks ativos em ${[...txLocks[tid]].join(', ')}`);
       errors.push({
         index,
         texto: `${tid} tentou Commit mantendo locks ativos (${[...txLocks[tid]].join(', ')})`

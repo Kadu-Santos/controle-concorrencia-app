@@ -1,0 +1,46 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 85%;
+  padding: 20px 40px;
+  background: transparent; /* herda o gradiente do hero */
+  color: #fff;
+  position: absolute; /* fixa dentro do hero */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%)
+}
+
+/* Logo à esquerda */
+.navbar-logo h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffcc00; /* destaque */
+}
+
+/* Espaço central */
+.navbar-space {
+  flex: 1;
+}
+
+/* Links à direita */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-links li a:hover {
+  color: #ffcc00;
+}

@@ -1,117 +1,131 @@
+.home{
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .home-container {
-  justify-content: center;
-  align-items: center;
+  width: 90%;
   margin: auto;
-  width: 80%;
 }
 
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 40px 20px;
-}
-.subtitle {
-  font-size: 1.5rem;
-  color: #444;
-  margin-bottom: 20px;
-}
-
-/* Objetivo */
-.boxBody {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-}
-.box1 {
+.dividerHome {
+  width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  flex: 1;
-}
-.box2 {
-  flex: 1;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
-.welcomeText {
-  color: #0051ad;
-  text-align: center;
-  font-size: 3rem;
+
+/* Hero moderno */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  background-image: url(../../assets/background.png);
+  height: 100vh;
 }
-.imgApresentation {
-  width: 60%;
-}
-.objective {
-  font-size: 1.8rem;
-  color: #0051ad;
+
+.hero-content {
+  display: flex;
+  width: 80%;
   margin: auto;
 }
+
+.hero-title {
+  font-size: 5.8rem;
+  letter-spacing: 0px;
+  line-height: 90px;
+  font-weight: bold;
+  margin: 0px 0px 20px 0px;
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  color: #e0e0e0;
+  margin: 0px;
+}
+
+/* Placeholders geométricos */
+.shape-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #ff6f61;
+  margin: 10px;
+}
+.shape-square {
+  width: 80px;
+  height: 80px;
+  background: #4caf50;
+  margin: 10px;
+}
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 80px solid #fbc02d;
+  margin: 10px;
+}
+
+/* Seções */
+.sectionTitle {
+  text-align: center;
+  font-size: 2rem;
+  color: #0056d6;
+  margin: 40px 0 20px;
+}
+
 .objectiveText {
+  text-align: center;
   font-size: 1.2rem;
   line-height: 1.6;
+  color: #333;
 }
 
 /* Funcionalidades */
-.sectionTitle {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #0051ad;
-  margin-top: 40px;
-}
 .features {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  margin: 20px 0;
 }
 .feature-card {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px;
   margin: 10px;
   flex: 1 1 200px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   text-align: center;
 }
 
-/* Preview */
-.preview {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
-}
-.preview-img {
-  width: 70%;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-/* Autores */
-.Autors {
-  margin-top: 40px;
-  font-size: 1.8rem;
-  color: #0051ad;
-  text-align: center;
-}
-
+/* Como usar */
 .how-to {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin: 30px 0;
 }
-
 .step-card {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-
 .step-card h4 {
-  color: #0051ad;
+  color: #0056d6;
   margin-bottom: 10px;
 }
 
+/*Formas*/
+.shape-circle {
+  width: 80px;
+}
+
+.shape-square {
+  width: 80px;
+}
+
+.shape-triangle {
+  width: 80px;
+}
