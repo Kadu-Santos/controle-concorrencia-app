@@ -9,14 +9,15 @@ export function useExecutionEngine(stepDelay = 1200) {
     const [errors, setErrors] = useState([]);
     const [executando, setExecutando] = useState(false);
     const stepDelayRef = useRef(stepDelay);
+    const stoppedByUserRef = useRef(false);
 
 
-    // novos estados para a tabela
-    const [estadoOperacoes, setEstadoOperacoes] = useState({}); // { index: "esperando"|"executado" }
-    const [mensagensEspera, setMensagensEspera] = useState({}); // { index: "msg" }
+    const [estadoOperacoes, setEstadoOperacoes] = useState({});
+    const [mensagensEspera, setMensagensEspera] = useState({});
 
     const engineRef = useRef(null);
     const highestIndexRef = useRef(-1);
+
 
     const advancePassoAtual = (index) => {
         if (typeof index !== 'number') return;
@@ -30,28 +31,21 @@ export function useExecutionEngine(stepDelay = 1200) {
     const iniciarExecucao = (instrucoesRaw) => {
         if (!instrucoesRaw || instrucoesRaw.length === 0) return;
 
-        // Normalização: converter formas curtas "Tn:VAR" -> "Tn:W:VAR"
-        // Isto evita que operações como "T3:X" sejam ignoradas pelo engine/scheduler.
         const instrucoes = instrucoesRaw.map((op) => {
             if (typeof op !== 'string') return op;
             const partes = op.split(':').map(p => p.trim());
-            // padrão ambíguo: duas partes e segunda parte não contém '=' e não é 'Commit'
-            // e não é um tipo reconhecido (RL, WL, R, W, U, Commit)
+
             if (partes.length === 2) {
                 const segundo = partes[1];
                 const tiposReconhecidos = ['RL', 'WL', 'R', 'W', 'U', 'Commit'];
-                // se o segundo for um desses, deixamos como está (ex.: "T1:Commit")
+
                 if (tiposReconhecidos.includes(segundo)) return op;
-                // se for expressão (contém '=') manter como está
+
                 if (segundo.includes('=')) return op;
-                // se for apenas um nome de variável (ex.: "X" ou "Y"), normalizar para escrita
-                // transformamos em Write: "Tn:W:VAR"
-                // essa escolha presume que "T3:X" representa operação que altera X (consistente com expressoes)
                 if (/^[A-Za-z0-9_]+$/.test(segundo)) {
                     return `${partes[0]}:W:${segundo}`;
                 }
             }
-            // caso não aplicável, retorna original
             return op;
         });
 
@@ -65,7 +59,6 @@ export function useExecutionEngine(stepDelay = 1200) {
         });
         setErrors(erroPorIndice);
 
-        // reset de estados de tabela
         setEstadoOperacoes({});
         setMensagensEspera({});
 
@@ -73,20 +66,17 @@ export function useExecutionEngine(stepDelay = 1200) {
 
         engineRef.current = engine;
 
-        // reset passo/higher-index antes de iniciar
         highestIndexRef.current = -1;
         setPassoAtual(-1);
 
         setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
         setExecutando(true);
 
-        // registra eventos — usar uma cópia local de erros para evitar problemas de closure
         const errosLocal = resultadoErros || [];
 
         engine.on("execute", ({ index, instrucao }) => {
             advancePassoAtual(index);
 
-            // Se instrucao tem erro de validação => mostrar só o erro (ignorar a mensagem original)
             const erro = errosLocal.find(e => e.indices?.includes(index));
             if (erro) {
                 const mensagemErro = erro.nome || erro.name || erro.message || "Erro desconhecido";
@@ -94,9 +84,7 @@ export function useExecutionEngine(stepDelay = 1200) {
                     ...prev,
                     { texto: `❌ ${mensagemErro}`, isErro: true }
                 ]);
-                // marcar como executado para não permanecer como aguardando
                 setEstadoOperacoes(prev => ({ ...prev, [index]: "executado" }));
-                // remover possível mensagem de espera (defensivo)
                 setMensagensEspera(prev => {
                     const copy = { ...prev };
                     delete copy[index];
@@ -105,10 +93,8 @@ export function useExecutionEngine(stepDelay = 1200) {
                 return;
             }
 
-            // Sem erro: registrar a instrução normalmente
             setLinhasTerminal((prev) => [...prev, { texto: instrucao, isErro: false }]);
 
-            // marcar como executado (normal flow)
             setEstadoOperacoes(prev => ({ ...prev, [index]: "executado" }));
             setMensagensEspera(prev => {
                 const copy = { ...prev };
@@ -117,54 +103,69 @@ export function useExecutionEngine(stepDelay = 1200) {
             });
         });
 
-        // evento "wait" indica que a operação está bloqueada — tabela deve mostrar WaitMessage
         engine.on("wait", ({ index, instrucao, mensagem }) => {
             advancePassoAtual(index);
-            // registrar linha de wait no terminal
             setLinhasTerminal((prev) => [...prev, { texto: `⏸ ${mensagem}`, isErro: true }]);
 
-            // marcar o estado da operação como "esperando" e guardar a mensagem para a tabela
             setEstadoOperacoes(prev => ({ ...prev, [index]: "esperando" }));
             setMensagensEspera(prev => ({ ...prev, [index]: mensagem || `${instrucao} aguardando...` }));
         });
 
-        // substitua o bloco engine.on("grant", ...) existente por este:
         engine.on("grant", (g) => {
-            // grant pode ser um objeto ou array
             const grants = Array.isArray(g) ? g : (g ? [g] : []);
             if (grants.length === 0) return;
 
-            // Apenas log imediato no terminal para feedback visual
             setLinhasTerminal((prev) => [
                 ...prev,
                 ...grants.map(item => ({ texto: `🔓 Lock concedido: ${item.tid} em ${item.item}`, isErro: false }))
             ]);
-
-            // NÃO removemos mensagens de espera aqui e NÃO marcamos como executado.
-            // A atualização do estado da tabela fica a cargo do evento 'execute',
-            // que será emitido pelo ExecutionEngine no tempo correto.
         });
 
-
-
         engine.on("finish", ({ success }) => {
-            setLinhasTerminal((prev) => [
-                ...prev,
-                {
-                    texto: success
-                        ? "🏁 Execução finalizada com sucesso."
-                        : "❌ Execução finalizada com erros.",
-                    isErro: !success,
-                },
-            ]);
+            if (stoppedByUserRef.current) {
+                // já mostramos "Execução interrompida"
+                stoppedByUserRef.current = false; // reseta para próxima execução
+                return;
+            }
+
+            const houveErros = errors.some(e => e === true);
+
+            if (houveErros) {
+                const transacoesComErro = resultadoErros
+                    .flatMap(e => e.indices || [])
+                    .map(i => {
+                        const instrucao = instrucoes[i] || "";
+                        return instrucao.split(":")[0];
+                    });
+
+                const unicos = [...new Set(transacoesComErro)];
+                const msgExtra = unicos.length > 0
+                    ? ` As seguintes trasações não foram concluidas: ${unicos.join(", ")}`
+                    : "";
+
+                setLinhasTerminal(prev => [
+                    ...prev,
+                    { texto: `❌ Execução finalizada com erros.\n❌${msgExtra}`, isErro: true }
+                ]);
+            } else if (success) {
+                setLinhasTerminal(prev => [
+                    ...prev,
+                    { texto: "🏁 Execução finalizada com sucesso.", isErro: false }
+                ]);
+            } else {
+                setLinhasTerminal(prev => [
+                    ...prev,
+                    { texto: "❌ Execução finalizada com erros.", isErro: true }
+                ]);
+            }
+
             setExecutando(false);
         });
 
         engine.on("stop", () => {
-            setLinhasTerminal((prev) => [...prev, { texto: "⏹ Execução interrompida.", isErro: true }]);
+            stoppedByUserRef.current = true;
+            setLinhasTerminal(prev => [...prev, { texto: "⏹ Execução interrompida.", isErro: true }]);
             setExecutando(false);
-
-            // limpar estados de espera ao parar
             setEstadoOperacoes({});
             setMensagensEspera({});
             highestIndexRef.current = -1;
@@ -177,11 +178,13 @@ export function useExecutionEngine(stepDelay = 1200) {
     // Para execução
     const pararExecucao = () => {
         if (engineRef.current) {
+            stoppedByUserRef.current = true;
             engineRef.current.stop();
         }
         setExecutando(false);
         highestIndexRef.current = -1;
     };
+
 
     const setStepDelay = (ms) => {
         const n = Number(ms) || 0;
@@ -222,7 +225,6 @@ export function useExecutionEngine(stepDelay = 1200) {
         errors,
         executando,
         resetUI,
-        // expor para a Table
         estadoOperacoes,
         mensagensEspera,
         setStepDelay
