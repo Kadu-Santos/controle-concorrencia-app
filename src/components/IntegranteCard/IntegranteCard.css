@@ -7,7 +7,7 @@
   width: 40%;
   max-width: 500px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 10px auto;
+  margin: 10px 10px;
   transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
 }
 

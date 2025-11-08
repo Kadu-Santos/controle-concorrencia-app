@@ -13,7 +13,7 @@ import Table from '../../components/Table/Table';
 import Toggle from '../../components/Toggle/Toggle';
 import Terminal from '../../components/Terminal/Terminal';
 import Footer from '../../components/Footer/Footer';
-import { exemplos } from '../../data/exemples';
+import { exemplos } from '../Home/data/exemples';
 
 import { useExecutionEngine } from '../../hooks/useExecutionEngine';
 

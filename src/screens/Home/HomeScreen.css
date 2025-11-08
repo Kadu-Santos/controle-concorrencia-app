@@ -1,19 +1,11 @@
-.home{
+.home {
   width: 100%;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .home-container {
   width: 90%;
   margin: auto;
-}
-
-.dividerHome {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 /* Hero moderno */
@@ -22,28 +14,33 @@
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  background-image: url(../../assets/background.png);
+  /* background: url(../../assets/background.png); */
+  background-size: cover;
   height: 100vh;
 }
 
 .hero-content {
+  width: 70%;
+  align-items: center;
   display: flex;
-  width: 80%;
+  flex-direction: column;
+  text-align: center;
   margin: auto;
 }
 
 .hero-title {
-  font-size: 5.8rem;
-  letter-spacing: 0px;
+  font-size: 5.6rem;
   line-height: 90px;
-  font-weight: bold;
-  margin: 0px 0px 20px 0px;
+  font-weight: 700;
+  margin: 0px 0px 40px 0px;
 }
 
 .hero-subtitle {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #e0e0e0;
-  margin: 0px;
+  margin: 0px 0px 40px 0px;
+  padding: 0px 10px 0px 10px;
+  width: 40vw;
 }
 
 /* Placeholders geométricos */
@@ -51,13 +48,13 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #ff6f61;
+  background: #f5c646;
   margin: 10px;
 }
 .shape-square {
   width: 80px;
   height: 80px;
-  background: #4caf50;
+  background: #3258d8;
   margin: 10px;
 }
 .shape-triangle {
@@ -65,7 +62,7 @@
   height: 0;
   border-left: 40px solid transparent;
   border-right: 40px solid transparent;
-  border-bottom: 80px solid #fbc02d;
+  border-bottom: 80px solid #f74c50;
   margin: 10px;
 }
 
@@ -96,7 +93,7 @@
   padding: 20px;
   margin: 10px;
   flex: 1 1 200px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -110,22 +107,65 @@
   background: #fff;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .step-card h4 {
   color: #0056d6;
   margin-bottom: 10px;
 }
 
-/*Formas*/
-.shape-circle {
-  width: 80px;
+.boxBody {
+  display: flex;
+  margin: 10px 0px 100px 0px;
+  justify-content: center;
+  gap: 30px;
 }
 
-.shape-square {
-  width: 80px;
+/* .imgAbstrata_1 {
+  position: absolute;
+  top: 60vh;
+  right: 30vh;
+  width: 120px;
+  height: 120px;
+  background: url(../../assets/abstract-forms/Circulo_Amarelo.png);
+  background-size: cover;
+  opacity: 0.85;
 }
 
-.shape-triangle {
-  width: 80px;
+.imgAbstrata_2 {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: 40vh;
+  right: 150vh;
+  background: url(../../assets/abstract-forms/Circulo_Azul.png);
+  background-size: cover;
+  opacity: 0.85;
+}
+
+.imgAbstrata_3 {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  right: 150vh;
+  background: url(../../assets/abstract-forms/Triangulo.png);
+  background-size: cover;
+  opacity: 0.85;
+} */
+
+.hero {
+  background-image: url(../../assets/abstract-forms/Circulo_Azul.png), url(../../assets/abstract-forms/Circulo_Amarelo.png), url(../../assets/abstract-forms/Triangulo.png), url(../../assets/background.png);
+  background-size: 240px, 120px, 170px, 100%;
+  background-position: left 25vh bottom 20vh, right 20vh bottom 30vh, right 50vh top 2vh, center;
+  background-repeat: no-repeat;
+  animation: moveShapes 1s infinite alternate ease-in-out;
+}
+
+@keyframes moveShapes {
+  0% {
+    background-position: left 25vh bottom 20vh, right 20vh bottom 30vh, right 50vh top 2vh, center;
+  }
+  100% {
+    background-position: left 30vh bottom 25vh, right 25vh bottom 35vh, right 55vh top 5vh, center;
+  }
 }

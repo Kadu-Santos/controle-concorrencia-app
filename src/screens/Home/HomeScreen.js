@@ -1,16 +1,18 @@
 // HomeScreen.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './HomeScreen.css';
-import ButtonC from '../../components/button/ButtonC';
-import Footer from '../../components/Footer/Footer';
-import IntegranteCard from '../../components/IntegranteCard/IntegranteCard';
-import Navbar from '../../components/Navbar/Navbar';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./HomeScreen.css";
+import ButtonC from "../../components/button/ButtonC";
+import Footer from "../../components/Footer/Footer";
+import IntegranteCard from "../../components/IntegranteCard/IntegranteCard";
+import Navbar from "../../components/Navbar/Navbar";
+import imgIntegrante from "../../assets/users/user2.jpeg";
+import imgIntegrante1 from "../../assets/users/user1.JPG";
 
 function HomeScreen() {
   const navigate = useNavigate();
   const goRunPage = () => {
-    navigate('/RunPage');
+    navigate("/RunPage");
   };
 
   return (
@@ -19,51 +21,44 @@ function HomeScreen() {
       <section className="hero">
         <Navbar />
         <div className="hero-content">
-          <div className='dividerHome'>
-            <h1 className="hero-title">
-              Simulador de <span>Controle de Concorrência</span>
-            </h1>
-            <p className="hero-subtitle">
-              Visualize passo a passo a execução de transações concorrentes,
-              compreenda o uso de bloqueios e descubra como evitar impasses em
-              sistemas de banco de dados.
-            </p>
-            <ButtonC
-              texto="COMEÇAR"
-              corTexto="#fff"
-              corFundo="#0056d6"
-              onClick={goRunPage}
-            />
-          </div>
-
-          <div className='dividerHome'>
-            <div className="hero-image">
-              {/* Placeholder geométrico */}
-              <div className="shape-circle"></div>
-              <div className="shape-triangle"></div>
-              <div className="shape-square"></div>
-            </div>
-          </div>
+          <h1 className="hero-title">
+            Simulador de <span>Controle de Concorrência</span>
+          </h1>
+          <p className="hero-subtitle">
+            Visualize passo a passo a execução de transações concorrentes,
+            compreenda o uso de bloqueios e descubra como evitar impasses em
+            sistemas de banco de dados.
+          </p>
+          <ButtonC
+            texto="COMEÇAR"
+            corTexto="#fff"
+            corFundo="#0056d6"
+            onClick={goRunPage}
+          />
+          
+          <div className="imgAbstrata_1"></div>
+          <div className="imgAbstrata_2"></div>
+          <div className="imgAbstrata_3"></div>
         </div>
-
-      </section >
+      </section>
       <div className="home-container">
-
         {/* Objetivo */}
-        < section className="objective-section" >
+        <section className="objective-section">
           <h3 className="sectionTitle">Objetivo do projeto</h3>
           <p className="objectiveText">
             Esta aplicação web interativa foi criada para auxiliar no ensino e
-            prática do <strong>controle de concorrência em bancos de dados</strong>.
-            Ela permite visualizar graficamente a execução de transações
+            prática do{" "}
+            <strong>controle de concorrência em bancos de dados</strong>. Ela
+            permite visualizar graficamente a execução de transações
             concorrentes, compreender o uso de bloqueios compartilhados e
             exclusivos, além de identificar automaticamente situações de
-            <em> deadlock</em> e violações ao protocolo <em>Two-Phase Locking (2PL)</em>.
+            <em> deadlock</em> e violações ao protocolo{" "}
+            <em>Two-Phase Locking (2PL)</em>.
           </p>
-        </section >
+        </section>
 
         {/* Funcionalidades */}
-        < h3 className="sectionTitle" > Principais Funcionalidades</h3 >
+        <h3 className="sectionTitle"> Principais Funcionalidades</h3>
         <div className="features">
           <div className="feature-card">
             <h4>🔎 Visualização gráfica</h4>
@@ -119,7 +114,7 @@ function HomeScreen() {
           <IntegranteCard
             nome="Carlos Eduardo dos Santos"
             funcao="Desenvolvedor"
-            foto="https://via.placeholder.com/150"
+            foto={imgIntegrante}
             github="https://github.com/Kadu-Santos"
             linkedin="https://www.linkedin.com/in/carlos-eduardo-santos-2a56aa283/"
             instagram="https://www.instagram.com/kadu.santoss_"
@@ -127,7 +122,7 @@ function HomeScreen() {
           <IntegranteCard
             nome="Jefferson Silva Lopes"
             funcao="Prof. Orientador"
-            foto="https://via.placeholder.com/150"
+            foto={imgIntegrante1}
             github="https://github.com/jeffersonl22"
             linkedin="https://br.linkedin.com/in/jefferson-silva-lopes-87925a248"
             instagram="https://www.instagram.com/jeffersonl22"
@@ -135,7 +130,7 @@ function HomeScreen() {
         </div>
 
         <Footer />
-      </div >
+      </div>
     </div>
   );
 }
