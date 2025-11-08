@@ -14,7 +14,7 @@
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  /* background: url(../../assets/background.png); */
+  background: url(../../assets/background.png);
   background-size: cover;
   height: 100vh;
 }
@@ -121,39 +121,62 @@
   gap: 30px;
 }
 
-/* .imgAbstrata_1 {
+.imgAbstrata_1 {
   position: absolute;
-  top: 60vh;
-  right: 30vh;
+  bottom: 30vh;
+  right: 20vh;
   width: 120px;
   height: 120px;
   background: url(../../assets/abstract-forms/Circulo_Amarelo.png);
   background-size: cover;
   opacity: 0.85;
+
+  animation: moveShape1 2s infinite alternate ease-in-out;
 }
 
 .imgAbstrata_2 {
   position: absolute;
   width: 240px;
   height: 240px;
-  top: 40vh;
-  right: 150vh;
+  bottom: 20vh;
+  left: 25vh;
   background: url(../../assets/abstract-forms/Circulo_Azul.png);
   background-size: cover;
   opacity: 0.85;
+
+  animation: moveShape2 3s infinite alternate ease-in-out;
 }
 
 .imgAbstrata_3 {
   position: absolute;
-  width: 240px;
-  height: 240px;
-  right: 150vh;
+  width: 170px;
+  height: 190px;
+  right: 50vh;
+  top: 2vh;
   background: url(../../assets/abstract-forms/Triangulo.png);
   background-size: cover;
   opacity: 0.85;
-} */
 
-.hero {
+  animation: moveShapes3 4s infinite alternate ease-in-out;
+}
+
+@keyframes moveShape1 {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+@keyframes moveShape2 {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(15px); }
+}
+
+@keyframes moveShapes3 {
+  0%   { transform: rotate(0deg) translateY(0); }
+  100% { transform: rotate(10deg) translateY(-10px); }
+}
+
+
+/* .hero {
   background-image: url(../../assets/abstract-forms/Circulo_Azul.png), url(../../assets/abstract-forms/Circulo_Amarelo.png), url(../../assets/abstract-forms/Triangulo.png), url(../../assets/background.png);
   background-size: 240px, 120px, 170px, 100%;
   background-position: left 25vh bottom 20vh, right 20vh bottom 30vh, right 50vh top 2vh, center;
@@ -166,6 +189,6 @@
     background-position: left 25vh bottom 20vh, right 20vh bottom 30vh, right 50vh top 2vh, center;
   }
   100% {
-    background-position: left 30vh bottom 25vh, right 25vh bottom 35vh, right 55vh top 5vh, center;
+    background-position: left 26vh bottom 21vh, right 21vh bottom 31vh, right 51vh top 1vh, center;
   }
-}
+} */
