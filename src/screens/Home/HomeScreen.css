@@ -125,40 +125,35 @@
   position: absolute;
   bottom: 30vh;
   right: 20vh;
-  width: 120px;
-  height: 120px;
-  background: url(../../assets/abstract-forms/Circulo_Amarelo.png);
-  background-size: cover;
+  width: 7vw;   /* antes 120px */
+  height: 7vw;
+  background: url(../../assets/abstract-forms/Circulo_Amarelo.png) no-repeat center/cover;
   opacity: 0.85;
-
   animation: moveShape1 2s infinite alternate ease-in-out;
 }
 
 .imgAbstrata_2 {
   position: absolute;
-  width: 240px;
-  height: 240px;
   bottom: 20vh;
   left: 25vh;
-  background: url(../../assets/abstract-forms/Circulo_Azul.png);
-  background-size: cover;
+  width: 12vw;   /* antes 240px */
+  height: 12vw;
+  background: url(../../assets/abstract-forms/Circulo_Azul.png) no-repeat center/cover;
   opacity: 0.85;
-
   animation: moveShape2 3s infinite alternate ease-in-out;
 }
 
 .imgAbstrata_3 {
   position: absolute;
-  width: 170px;
-  height: 190px;
   right: 50vh;
   top: 2vh;
-  background: url(../../assets/abstract-forms/Triangulo.png);
-  background-size: cover;
+  width: 9vw;   /* antes 170px */
+  height: 10vw;
+  background: url(../../assets/abstract-forms/Triangulo.png) no-repeat center/cover;
   opacity: 0.85;
-
   animation: moveShapes3 4s infinite alternate ease-in-out;
 }
+
 
 @keyframes moveShape1 {
   0%   { transform: translateY(0); }
@@ -192,3 +187,81 @@
     background-position: left 26vh bottom 21vh, right 21vh bottom 31vh, right 51vh top 1vh, center;
   }
 } */
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 3.6rem;
+    line-height: 60px;
+  }
+
+  .hero-subtitle {
+    width: 70vw;
+    font-size: 1.2rem;
+  }
+
+  .boxBody {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 768px) {
+  .hero {
+    height: 100vh; /* deixa a altura se ajustar ao conteúdo */
+    padding: 60px 20px;
+    background-size: auto;
+  }
+
+  .hero-content {
+    width: 100%;
+    margin: 0;
+    gap: 10px
+  }
+
+  .hero-title {
+    font-size: 2.4rem;
+    line-height: 40px;
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    width: 90%;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card {
+    width: 90%;
+  }
+
+  .how-to {
+    gap: 10px;
+  }
+
+  .step-card {
+    width: 100%;
+  }
+
+  .boxBody {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Ajustar imagens abstratas para não atrapalhar em telas pequenas */
+  .imgAbstrata_1,
+  .imgAbstrata_2,
+  .imgAbstrata_3 {
+    display: none; /* opcional: esconder em mobile */
+  }
+}
+
