@@ -33,6 +33,7 @@
   line-height: 90px;
   font-weight: 700;
   margin: 0px 0px 40px 0px;
+  z-index: 2;
 }
 
 .hero-subtitle {
@@ -41,6 +42,7 @@
   margin: 0px 0px 40px 0px;
   padding: 0px 10px 0px 10px;
   width: 40vw;
+  z-index: 2;
 }
 
 /* Placeholders geométricos */
@@ -130,6 +132,8 @@
   background: url(../../assets/abstract-forms/Circulo_Amarelo.png) no-repeat center/cover;
   opacity: 0.85;
   animation: moveShape1 2s infinite alternate ease-in-out;
+  z-index: 1;
+
 }
 
 .imgAbstrata_2 {
@@ -141,6 +145,7 @@
   background: url(../../assets/abstract-forms/Circulo_Azul.png) no-repeat center/cover;
   opacity: 0.85;
   animation: moveShape2 3s infinite alternate ease-in-out;
+  z-index: 1;
 }
 
 .imgAbstrata_3 {
@@ -152,6 +157,7 @@
   background: url(../../assets/abstract-forms/Triangulo.png) no-repeat center/cover;
   opacity: 0.85;
   animation: moveShapes3 4s infinite alternate ease-in-out;
+  z-index: 1;
 }
 
 
