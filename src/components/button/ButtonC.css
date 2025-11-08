@@ -1,5 +1,35 @@
 .botao {
   padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  height: 47px;
+  width: 250px;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+}
+
+.botao:hover {
+  filter: brightness(85%);
+  transform: scale(1.02);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+}
+
+.botao:disabled {
+  filter: grayscale(0.4);
+  box-shadow: none;
+  transform: none;
+}
+
+
+/* .botao {
+  padding: 10px 20px;
   border-radius: 18px;
   font-size: 16px;
   cursor: pointer;
@@ -24,4 +54,4 @@
 .botao:hover {
   opacity: 1;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+} */
