@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ExecutionEngine } from "../engine/ExecutionEngine";
 import scheduler from '../engine/Scheduler';
-import verifier from '../utils/verifier';
+import verifier from '../utils/Verifier';
 
 export function useExecutionEngine(stepDelay = 1200) {
     const [linhasTerminal, setLinhasTerminal] = useState([]);
