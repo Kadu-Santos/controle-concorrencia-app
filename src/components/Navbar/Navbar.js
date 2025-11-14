@@ -1,12 +1,13 @@
 import React from 'react';
 import './Navbar.css';
+import Logo from '../../assets/icons/logo-visualiza.png'
 
 function Navbar() {
   return (
     <nav className="navbar">
       {/* Logo à esquerda */}
       <div className="navbar-logo">
-        <h2>LOGO</h2>
+        <img src={Logo} alt="Logo Visualiza" className="logo-image" />
       </div>
 
       {/* Espaço central */}

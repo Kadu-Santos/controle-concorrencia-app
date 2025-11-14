@@ -9,15 +9,14 @@
   position: absolute; /* fixa dentro do hero */
   top: 0;
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
+  margin-top: 10px;
+  
 }
 
 /* Logo à esquerda */
-.navbar-logo h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffcc00; /* destaque */
+.logo-image {
+  width: 200px;
 }
 
 /* Espaço central */

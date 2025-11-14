@@ -8,6 +8,7 @@ import IntegranteCard from "../../components/IntegranteCard/IntegranteCard";
 import Navbar from "../../components/Navbar/Navbar";
 import imgIntegrante from "../../assets/users/user2.jpeg";
 import imgIntegrante1 from "../../assets/users/user1.JPG";
+import Imagem from "../../assets/img.png";
 
 function HomeScreen() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function HomeScreen() {
             corFundo="#0056d6"
             onClick={goRunPage}
           />
-          
+
           <div className="imgAbstrata_1"></div>
           <div className="imgAbstrata_2"></div>
           <div className="imgAbstrata_3"></div>
@@ -44,17 +45,20 @@ function HomeScreen() {
       <div className="home-container">
         {/* Objetivo */}
         <section className="objective-section">
-          <h3 className="sectionTitle">Objetivo do projeto</h3>
-          <p className="objectiveText">
-            Esta aplicação web interativa foi criada para auxiliar no ensino e
-            prática do{" "}
-            <strong>controle de concorrência em bancos de dados</strong>. Ela
-            permite visualizar graficamente a execução de transações
-            concorrentes, compreender o uso de bloqueios compartilhados e
-            exclusivos, além de identificar automaticamente situações de
-            <em> deadlock</em> e violações ao protocolo{" "}
-            <em>Two-Phase Locking (2PL)</em>.
-          </p>
+          <div className="text-section">
+            <h3 className="sectionTitle">Objetivo do Projeto</h3>
+            <p className="objectiveText">
+              Esta aplicação web interativa foi criada para auxiliar no ensino e
+              prática do{" "}
+              controle de concorrência em bancos de dados. Ela
+              permite visualizar graficamente a execução de transações
+              concorrentes, compreender o uso de bloqueios compartilhados e
+              exclusivos, além de identificar automaticamente situações de
+              <em> deadlock</em> e violações ao protocolo{" "}
+              <em>Two-Phase Locking (2PL)</em>.
+            </p>
+          </div>
+          <img src={Imagem} alt="Imagem de exemplo" className="img" />
         </section>
 
         {/* Funcionalidades */}
