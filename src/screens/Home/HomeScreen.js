@@ -48,17 +48,10 @@ function HomeScreen() {
           <div className="text-section">
             <h3 className="sectionTitle">Objetivo do Projeto</h3>
             <p className="objectiveText">
-              Esta aplicação web interativa foi criada para auxiliar no ensino e
-              prática do{" "}
-              controle de concorrência em bancos de dados. Ela
-              permite visualizar graficamente a execução de transações
-              concorrentes, compreender o uso de bloqueios compartilhados e
-              exclusivos, além de identificar automaticamente situações de
-              <em> deadlock</em> e violações ao protocolo{" "}
-              <em>Two-Phase Locking (2PL)</em>.
+              Esta aplicação web interativa foi criada para auxiliar no ensino e prática do controle de concorrência em bancos de dados. Ela permite visualizar graficamente a execução de transações concorrentes, compreender o uso de bloqueios compartilhados e exclusivos, além de identificar automaticamente situações de <em>deadlock</em> e violações ao protocolo <em>Two-Phase Locking (2PL)</em>.
             </p>
           </div>
-          <img src={Imagem} alt="Imagem de exemplo" className="img" />
+          <img src={Imagem} className="imgObjective" alt="Simulação de concorrência em bancos" />
         </section>
 
         {/* Funcionalidades */}
