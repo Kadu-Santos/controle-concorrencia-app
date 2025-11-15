@@ -1,14 +1,24 @@
 .variaveis-toggle {
-  margin-bottom: 10px;
+  
 }
 
 .radio-group {
   display: flex;
   gap: 1rem;
-  margin-top: 5px;
 }
 
 .radio-group label {
   font-size: 0.95rem;
   cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: #2a4d8f; /* cor do círculo preenchido */
+}
+
+/* opcional: aumentar levemente o tamanho sem quebrar o layout */
+.radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  transform: translateY(2px); /* alinhar com o texto */
 }

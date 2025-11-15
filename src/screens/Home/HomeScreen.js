@@ -23,7 +23,7 @@ function HomeScreen() {
         <Navbar />
         <div className="hero-content">
           <h1 className="hero-title">
-            Simulador de <span>Controle de Concorrência</span>
+            Visualizador de <span>Controle de Concorrência</span>
           </h1>
           <p className="hero-subtitle">
             Visualize passo a passo a execução de transações concorrentes,
@@ -42,7 +42,7 @@ function HomeScreen() {
           <div className="imgAbstrata_3"></div>
         </div>
       </section>
-      <div className="home-container">
+      <div className="home-container" id="objetivo">
         {/* Objetivo */}
         <section className="objective-section">
           <div className="text-section">
@@ -76,7 +76,7 @@ function HomeScreen() {
         </div>
 
         {/* Como usar */}
-        <h3 className="sectionTitle">Como usar a ferramenta</h3>
+        <h3 className="sectionTitle" id="como-usar">Como usar a ferramenta</h3>
         <div className="how-to">
           <div className="step-card">
             <h4>1️⃣ Configure a execução</h4>

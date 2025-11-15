@@ -31,6 +31,7 @@ export function useExecutionEngine(stepDelay = 1200) {
     const iniciarExecucao = (instrucoesRaw) => {
         if (!instrucoesRaw || instrucoesRaw.length === 0) return;
 
+        // ======== Normalização das instruções ============
         const instrucoes = instrucoesRaw.map((op) => {
             if (typeof op !== 'string') return op;
             const partes = op.split(':').map(p => p.trim());
@@ -40,8 +41,8 @@ export function useExecutionEngine(stepDelay = 1200) {
                 const tiposReconhecidos = ['RL', 'WL', 'R', 'W', 'U', 'Commit'];
 
                 if (tiposReconhecidos.includes(segundo)) return op;
-
                 if (segundo.includes('=')) return op;
+
                 if (/^[A-Za-z0-9_]+$/.test(segundo)) {
                     return `${partes[0]}:W:${segundo}`;
                 }
@@ -49,103 +50,126 @@ export function useExecutionEngine(stepDelay = 1200) {
             return op;
         });
 
+        // ======== Validação inicial ============
         const { errors: resultadoErros } = verifier(instrucoes);
 
+        // erroPorIndice: array booleana local
         const erroPorIndice = Array(instrucoes.length).fill(false);
         (resultadoErros || []).forEach(e => {
             e.indices?.forEach(i => {
                 erroPorIndice[i] = true;
             });
         });
-        setErrors(erroPorIndice);
 
+        // Atualiza UI
+        setErrors(erroPorIndice);
         setEstadoOperacoes({});
         setMensagensEspera({});
-
-        const engine = new ExecutionEngine(instrucoes, scheduler, { stepDelay: stepDelayRef.current });
-
-        engineRef.current = engine;
-
+        setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
         highestIndexRef.current = -1;
         setPassoAtual(-1);
-
-        setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
         setExecutando(true);
 
-        const errosLocal = resultadoErros || [];
+        stoppedByUserRef.current = false;
 
-        engine.on("execute", ({ index, instrucao }) => {
+        // ======== Criação do engine ============
+        const engine = new ExecutionEngine(instrucoes, scheduler, { stepDelay: stepDelayRef.current });
+
+        // GUARDA engine
+        engineRef.current = engine;
+
+        // ======== SISTEMA DE LIMPEZA DE LISTENERS ============
+        // Guardamos handlers para remover no final
+        const listeners = [];
+
+        const on = (event, handler) => {
+            engine.on(event, handler);
+            listeners.push({ event, handler });
+        };
+
+        const cleanupListeners = () => {
+            if (!engine.off) return; // caso a implementação não suporte off()
+            listeners.forEach(({ event, handler }) => {
+                engine.off(event, handler);
+            });
+        };
+
+        // ======== Handlers ============
+        on("execute", ({ index, instrucao }) => {
             advancePassoAtual(index);
 
-            const erro = errosLocal.find(e => e.indices?.includes(index));
+            const erro = erroPorIndice[index];
             if (erro) {
-                const mensagemErro = erro.nome || erro.name || erro.message || "Erro desconhecido";
+                const erroObj = resultadoErros.find(e => e.indices?.includes(index));
+                const mensagemErro = erroObj?.nome || erroObj?.name || erroObj?.message || "Erro desconhecido";
+
                 setLinhasTerminal(prev => [
                     ...prev,
                     { texto: `❌ ${mensagemErro}`, isErro: true }
                 ]);
+
                 setEstadoOperacoes(prev => ({ ...prev, [index]: "executado" }));
-                setMensagensEspera(prev => {
-                    const copy = { ...prev };
-                    delete copy[index];
-                    return copy;
-                });
+                setMensagensEspera(prev => { const c = { ...prev }; delete c[index]; return c; });
+
                 return;
             }
 
-            setLinhasTerminal((prev) => [...prev, { texto: instrucao, isErro: false }]);
-
+            setLinhasTerminal(prev => [...prev, { texto: instrucao, isErro: false }]);
             setEstadoOperacoes(prev => ({ ...prev, [index]: "executado" }));
-            setMensagensEspera(prev => {
-                const copy = { ...prev };
-                delete copy[index];
-                return copy;
-            });
+            setMensagensEspera(prev => { const c = { ...prev }; delete c[index]; return c; });
         });
 
-        engine.on("wait", ({ index, instrucao, mensagem }) => {
+        on("wait", ({ index, instrucao, mensagem }) => {
             advancePassoAtual(index);
-            setLinhasTerminal((prev) => [...prev, { texto: `⏸ ${mensagem}`, isErro: true }]);
+
+            setLinhasTerminal(prev => [
+                ...prev,
+                { texto: `⏸ ${mensagem}`, isErro: true }
+            ]);
 
             setEstadoOperacoes(prev => ({ ...prev, [index]: "esperando" }));
             setMensagensEspera(prev => ({ ...prev, [index]: mensagem || `${instrucao} aguardando...` }));
         });
 
-        engine.on("grant", (g) => {
+        on("grant", (g) => {
             const grants = Array.isArray(g) ? g : (g ? [g] : []);
             if (grants.length === 0) return;
 
-            setLinhasTerminal((prev) => [
+            setLinhasTerminal(prev => [
                 ...prev,
-                ...grants.map(item => ({ texto: `🔓 Lock concedido: ${item.tid} em ${item.item}`, isErro: false }))
+                ...grants.map(item => ({
+                    texto: `🔓 Lock concedido: ${item.tid} em ${item.item}`,
+                    isErro: false
+                }))
             ]);
         });
 
-        engine.on("finish", ({ success }) => {
+        // ========== FINALIZAÇÃO ==========
+        on("finish", ({ success }) => {
             if (stoppedByUserRef.current) {
-                // já mostramos "Execução interrompida"
-                stoppedByUserRef.current = false; // reseta para próxima execução
+                stoppedByUserRef.current = false;
+                cleanupListeners();
+                engineRef.current = null;
+                setExecutando(false);
                 return;
             }
 
-            const houveErros = errors.some(e => e === true);
+            const houveErros = erroPorIndice.some(Boolean);
 
             if (houveErros) {
                 const transacoesComErro = resultadoErros
                     .flatMap(e => e.indices || [])
-                    .map(i => {
-                        const instrucao = instrucoes[i] || "";
-                        return instrucao.split(":")[0];
-                    });
+                    .map(i => instrucoes[i].split(":")[0]);
 
                 const unicos = [...new Set(transacoesComErro)];
+
                 const msgExtra = unicos.length > 0
-                    ? ` As seguintes trasações não foram concluidas: ${unicos.join(", ")}`
+                    ? ` \nAs seguintes transações não foram concluídas: ${unicos.join(", ")}.`
                     : "";
 
                 setLinhasTerminal(prev => [
                     ...prev,
-                    { texto: `❌ Execução finalizada com erros.\n❌${msgExtra}`, isErro: true }
+                    { texto: `❌ Execução finalizada com erros.${msgExtra}`, isErro: true }
                 ]);
             } else if (success) {
                 setLinhasTerminal(prev => [
@@ -159,21 +183,30 @@ export function useExecutionEngine(stepDelay = 1200) {
                 ]);
             }
 
+            cleanupListeners();
+            engineRef.current = null;
             setExecutando(false);
         });
 
-        engine.on("stop", () => {
+        // ========== STOP ==========
+        on("stop", () => {
             stoppedByUserRef.current = true;
+
             setLinhasTerminal(prev => [...prev, { texto: "⏹ Execução interrompida.", isErro: true }]);
+
             setExecutando(false);
             setEstadoOperacoes({});
             setMensagensEspera({});
             highestIndexRef.current = -1;
+
+            cleanupListeners();
+            engineRef.current = null;
         });
 
-        // inicia
+        // Inicia engine
         engine.start();
     };
+
 
     // Para execução
     const pararExecucao = () => {

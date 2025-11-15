@@ -51,11 +51,11 @@
   background-color: #f0f0f0;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   font-family: 'Courier New', Courier, monospace;
-  width: 60%;
+  min-width: 65%;
 }
 
 .barra-superior {
-  height: 30px;
+  height: 40px;
   background: #ddd;
   display: flex;
   align-items: center;

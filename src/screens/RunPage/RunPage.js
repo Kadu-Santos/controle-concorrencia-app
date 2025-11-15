@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import './RunPage.css';
 
-import Logo from '../../components/Logo/Logo';
+
+import Navbar from '../../components/Navbar/Navbar';
 import NumericDropdown from '../../components/NumericDropdown/NumericDropdown';
 import HintButton from '../../components/HintButton/HintButton';
 import InputList from '../../components/InputList.js/InputList';
@@ -141,207 +142,208 @@ function RunPage() {
     }, [numVarsParsed, numTransacoes, valoresVariaveis, operacoes, expressoes, valor]);
 
     return (
-        <div className="runPage-container">
-            <Logo />
-            <h2 className='Title'>Simulador de Controle de Concorrência</h2>
-            <h3 className='SubTitle'>Configure a execução de suas transações</h3>
+        <div className="bodyRunPage">
+            <div className="runPage-container">
+                <Navbar />
+                <h2 className='Title'>Visualizador de Controle de Concorrência</h2>
+                <h3 className='SubTitle'>Configure a execução de suas transações</h3>
 
-            <div className="dividerBox">
-                <div className="divider">
-                    <p>Configuração de execução</p>
-                    <p>Número de transações:</p>
-                    <HintButton texto="Aqui você pode visualizar detalhes do controle de concorrência." />
+                <div className="dividerContainer">
+                    <div className="dividerBox">
+                        <p className='titleDivider'>Configuração de execução</p>
+                        <p>Número de transações:</p>
+                        <HintButton texto="Aqui você pode visualizar detalhes do controle de concorrência." />
 
-                    <NumericDropdown
-                        options={nOpTransacao}
-                        onSelect={(v) => setNumTransacoes(v)}
-                        selectedValue={numTransacoes}
-                    />
+                        <NumericDropdown
+                            options={nOpTransacao}
+                            onSelect={(v) => setNumTransacoes(v)}
+                            selectedValue={numTransacoes}
+                        />
 
-                    <p>Número de variáveis:</p>
-                    <HintButton texto="Número de variáveis" />
-                    <NumericDropdown
-                        options={nOpVarivavel}
-                        onSelect={(v) => setNumVariaveis(v)}
-                        selectedValue={numVariaveis}
-                    />
+                        <p>Número de variáveis:</p>
+                        <HintButton texto="Número de variáveis" />
+                        <NumericDropdown
+                            options={nOpVarivavel}
+                            onSelect={(v) => setNumVariaveis(v)}
+                            selectedValue={numVariaveis}
+                        />
 
-                </div>
-
-                <div className="divider">
-                    <p>Preencher valores iniciais das variáveis?</p>
-                    <Toggle
-                        valor={valor}
-                        onChange={(novoValor) => {
-                            setValor(novoValor);
-                            if (novoValor) {
-                                setValoresVariaveis(Array(numVarsParsed).fill(''));
-                            }
-                        }}
-                    />
-
-                    <p>Valores iniciais das variáveis:</p>
-                    <InputList
-                        quantidade={withNum}
-                        onChange={setValoresVariaveis}
-                        valoresIniciais={valoresVariaveis}
-                    />
-
-                    <div className="speed-control">
-                        <p>Velocidade da execução:</p>
-                        <div className="speed-row">
-                            <span>Lento</span>
-                            <input
-                                type="range"
-                                min={100}
-                                max={3000}
-                                step={50}
-                                value={3000 - (speedMs - 100)}
-                                onChange={(e) => {
-                                    const val = Number(e.target.value);
-                                    onSpeedChange(3000 - (val - 100));
-                                }}
-                                disabled={executando}
-                            />
-                            <span>Rápido</span>
-                        </div>
                     </div>
 
-                </div>
+                    <div className="dividerBox">
+                        <p className='titleDivider'>Preencher valores iniciais das variáveis?</p>
+                        <Toggle
+                            valor={valor}
+                            onChange={(novoValor) => {
+                                setValor(novoValor);
+                                if (novoValor) {
+                                    setValoresVariaveis(Array(numVarsParsed).fill(''));
+                                }
+                            }}
+                        />
 
-                <div className="divider">
-                    <p>Como rodar um exemplo?</p>
-                    <p>
-                        Ao clicar em "Gerar Exemplo", será gerado um exemplo aleatório e
-                        os campos de configuração de execução serão preenchidos automaticamente.
-                        Em seguida, clique em "Gerar" para iniciar a simulação.
-                    </p>
-                    <ButtonC
-                        texto="GERAR EXEMPLO"
-                        corFundo="#007bff"
-                        corTexto="#fff"
-                        onClick={executarExemploAleatorio}
-                        ativo={true}
-                    />
+                        <p>Valores iniciais das variáveis:</p>
+                        <InputList
+                            quantidade={withNum}
+                            onChange={setValoresVariaveis}
+                            valoresIniciais={valoresVariaveis}
+                        />
 
-                </div>
-            </div>
-
-            <br />
-            <br />
-
-            <h3 className='SubTitle'>Insira o Cronograma de execução</h3>
-
-            <div className="boxRun">
-
-                <div className="dropdowns-container">
-                    <p>S1:</p>
-                    {operacoes.map((opStr, i) => {
-                        const isOp = isOperacaoMatematica(opStr, numVarsParsed);
-                        return (
-                            <div key={i} className="dropdown-item" id={`dropdown-${i}`}> {/* 👈 id único */}
-                                <MultiLevelDropdown
-                                    transactionCount={numTransacoes}
-                                    variableCount={numVarsParsed}
-                                    onSelect={(val) => atualizarOperacao(i, val)}
-                                    selectedValue={opStr}
-                                    disabled={executando || (valor && !(valoresVariaveis.length === numVarsParsed))}
+                        <div className="speed-control">
+                            <p className='titleDivider'>Velocidade da execução:</p>
+                            <div className="speed-row">
+                                <span>Lento</span>
+                                <input
+                                    type="range"
+                                    min={100}
+                                    max={3000}
+                                    step={50}
+                                    value={3000 - (speedMs - 100)}
+                                    onChange={(e) => {
+                                        const val = Number(e.target.value);
+                                        onSpeedChange(3000 - (val - 100));
+                                    }}
+                                    disabled={executando}
                                 />
-
-                                {isOp && (
-                                    <>
-                                        <Operation
-                                            numVariaveis={numVarsParsed}
-                                            onOperacaoChange={handleOperacaoChange(i)}
-                                            valorInicial={expressoes[i]}
-                                            disabled={!numVarsParsed}
-                                        />
-                                        <span style={{ marginLeft: 6 }}>;</span>
-                                    </>
-                                )}
-
-                                {!isOp && <span style={{ marginLeft: 6 }}>;</span>}
-
-                                {i === operacoes.length - 1 && (
-                                    <DropdownControlButtons
-                                        onAdd={() => {
-                                            if (opStr && opStr.trim() !== '') adicionarOperacao();
-                                        }}
-                                        onRemove={() => {
-                                            if (operacoes.length > 1) removerOperacao(i);
-                                        }}
-                                        podeAdicionar={
-                                            !!opStr &&
-                                            opStr.trim() !== '' &&
-                                            (!isOp || (expressoes[i] && expressoes[i].trim() !== ''))
-                                        }
-                                        podeRemover={operacoes.length > 1}
-                                    />
-                                )}
+                                <span>Rápido</span>
                             </div>
-                        );
-                    })}
+                        </div>
+
+                    </div>
+
+                    <div className="dividerBox">
+                        <p className='titleDivider'>Como rodar um exemplo?</p>
+                        <p>
+                            Ao clicar em "Gerar Exemplo", será gerado um exemplo aleatório e
+                            os campos de configuração de execução serão preenchidos automaticamente.
+                            Em seguida, clique em "Gerar" para iniciar a simulação.
+                        </p>
+                        <ButtonC
+                            texto="GERAR EXEMPLO"
+                            corFundo="#007bff"
+                            corTexto="#fff"
+                            onClick={executarExemploAleatorio}
+                            ativo={true}
+                        />
+
+                    </div>
+                </div>
+
+                <h3 className='SubTitle'>Insira o Cronograma de execução</h3>
+
+                <div className="dropdownsContainer">
+
+                    <div className="dropdownsBox">
+                        <p>S1:</p>
+                        {operacoes.map((opStr, i) => {
+                            const isOp = isOperacaoMatematica(opStr, numVarsParsed);
+                            return (
+                                <div key={i} className="dropdown-item" id={`dropdown-${i}`}>
+                                    <MultiLevelDropdown
+                                        transactionCount={numTransacoes}
+                                        variableCount={numVarsParsed}
+                                        onSelect={(val) => atualizarOperacao(i, val)}
+                                        selectedValue={opStr}
+                                        disabled={executando || (valor && !(valoresVariaveis.length === numVarsParsed))}
+                                    />
+
+                                    {isOp && (
+                                        <>
+                                            <Operation
+                                                numVariaveis={numVarsParsed}
+                                                onOperacaoChange={handleOperacaoChange(i)}
+                                                valorInicial={expressoes[i]}
+                                                disabled={!numVarsParsed}
+                                            />
+                                            <span style={{ marginLeft: 6 }}>;</span>
+                                        </>
+                                    )}
+
+                                    {!isOp && <span style={{ marginLeft: 6 }}>;</span>}
+
+                                    {i === operacoes.length - 1 && (
+                                        <DropdownControlButtons
+                                            onAdd={() => {
+                                                if (opStr && opStr.trim() !== '') adicionarOperacao();
+                                            }}
+                                            onRemove={() => {
+                                                if (operacoes.length > 1) removerOperacao(i);
+                                            }}
+                                            podeAdicionar={
+                                                !!opStr &&
+                                                opStr.trim() !== '' &&
+                                                (!isOp || (expressoes[i] && expressoes[i].trim() !== ''))
+                                            }
+                                            podeRemover={operacoes.length > 1}
+                                        />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+
+                    <div className='buttonsBox'>
+                        <ButtonC
+                            texto="GERAR"
+                            corFundo="#409b40"
+                            corTexto="#fff"
+                            onClick={() => {
+                                const instr = format(operacoes, expressoes, numVarsParsed);
+                                setOperacoesExecucao(instr);
+                                iniciarExecucao(instr);
+                            }}
+                            ativo={botaoAtivo && !executando}
+                        />
+
+
+                        <ButtonC
+                            texto={executando ? "PARAR" : "LIMPAR"}
+                            corFundo={executando ? "#dc3545" : "#6c757d"}
+                            corTexto="#fff"
+                            onClick={() => {
+                                if (executando) {
+                                    pararExecucao();
+                                } else {
+                                    limparTudo();
+                                }
+                            }}
+                            ativo={executando || operacoes.some(op => op.trim() !== "")}
+                        />
+
+                    </div>
+                </div>
+
+                <h3 className='SubTitle'>Execução</h3>
+
+                <div className='ExcutionContainer'>
+                    <Table
+                        operacoes={operacoesExecucao}
+                        errors={errors}
+                        passoAtual={passoAtual}
+                        estadoOperacoes={estadoOperacoes}
+                        mensagensEspera={mensagensEspera}
+                    />
+
+                    <Terminal linhas={linhasTerminal} />
                 </div>
 
 
-                <div className='buttonsBox'>
-                    <ButtonC
-                        texto="GERAR"
-                        corFundo="#409b40"
-                        corTexto="#fff"
-                        onClick={() => {
-                            const instr = format(operacoes, expressoes, numVarsParsed);
-                            setOperacoesExecucao(instr);
-                            iniciarExecucao(instr);
-                        }}
-                        ativo={botaoAtivo && !executando}
+                <h3 className='SubTitle'>Resultado da execução</h3>
+
+
+                <div className='ResultTableContainer'>
+                    <ResultTable
+                        status={getStatus()}
+                        operacoes={operacoesExecucao}
+                        valoresIniciais={valoresVariaveis}
                     />
+                </div>
 
-
-                    <ButtonC
-                        texto={executando ? "PARAR" : "LIMPAR"}
-                        corFundo={executando ? "#dc3545" : "#6c757d"}
-                        corTexto="#fff"
-                        onClick={() => {
-                            if (executando) {
-                                pararExecucao();
-                            } else {
-                                limparTudo();
-                            }
-                        }}
-                        ativo={executando || operacoes.some(op => op.trim() !== "")}
-                    />
-
+                <div className='FooterContainer'> 
+                    <Footer />
                 </div>
             </div>
-
-
-            <div className='Excution'>
-                <Table
-                    operacoes={operacoesExecucao}
-                    errors={errors}
-                    passoAtual={passoAtual}
-                    estadoOperacoes={estadoOperacoes}
-                    mensagensEspera={mensagensEspera}
-                />
-
-                <Terminal linhas={linhasTerminal} />
-            </div>
-
-            <br />
-            <h3 className='SubTitle'>Resultado da execução</h3>
-            <br />
-
-            <ResultTable
-                status={getStatus()}
-                operacoes={operacoesExecucao}
-                valoresIniciais={valoresVariaveis}
-            />
-
-            <br />
-            <br />
-            <Footer />
-
         </div>
     );
 }

@@ -4,14 +4,13 @@
   justify-content: space-between;
   width: 85%;
   padding: 20px 40px;
-  background: transparent; /* herda o gradiente do hero */
   color: #fff;
   position: absolute; /* fixa dentro do hero */
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
-  
+  z-index: 2;
 }
 
 /* Logo à esquerda */
@@ -31,6 +30,7 @@
   gap: 30px;
   margin: 0;
   padding: 0;
+  
 }
 
 .navbar-links li a {
@@ -42,4 +42,30 @@
 
 .navbar-links li a:hover {
   color: #ffcc00;
+}
+
+.navbar-links li {
+  cursor: pointer;
+  padding: 10px 15px;
+  transition: background 0.3s;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.navbar-links li:hover {
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  color: black;
+}
+
+#destaque{
+  background-color: #ffcc00;
+  border-radius: 6px;
+  color: black;
+}
+
+#destaque:hover {
+  filter: brightness(85%);
+  transform: scale(1.02);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
 }

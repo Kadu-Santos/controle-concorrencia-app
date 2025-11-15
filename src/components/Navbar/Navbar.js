@@ -1,12 +1,24 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import Logo from '../../assets/icons/logo-visualiza.png'
+import Logo from '../../assets/icons/logo-visualiza.png';
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId) => {
+    navigate('/');
+    setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100); // tempo para garantir que a Home carregue
+  };
+
   return (
     <nav className="navbar">
       {/* Logo à esquerda */}
-      <div className="navbar-logo">
+      <div className="navbar-logo" onClick={() => navigate('/')}>
         <img src={Logo} alt="Logo Visualiza" className="logo-image" />
       </div>
 
@@ -15,9 +27,10 @@ function Navbar() {
 
       {/* Opções à direita */}
       <ul className="navbar-links">
-        <li><a href="#home">Início</a></li>
-        <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#contato">Contato</a></li>
+        <li onClick={() => navigate('/')}>Início</li>
+        <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
+        <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
+        <li onClick={() => navigate('/RunPage')} id='destaque'>Começar</li>
       </ul>
     </nav>
   );
