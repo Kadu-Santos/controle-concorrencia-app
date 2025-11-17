@@ -53,6 +53,8 @@ export function useExecutionEngine(stepDelay = 1200) {
         // ======== Validação inicial ============
         const { errors: resultadoErros } = verifier(instrucoes);
 
+        console.log("Resultado da verificação:", resultadoErros);
+
         // erroPorIndice: array booleana local
         const erroPorIndice = Array(instrucoes.length).fill(false);
         (resultadoErros || []).forEach(e => {
@@ -164,7 +166,7 @@ export function useExecutionEngine(stepDelay = 1200) {
                 const unicos = [...new Set(transacoesComErro)];
 
                 const msgExtra = unicos.length > 0
-                    ? ` \nAs seguintes transações não foram concluídas: ${unicos.join(", ")}.`
+                    ? ` \n❌ ${unicos.join(", ")} não foram finalizadas.`
                     : "";
 
                 setLinhasTerminal(prev => [

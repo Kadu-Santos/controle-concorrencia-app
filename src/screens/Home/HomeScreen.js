@@ -55,7 +55,7 @@ function HomeScreen() {
         </section>
 
         {/* Funcionalidades */}
-        <h3 className="sectionTitle"> Principais Funcionalidades</h3>
+        {/* <h3 className="sectionTitle"> Principais Funcionalidades</h3>
         <div className="features">
           <div className="feature-card">
             <h4>🔎 Visualização gráfica</h4>
@@ -73,7 +73,7 @@ function HomeScreen() {
             <h4>📚 Exemplos práticos</h4>
             <p>Explore casos pré-configurados para estudo guiado.</p>
           </div>
-        </div>
+        </div> */}
 
         {/* Como usar */}
         <h3 className="sectionTitle" id="como-usar">Como usar a ferramenta</h3>

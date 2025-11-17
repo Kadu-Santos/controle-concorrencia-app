@@ -14,12 +14,13 @@ import Table from '../../components/Table/Table';
 import Toggle from '../../components/Toggle/Toggle';
 import Terminal from '../../components/Terminal/Terminal';
 import Footer from '../../components/Footer/Footer';
-import { exemplos } from '../Home/data/exemples';
+import { exemplos } from '../../data/exemples';
+import { format, isOperacaoMatematica } from '../../utils/Valid';
+import ResultTable from '../../components/ResultTable/ResultTable';
 
 import { useExecutionEngine } from '../../hooks/useExecutionEngine';
 
-import { format, isOperacaoMatematica } from '../../utils/Valid';
-import ResultTable from '../../components/ResultTable/ResultTable';
+
 
 
 function RunPage() {
@@ -143,8 +144,13 @@ function RunPage() {
 
     return (
         <div className="bodyRunPage">
+
+            <Navbar />
+            <div className="background-image-1"></div>
+            <div className="background-image-2"></div>
+            
             <div className="runPage-container">
-                <Navbar />
+                
                 <h2 className='Title'>Visualizador de Controle de Concorrência</h2>
                 <h3 className='SubTitle'>Configure a execução de suas transações</h3>
 
@@ -282,7 +288,6 @@ function RunPage() {
                         })}
                     </div>
 
-
                     <div className='buttonsBox'>
                         <ButtonC
                             texto="GERAR"
@@ -339,6 +344,8 @@ function RunPage() {
                         valoresIniciais={valoresVariaveis}
                     />
                 </div>
+
+                
 
                 <div className='FooterContainer'> 
                     <Footer />
