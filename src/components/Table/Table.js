@@ -88,7 +88,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
           return (
             <Bloco
               key={`${i}-${t}`}
-              index={i} 
+              index={i}
               texto={texto}
               cor={cor}
               animacao={direcao}

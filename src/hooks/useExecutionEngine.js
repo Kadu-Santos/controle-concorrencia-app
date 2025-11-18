@@ -126,7 +126,7 @@ export function useExecutionEngine(stepDelay = 1200) {
 
             setLinhasTerminal(prev => [
                 ...prev,
-                { texto: `⏸ ${mensagem}`, isErro: true }
+                { texto: `⏸️ ${mensagem}`, isErro: true }
             ]);
 
             setEstadoOperacoes(prev => ({ ...prev, [index]: "esperando" }));
@@ -157,6 +157,23 @@ export function useExecutionEngine(stepDelay = 1200) {
             }
 
             const houveErros = erroPorIndice.some(Boolean);
+
+            // =============================================
+            // ➤ NOVO: Exibir deadlocks detectados
+            // =============================================
+            const deadlocksDetectados = (resultadoErros || [])
+                .filter(e => e.name?.toLowerCase().includes("deadlock"));
+
+            if (deadlocksDetectados.length > 0) {
+                setLinhasTerminal(prev => [
+                    ...prev,
+                    ...deadlocksDetectados.map(e => ({
+                        texto: `❌ ${e.name}`,
+                        isErro: true
+                    }))
+                ]);
+            }
+            // =============================================
 
             if (houveErros) {
                 const transacoesComErro = resultadoErros
