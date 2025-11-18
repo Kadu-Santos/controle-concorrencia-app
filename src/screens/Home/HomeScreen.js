@@ -46,12 +46,25 @@ function HomeScreen() {
         {/* Objetivo */}
         <section className="objective-section">
           <div className="text-section">
-            <h3 className="sectionTitle">Objetivo do Projeto</h3>
+            <h3 className="sectionTitle">Finalidade da Ferramenta</h3>
             <p className="objectiveText">
-              Esta aplicação web interativa foi criada para auxiliar no ensino e prática do controle de concorrência em bancos de dados. Ela permite visualizar graficamente a execução de transações concorrentes, compreender o uso de bloqueios compartilhados e exclusivos, além de identificar automaticamente situações de <em>deadlock</em> e violações ao protocolo <em>Two-Phase Locking (2PL)</em>.
+              Esta aplicação web interativa foi criada para auxiliar no ensino e
+              prática do controle de concorrência em bancos de dados. Ela
+              permite visualizar graficamente a execução de transações
+              concorrentes, compreender o uso de bloqueios compartilhados e
+              exclusivos, além de identificar automaticamente situações de{" "}
+              <em>deadlock</em> e violações ao protocolo{" "}
+              <em>Two-Phase Locking (2PL)</em>.
             </p>
+            <input type="button" value="Saiba +" className="button-plus" />
           </div>
-          <img src={Imagem} className="imgObjective" alt="Simulação de concorrência em bancos" />
+          <div className="image-image">
+            <img
+              src={Imagem}
+              className="imgObjective"
+              alt="Simulação de concorrência em bancos"
+            />
+          </div>
         </section>
 
         {/* Funcionalidades */}
@@ -76,7 +89,9 @@ function HomeScreen() {
         </div> */}
 
         {/* Como usar */}
-        <h3 className="sectionTitle" id="como-usar">Como usar a ferramenta</h3>
+        <h3 className="sectionTitle" id="como-usar">
+          Como usar a ferramenta
+        </h3>
         <div className="how-to">
           <div className="step-card">
             <h4>1️⃣ Configure a execução</h4>
