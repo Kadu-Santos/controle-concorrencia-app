@@ -9,6 +9,7 @@
 .header-linha, .linha-operacao {
   display: flex;
   align-items: center;
+  margin-bottom: 4px;
 }
 
 .header-linha > div {
@@ -42,7 +43,7 @@
   text-align: right;
   width: 20px;
   opacity: 0.6;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .janela-tabela {

@@ -40,14 +40,6 @@ function interpretarOperacao(op) {
   return op;
 }
 
-/**
- * Table
- * @param {Array} operacoes - lista de operações formatadas
- * @param {number} passoAtual - índice atual da execução
- * @param {Array|Object} errors - índices com erro
- * @param {Object} estadoOperacoes - estado de cada operação: { 5: "esperando", 6: "executado" }
- * @param {Object} mensagensEspera - mensagens de espera por índice: { 5: "T3 aguardando liberação de X por T1" }
- */
 function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensEspera = {} }) {
 
   if (!operacoes || operacoes.length === 0) {
@@ -84,11 +76,14 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
             <WaitMessage
               key={`${i}-${t}`}
               texto={mensagensEspera[i] || `${transacao} aguardando...`}
+              operacaoOriginal={texto}
+              index={i}
+              cor={cor}
+              pulsando={errors?.[i] === true}
             />
           );
         }
 
-        // Se já executou normalmente → mostra o bloco
         if (status === "executado" || !status) {
           return (
             <Bloco

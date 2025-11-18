@@ -9,10 +9,10 @@
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  min-width: 160px;
+  width: 100%;
   transform: translateX(0);
   height: 34px;
+  cursor: pointer;
 }
 
 .operacao-bloco:hover {

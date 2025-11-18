@@ -1,22 +1,46 @@
-// src/data/exemplos.js
 
 export const exemplos = [
-  // Exemplo 1: DeadLock
+  //Exemplo 1: DeadLock
   {
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: [],
     operacoes: [
       "T1:WL:X",
-                "T2:WL:Y",
-                "T2:WL:X",
+      "T2:WL:Y",
+      "T2:WL:X",
       "T1:WL:Y",
-                "T2:U:X",
-                "T2:U:Y",
-                "T2:Commit",
+      "T2:U:X",
+      "T2:U:Y",
+      "T2:Commit",
       "T1:U:X",
       "T1:U:Y",
       "T1:Commit"
+    ],
+    expressoes: {},
+    erro: null
+  },
+
+  {
+    numTransacoes: 3,
+    numVariaveis: 2,
+    valoresVariaveis: [],
+    operacoes: [
+      "T1:WL:X",
+      "T2:WL:Y",
+      "T2:WL:X",
+      "T1:WL:Y",
+      "T3:WL:X",   // T3 tenta pegar X, mas T1 já tem
+      "T3:WL:Y",   // depois tenta Y, mas T2 já tem
+      "T2:U:X",
+      "T2:U:Y",
+      "T2:Commit",
+      "T1:U:X",
+      "T1:U:Y",
+      "T1:Commit",
+      "T3:U:X",
+      "T3:U:Y",
+      "T3:Commit"
     ],
     expressoes: {},
     erro: null

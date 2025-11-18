@@ -288,6 +288,7 @@ function RunPage() {
                         })}
                     </div>
 
+
                     <div className='buttonsBox'>
                         <ButtonC
                             texto="GERAR"
@@ -344,8 +345,7 @@ function RunPage() {
                         valoresIniciais={valoresVariaveis}
                     />
                 </div>
-
-                
+            
 
                 <div className='FooterContainer'> 
                     <Footer />

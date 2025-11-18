@@ -1,14 +1,28 @@
 .wait-message {
-  margin-left: 8px;
-  padding: 4px 8px;
-  background-color: #fff3cd; /* amarelo claro */
-  border: 1px solid #ffeeba;
+  background-color: #fff3cd;
+  border: 1px solid #cacaca;
   border-radius: 4px;
-  font-size: 0.85rem;
   color: #856404;
+  min-width: 160px;
+  height: 34px;
   display: inline-block;
+  align-items: center;
+  cursor: pointer;
 }
 
 .message {
-  margin: 0;
+  font-size: 0.85rem;
+}
+
+
+.wait-message .operacao-bloco {
+  display: none;
+}
+
+.wait-message:hover .message {
+  display: none;
+}
+
+.wait-message:hover .operacao-bloco {
+  display: inline-block;
 }
