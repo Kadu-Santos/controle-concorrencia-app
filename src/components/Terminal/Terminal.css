@@ -75,3 +75,9 @@
   color: #ff4d4f; /* Vermelho */
   font-weight: bold;
 }
+
+.terminal-body p.espera {
+  color: #fec931; /* tom terroso de alerta */
+  font-weight: bold;
+}
+

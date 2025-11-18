@@ -3,11 +3,28 @@ import Bloco from '../Bloco/Bloco';
 import WaitMessage from '../WaitMessage/WaitMessage';
 
 const coresTransacoes = {
-  T1: '#0066ff',
-  T2: '#e63946',
-  T3: '#8e44ad',
-  T4: '#2a9d8f',
+  T1: {
+    texto: '#1E40AF',
+    fundo: '#DBEAFE',
+    borda: '#93C5FD',
+  },
+  T2: {
+    texto: '#B91C1C',
+    fundo: '#FEE2E2',
+    borda: '#FCA5A5',
+  },
+  T3: {
+    texto: '#6D28D9',
+    fundo: '#EDE9FE',
+    borda: '#C4B5FD',
+  },
+  T4: {
+    texto: '#065F46',
+    fundo: '#D1FAE5',
+    borda: '#6EE7B7',
+  },
 };
+
 
 function BarraSuperior() {
   return (
@@ -63,7 +80,11 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
     const op = operacoes[i] || '';
     const transacao = op.split(':')[0];
     const texto = i <= passoAtual ? interpretarOperacao(op) : '';
-    const cor = coresTransacoes[transacao] || 'black';
+    const cores = coresTransacoes[transacao] || {
+      texto: 'black',
+      fundo: '#f5f5f5',
+      borda: '#ccc'
+    };
     const status = estadoOperacoes[i]; // "esperando" | "executado" | undefined
 
     const linha = transacoes.map((t, index) => {
@@ -78,7 +99,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
               texto={mensagensEspera[i] || `${transacao} aguardando...`}
               operacaoOriginal={texto}
               index={i}
-              cor={cor}
+              cor={cores}
               pulsando={errors?.[i] === true}
             />
           );
@@ -90,7 +111,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
               key={`${i}-${t}`}
               index={i}
               texto={texto}
-              cor={cor}
+              cor={cores}
               animacao={direcao}
               pulsando={errors?.[i] === true}
             />
@@ -117,7 +138,7 @@ function Table({ operacoes, passoAtual, errors, estadoOperacoes = {}, mensagensE
             {transacoes.map(t => (
               <div
                 key={t}
-                style={{ flex: 1, color: coresTransacoes[t], textAlign: 'center' }}
+                style={{ flex: 1, color: coresTransacoes[t]?.texto, textAlign: 'center' }}
               >
                 {t}
               </div>

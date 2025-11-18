@@ -1,8 +1,10 @@
 import React from 'react';
 import './Bloco.css';
 
+
 function Bloco({ texto, index, cor = 'black', pulsando = false, animacao = '' }) {
 
+  const { texto: corTexto, fundo, borda } = cor;
   const handleClick = () => {
     const el = document.getElementById(`dropdown-${index}`);
     if (el) {
@@ -15,7 +17,7 @@ function Bloco({ texto, index, cor = 'black', pulsando = false, animacao = '' })
   return (
     <div
       className={`operacao-bloco ${pulsando ? 'pulsando' : ''} ${animacao}`}
-      style={{ color: cor }}
+      style={{ color: corTexto, backgroundColor: fundo, borderColor: borda }}
       onClick={handleClick}
     >
       {texto}

@@ -48,6 +48,10 @@ function Terminal({ linhas = [] }) {
   const getClasse = (linha) => {
     if (linha.isErro) return 'erro';
 
+    if (linha.texto.trim().startsWith('⏸') || linha.texto.trim().startsWith('⏳')) {
+      return 'espera';
+    }
+
     if (!linha.texto) return '';
 
     const partes = linha.texto.split(':');

@@ -53,8 +53,6 @@ export function useExecutionEngine(stepDelay = 1200) {
         // ======== Validação inicial ============
         const { errors: resultadoErros } = verifier(instrucoes);
 
-        console.log("Resultado da verificação:", resultadoErros);
-
         // erroPorIndice: array booleana local
         const erroPorIndice = Array(instrucoes.length).fill(false);
         (resultadoErros || []).forEach(e => {
@@ -126,7 +124,7 @@ export function useExecutionEngine(stepDelay = 1200) {
 
             setLinhasTerminal(prev => [
                 ...prev,
-                { texto: `⏸️ ${mensagem}`, isErro: true }
+                { texto: `⏸️ ${mensagem}`, isErro: false }
             ]);
 
             setEstadoOperacoes(prev => ({ ...prev, [index]: "esperando" }));
@@ -159,20 +157,53 @@ export function useExecutionEngine(stepDelay = 1200) {
             const houveErros = erroPorIndice.some(Boolean);
 
             // =============================================
-            // ➤ NOVO: Exibir deadlocks detectados
+            // Consolidar mensagens de deadlock
             // =============================================
             const deadlocksDetectados = (resultadoErros || [])
                 .filter(e => e.name?.toLowerCase().includes("deadlock"));
 
             if (deadlocksDetectados.length > 0) {
-                setLinhasTerminal(prev => [
-                    ...prev,
-                    ...deadlocksDetectados.map(e => ({
-                        texto: `❌ ${e.name}`,
-                        isErro: true
-                    }))
-                ]);
+                const linhas = deadlocksDetectados
+                    .flatMap(e => e.indices || [])
+                    .sort((a, b) => a - b)
+                    .map(l => l + 1);
+
+                const ciclos = deadlocksDetectados.map(e => {
+                    const cicloBruto = e.name;
+                    return cicloBruto.substring(cicloBruto.indexOf("Ciclo"));
+                });
+
+                if (deadlocksDetectados.length === 1) {
+                    setLinhasTerminal(prev => [
+                        ...prev,
+                        {
+                            texto: `\n❌ Deadlock iniciado na linha: ${linhas[0]}`,
+                            isErro: true
+                        },
+                        {
+                            texto: `🔁 ${ciclos[0]}`,
+                            isErro: false
+                        }
+                    ]);
+                } else {
+                    setLinhasTerminal(prev => [
+                        ...prev,
+                        {
+                            texto: `\n🌀 Ciclos encontrados: ${deadlocksDetectados.length}`,
+                            isErro: true
+                        },
+                        {
+                            texto: `❌ Deadlocks iniciados nas linhas: ${linhas.join(" e ")}`,
+                            isErro: true
+                        },
+                        {
+                            texto: `🔁 ${ciclos.join(" e ")}`,
+                            isErro: false
+                        }
+                    ]);
+                }
             }
+
             // =============================================
 
             if (houveErros) {
@@ -188,7 +219,7 @@ export function useExecutionEngine(stepDelay = 1200) {
 
                 setLinhasTerminal(prev => [
                     ...prev,
-                    { texto: `❌ Execução finalizada com erros.${msgExtra}`, isErro: true }
+                    { texto: `\n❌ Execução finalizada com erros.${msgExtra}`, isErro: true }
                 ]);
             } else if (success) {
                 setLinhasTerminal(prev => [
@@ -207,7 +238,6 @@ export function useExecutionEngine(stepDelay = 1200) {
             setExecutando(false);
         });
 
-        // ========== STOP ==========
         on("stop", () => {
             stoppedByUserRef.current = true;
 
