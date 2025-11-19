@@ -17,7 +17,7 @@ function Bloco({ texto, index, cor = 'black', pulsando = false, animacao = '' })
   return (
     <div
       className={`operacao-bloco ${pulsando ? 'pulsando' : ''} ${animacao}`}
-      style={{ color: corTexto, backgroundColor: fundo, borderColor: borda }}
+      style={{ '--c': corTexto, '--bg': fundo, borderColor: borda }}
       onClick={handleClick}
     >
       {texto}
