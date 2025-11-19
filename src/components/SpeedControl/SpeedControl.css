@@ -1,0 +1,23 @@
+.speed-control input[type="range"] {
+  width: 65%;
+  height: 8px;
+  background: linear-gradient(to right, #4A90E2, #50E3C2);
+  border-radius: 5px;
+  appearance: none;
+  transition: background 0.3s ease;
+}
+
+.speed-control input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid #4A90E2;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.speed-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
