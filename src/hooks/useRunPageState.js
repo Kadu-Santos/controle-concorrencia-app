@@ -83,6 +83,26 @@ export function useRunPageState() {
         return variaveisOk && operacoesOk;
     }, [numVariaveis, numTransacoes, valoresVariaveis, operacoes, expressoes, valor]);
 
+    const dropAtivo = () => {
+        //Durante a execução sempre desativado
+        if (executando) return false;
+
+        // precisa ter número de transações definido
+        if (!numTransacoes || numTransacoes <= 0) return false;
+
+        // precisa ter número de variáveis definido
+        if (!numVariaveis || numVariaveis <= 0) return false;
+
+        // se NÃO for usar valores iniciais → pode ativar
+        if (!valor) return true;
+
+        // se for usar valores iniciais → precisa estar completo
+        const preenchido = valoresVariaveis.length === numVariaveis &&
+            valoresVariaveis.every(v => v.trim() !== "");
+
+        return preenchido;
+    };
+
 
     // EXEMPLO ALEATÓRIO
     const executarExemploAleatorio = () => {
@@ -151,6 +171,7 @@ export function useRunPageState() {
         limparTudo,
         getStatus,
         setOperacoes,
-        setExpressoes
+        setExpressoes,
+        dropAtivo
     };
 }

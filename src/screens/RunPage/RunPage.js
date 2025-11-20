@@ -39,6 +39,7 @@ function RunPage() {
         getStatus,
         setOperacoes,
         setExpressoes,
+        dropAtivo
     } = useRunPageState();
 
     return (
@@ -129,9 +130,7 @@ function RunPage() {
                         onChangeExpressoes={(next) => setExpressoes(next)}
                         numTransacoes={numTransacoes}
                         numVariaveis={numVariaveis}
-                        executando={executando}
-                        valor={valor}
-                        valoresVariaveis={valoresVariaveis}
+                        disable={!dropAtivo()}
                     />
 
                     <div className='buttonsBox'>

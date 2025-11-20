@@ -6,13 +6,11 @@ import "./SchedulerRow.css";
 import { isOperacaoMatematica } from "../../utils/Valid";
 
 export default function ScheduleRow({
-  id, index,
   opStr, expressao,
-  numTransacoes, numVariaveis, executando,
-  valor, valoresVariaveis,
+  numTransacoes, numVariaveis, disable,
   onChangeOpStr, onChangeExpressao,
   onAddAfter, onRemove,
-  isLast
+  isLast, canRemove,
 }) {
 
   const [showControls, setShowControls] = useState(false);
@@ -21,12 +19,11 @@ export default function ScheduleRow({
 
 
   const handleMouseEnter = () => {
-    // último item não usa hover (mantém padrão atual)
-    if (isLast || executando) return;
+    if (isLast || disable) return;
 
     hoverTimerRef.current = setTimeout(() => {
       setShowControls(true);
-    }, 500); // 1 segundo parado
+    }, 500);
   };
 
   const handleMouseLeave = () => {
@@ -38,15 +35,12 @@ export default function ScheduleRow({
   };
 
   const handleRowMouseDown = (e) => {
-    // se os controles não estão visíveis, nada a fazer
     if (!showControls) return;
 
-    // se clicou nos botões → não esconda
     if (controlsRef.current && controlsRef.current.contains(e.target)) {
       return;
     }
 
-    // se clicou em qualquer outra área dentro do row → esconda
     setShowControls(false);
   };
 
@@ -66,7 +60,7 @@ export default function ScheduleRow({
         variableCount={numVariaveis}
         onSelect={onChangeOpStr}
         selectedValue={opStr}
-        disabled={executando}
+        disabled={disable}
       />
 
       {isOp && (
@@ -75,7 +69,7 @@ export default function ScheduleRow({
             numVariaveis={numVariaveis}
             onOperacaoChange={onChangeExpressao}
             valorInicial={expressao}
-            disabled={executando}
+            disabled={disable}
           />
           <span className="pontoVirgulaOp">;</span>
         </>
@@ -89,8 +83,8 @@ export default function ScheduleRow({
           <DropdownControlButtons
             onAdd={onAddAfter}
             onRemove={onRemove}
-            podeAdicionar={!!opStr?.trim()}
-            podeRemover={true}
+            podeAdicionar={!!opStr?.trim() && !disable}
+            podeRemover={canRemove && !disable}
           />
         </div>
       )}

@@ -38,7 +38,8 @@
   background-color: #ccc;
   color: white;
   cursor: not-allowed;
-  width: 30px;
+  width: 35px;
+  height: 35px;
 }
 
 .btn-remove.enabled {
@@ -52,5 +53,6 @@
   background-color: #ccc;
   color: white;
   cursor: not-allowed;
-  width: 30px;
+  width: 35px;
+  height: 35px;
 }

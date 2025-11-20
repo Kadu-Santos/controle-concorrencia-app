@@ -16,10 +16,7 @@ export default function ScheduleEditor({
     onChangeExpressoes,
     numTransacoes,
     numVariaveis,
-    executando,
-    
-    valor,
-    valoresVariaveis
+    disable,
 }) {
     // id generator (simples e deterministicamente único por instância)
     const idCounter = useRef(0);
@@ -114,14 +111,13 @@ export default function ScheduleEditor({
                         expressao={it.expressao}
                         numTransacoes={numTransacoes}
                         numVariaveis={numVariaveis}
-                        executando={executando}
-                        valor={valor}
-                        valoresVariaveis={valoresVariaveis}
+                        disable={disable}
                         onChangeOpStr={(v) => setOpStr(it.id, v)}
                         onChangeExpressao={(v) => setExpressao(it.id, v)}
                         onAddAfter={() => insertAfter(it.id)}
                         onRemove={() => removeById(it.id)}
                         isLast={index === items.length - 1}
+                        canRemove={operacoes.length > 1}
                     />
                 </div>
             ))}
