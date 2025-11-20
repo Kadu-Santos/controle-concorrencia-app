@@ -1,0 +1,13 @@
+.pontoVirgulaIns{
+  margin-left: 3px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.pontoVirgulaOp{
+  margin-left: -3px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
