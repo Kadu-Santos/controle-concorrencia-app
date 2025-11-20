@@ -32,7 +32,7 @@ function NumericDropdown({
   return (
     <div className="numeric-dropdown" ref={dropdownRef} style={{ width }}>
       <div
-        className={`dropdown-display ${disabled ? 'disabled' : ''}`}
+        className={`nDropdown-display ${disabled ? 'disabled' : ''}`}
         onClick={() => !disabled && setMenuOpen((prev) => !prev)}
       >
         <span className={`dropdown-placeholder ${selectedValue ? 'active' : ''}`}>
@@ -48,13 +48,13 @@ function NumericDropdown({
       </div>
 
       {menuOpen && (
-        <div className="dropdown-menu">
+        <div className="nDropdown-menu">
           {options.map((opt, index) => {
             const numericValue = parseInt(opt, 10);
             return (
               <div
                 key={index}
-                className="dropdown-item"
+                className="nDropdown-item"
                 onClick={() => handleClick(numericValue)}
               >
                 {opt}

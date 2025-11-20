@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Operation.css';
 
-function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
+function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = false }) {
   const baseVariaveis = ['X', 'Y', 'Z', 'W', 'V'];
   const variaveis = baseVariaveis.slice(0, numVariaveis);
   const opcoes = [...variaveis, 'Digite...'];
@@ -80,21 +80,23 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
   };
 
   return (
-    <div className="operacao-montagem">
+    <div className={`operacao-montagem ${disabled ? 'disabled' : ''}`}>
       <p>=</p>
       {esquerdaManual ? (
         <input
           type="text"
           value={esquerda}
-          onChange={(e) => setEsquerda(e.target.value)}
+          onChange={(e) => !disabled && setEsquerda(e.target.value)}
           className="campo-input"
           placeholder="Digite"
+          disabled={disabled}
         />
       ) : (
         <select
           value={esquerda}
-          onChange={(e) => handleSelect(e.target.value, 'esquerda')}
+          onChange={(e) => !disabled && handleSelect(e.target.value, 'esquerda')}
           className="campo-select"
+          disabled={disabled}
         >
           <option value="" disabled>Selecione</option>
           {opcoes.map((op) => (
@@ -105,8 +107,9 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
 
       <select
         value={operador}
-        onChange={(e) => setOperador(e.target.value)}
+        onChange={(e) => !disabled && setOperador(e.target.value)}
         className="operador-select"
+        disabled={disabled}
       >
         <option value="+">+</option>
         <option value="-">−</option>
@@ -121,12 +124,14 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial }) {
           onChange={(e) => setDireita(e.target.value)}
           className="campo-input"
           placeholder="Digite"
+          disabled={disabled}
         />
       ) : (
         <select
           value={direita}
-          onChange={(e) => handleSelect(e.target.value, 'direita')}
+          onChange={(e) => !disabled && handleSelect(e.target.value, 'direita')}
           className="campo-select"
+          disabled={disabled} 
         >
           <option value="" disabled>Selecione</option>
           {opcoes.map((op) => (

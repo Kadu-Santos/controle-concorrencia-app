@@ -18,6 +18,11 @@
   }
 }
 
+.dropdown-display.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .dropdown-display {
   background-color: white;
   border: 1px solid #ccc;
@@ -57,9 +62,9 @@
 
 .dropdown-item {
   padding: 8px 5px;
-  cursor: pointer;
   white-space: nowrap;
   position: relative;
+  
 }
 
 .dropdown-item:hover {
@@ -121,4 +126,8 @@
 .action-wrapper {
   position: relative;
   display: inline-block;
+}
+
+.dropdown-display:hover {
+  border-color: #888;
 }
