@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import ScheduleRow from "./ScheduleRow";
+import ScheduleRow from "../ScheduleRow/ScheduleRow";
 import "./ScheduleEditor.css";
 
 /**

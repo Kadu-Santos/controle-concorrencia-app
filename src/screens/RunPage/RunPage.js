@@ -4,17 +4,15 @@ import Navbar from '../../components/Navbar/Navbar';
 import NumericDropdown from '../../components/NumericDropdown/NumericDropdown';
 import HintButton from '../../components/HintButton/HintButton';
 import InputList from '../../components/InputList.js/InputList';
-import MultiLevelDropdown from '../../components/MultiLevelDropdown/MultiLevelDropdown';
-import DropdownControlButtons from '../../components/DropdownControlButtons/DropdownControlButtons';
 import ButtonC from '../../components/button/ButtonC';
-import Operation from '../../components/Operation/Operation';
 import Table from '../../components/Table/Table';
 import Toggle from '../../components/Toggle/Toggle';
 import Terminal from '../../components/Terminal/Terminal';
 import Footer from '../../components/Footer/Footer';
-import { format, isOperacaoMatematica } from '../../utils/Valid';
+import { format } from '../../utils/Valid';
 import ResultTable from '../../components/ResultTable/ResultTable';
 import SpeedControl from '../../components/SpeedControl/SpeedControl';
+import ScheduleEditor from '../../components/ScheduleEditor/ScheduleEditor';
 
 import { useRunPageState } from '../../hooks/useRunPageState';
 
@@ -35,9 +33,12 @@ function RunPage() {
         setNumVariaveis, setNumTransacoes, setValoresVariaveis,
         setValor, setOperacoesExecucao,
 
-        onSpeedChange, atualizarOperacao, handleOperacaoChange,
-        adicionarOperacao, removerOperacao,
-        executarExemploAleatorio, limparTudo, getStatus
+        onSpeedChange,
+        executarExemploAleatorio,
+        limparTudo,
+        getStatus,
+        setOperacoes,
+        setExpressoes,
     } = useRunPageState();
 
     return (
@@ -121,48 +122,17 @@ function RunPage() {
                 <h3 className='SubTitle'>Insira o Cronograma</h3>
 
                 <div className="dropdownsContainer">
-                    <div className="dropdownsBox">
-
-                        <p>S1:</p>
-
-                        {operacoes.map((opStr, i) => {
-                            const isOp = isOperacaoMatematica(opStr, numVariaveis);
-                            return (
-                                <div key={i} className="dropdown-item" id={`dropdown-${i}`}>
-
-                                    <MultiLevelDropdown
-                                        transactionCount={numTransacoes}
-                                        variableCount={numVariaveis}
-                                        onSelect={(v) => atualizarOperacao(i, v)}
-                                        selectedValue={opStr}
-                                        disabled={executando || (valor && valoresVariaveis.length !== numVariaveis)}
-                                    />
-
-                                    {isOp && (
-                                        <>
-                                            <Operation
-                                                numVariaveis={numVariaveis}
-                                                onOperacaoChange={handleOperacaoChange(i)}
-                                                valorInicial={expressoes[i]}
-                                            />
-                                            <span className='pontoVirgula'>;</span>
-                                        </>
-                                    )}
-
-                                    {!isOp && <span className='pontoVirgula'>;</span>}
-
-                                    {i === operacoes.length - 1 && (
-                                        <DropdownControlButtons
-                                            onAdd={() => opStr.trim() && adicionarOperacao()}
-                                            onRemove={() => operacoes.length > 1 && removerOperacao(i)}
-                                            podeAdicionar={opStr.trim()}
-                                            podeRemover={operacoes.length > 1}
-                                        />
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
+                    <ScheduleEditor
+                        operacoes={operacoes}
+                        expressoes={expressoes}
+                        onChangeOperacoes={(next) => setOperacoes(next)}
+                        onChangeExpressoes={(next) => setExpressoes(next)}
+                        numTransacoes={numTransacoes}
+                        numVariaveis={numVariaveis}
+                        executando={executando}
+                        valor={valor}
+                        valoresVariaveis={valoresVariaveis}
+                    />
 
                     <div className='buttonsBox'>
 

@@ -150,5 +150,7 @@ export function useRunPageState() {
         executarExemploAleatorio,
         limparTudo,
         getStatus,
+        setOperacoes,
+        setExpressoes
     };
 }
