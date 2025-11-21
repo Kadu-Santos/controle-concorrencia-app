@@ -33,7 +33,7 @@ export default function CustomSelect({
         className="cs-selected"
         onClick={() => !disabled && setOpen((v) => !v)}
       >
-        <span>{value || placeholder}</span>
+        <span className={`cs ${!value ? "placeholder":" "}`}>{value || placeholder}</span>
         <img
           src={downIcon}
           alt="Toggle menu"

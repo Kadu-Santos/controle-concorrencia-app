@@ -15,6 +15,7 @@
   user-select: none;
   transition: 0.2s ease;
   align-items: center;
+  height: 35px;
 }
 
 .cs-selected:hover {
@@ -69,4 +70,22 @@
 
 .cs-disabled .cs-option {
   pointer-events: none;
+}
+
+.cs.placeholder {
+  display: inline-block;
+  max-width: 25px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #888;
+  
+  /* FADE-OUT usando mask */
+  -webkit-mask-image: linear-gradient(to right, 
+    black 70%, 
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, 
+    black 70%, 
+    transparent 100%
+  );
 }

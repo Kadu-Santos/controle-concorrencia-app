@@ -11,3 +11,8 @@
   display: flex;
   align-items: center;
 }
+
+.schedule-row {
+  margin: 5px;
+
+}
