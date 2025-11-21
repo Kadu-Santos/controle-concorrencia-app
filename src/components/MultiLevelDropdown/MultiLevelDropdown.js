@@ -95,7 +95,7 @@ function MultiLevelDropdown({
                           className={`dropdown-item ${a !== 'Commit' ? 'relative' : 'commit'}`}
                         >
                           <div
-                            className="action-item"
+                            className={"action-item"}
                             onMouseEnter={() => setSubmenuOpen({ tx, action: a })}
                             onClick={a === 'Commit' ? () => handleClick(tx, a) : undefined}
                           >

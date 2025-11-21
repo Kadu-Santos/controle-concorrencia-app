@@ -61,6 +61,7 @@
 .dropdown-item {
   white-space: nowrap;
   position: relative;
+  padding: 5px 7px;
 }
 
 @keyframes MfadeDropdown {
@@ -80,7 +81,7 @@
   align-items: center;
   width: 100%;
   padding-right: 8px;
-  padding: 8px 5px;
+  padding: 8px 8px;
 }
 
 
@@ -106,6 +107,7 @@
 
 .dropdown-item.relative {
   position: relative;
+  padding: 0px 0px;
 }
 
 .last-level {
@@ -142,3 +144,5 @@
 .dropdown-display:hover {
   border-color: #888;
 }
+
+
