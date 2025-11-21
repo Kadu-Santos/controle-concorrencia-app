@@ -1,0 +1,68 @@
+.cs-wrapper {
+  position: relative;
+  width: 90px;
+  font-size: 14px;
+}
+
+.cs-selected {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  transition: 0.2s ease;
+}
+
+.cs-selected:hover {
+  border-color: #888;
+}
+
+.cs-arrow {
+  margin-left: 8px;
+  transition: 0.2s ease;
+}
+
+.cs-arrow.up {
+  transform: rotate(180deg);
+}
+
+.cs-options {
+  position: absolute;
+  margin-top: 4px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  animation: fadeDropdown 0.15s ease-out;
+}
+
+@keyframes fadeDropdown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cs-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cs-option:hover {
+  background: #f0f0f0;
+}
+
+.cs-disabled .cs-selected {
+  background: #f2f2f2;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cs-disabled .cs-option {
+  pointer-events: none;
+}

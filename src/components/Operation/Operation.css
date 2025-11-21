@@ -7,7 +7,7 @@
   animation: fadeSlideIn 0.50s ease-out;
 }
 
-.campo-select, .operador-select, .campo-input {
+.campo-input {
   font-size: 14px;
   padding: 8px 12px;
   border: 1px solid #ccc;
@@ -16,21 +16,18 @@
   max-width: 80px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
-  cursor: pointer;
+  cursor: text;
+  height: 100%;
 }
 
-.campo-select:hover, .operador-select:hover, .campo-input:hover {
+.campo-input:hover {
   border-color: #888;
 }
 
-.operacao-montagem.disabled input,
-.operacao-montagem.disabled select {
+.operacao-montagem.disabled input {
   cursor: not-allowed;
 }
 
-.campo-input{
-  cursor: text;
-}
 .campo-input:disabled{
   opacity: 0.6;
 }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import CustomSelect from '../CustomSelect/CustomSelect';
 import './Operation.css';
 
 function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = false }) {
@@ -92,30 +93,22 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = fa
           disabled={disabled}
         />
       ) : (
-        <select
+        <CustomSelect
           value={esquerda}
-          onChange={(e) => !disabled && handleSelect(e.target.value, 'esquerda')}
-          className="campo-select"
+          options={opcoes}
+          onChange={(v) => handleSelect(v, "esquerda")}
           disabled={disabled}
-        >
-          <option value="" disabled>Selecione</option>
-          {opcoes.map((op) => (
-            <option key={op} value={op}>{op}</option>
-          ))}
-        </select>
+        />
+
       )}
 
-      <select
+      <CustomSelect
         value={operador}
-        onChange={(e) => !disabled && setOperador(e.target.value)}
-        className="operador-select"
+        options={["+", "-", "*", "/"]}
+        onChange={(v) => setOperador(v)}
         disabled={disabled}
-      >
-        <option value="+">+</option>
-        <option value="-">−</option>
-        <option value="*">×</option>
-        <option value="/">÷</option>
-      </select>
+      />
+
 
       {direitaManual ? (
         <input
@@ -127,17 +120,13 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = fa
           disabled={disabled}
         />
       ) : (
-        <select
+        <CustomSelect
           value={direita}
-          onChange={(e) => !disabled && handleSelect(e.target.value, 'direita')}
-          className="campo-select"
-          disabled={disabled} 
-        >
-          <option value="" disabled>Selecione</option>
-          {opcoes.map((op) => (
-            <option key={op} value={op}>{op}</option>
-          ))}
-        </select>
+          options={opcoes}
+          onChange={(v) => handleSelect(v, "direita")}
+          disabled={disabled}
+        />
+
       )}
     </div>
   );
