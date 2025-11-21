@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './MultiLevelDropdown.css';
 
 import downIcon from '../../assets/icons/down.png';
-import upIcon from '../../assets/icons/up.png';
 import threadIcon from '../../assets/icons/traco.png';
 import rightIcon from '../../assets/icons/right.png';
 
@@ -58,9 +57,9 @@ function MultiLevelDropdown({
           {selectedValue || 'Selecione'}
         </span>
         <img
-          src={menuOpen ? upIcon : downIcon}
+          src={downIcon}
           alt="Toggle menu"
-          className="icon-arrow"
+          className={`icon-arrow ${menuOpen ? "rotated" : ""}`}
         />
       </div>
 
@@ -81,7 +80,7 @@ function MultiLevelDropdown({
                   <img
                     src={isTransactionActive ? threadIcon : rightIcon}
                     alt="Submenu"
-                    className="icon-arrow"
+                    className={`icon-arrow ${isTransactionActive ? "fade-in" : "fade-out"}`}
                   />
                 </div>
 
@@ -105,7 +104,7 @@ function MultiLevelDropdown({
                               <img
                                 src={isActionActive ? threadIcon : rightIcon}
                                 alt="Submenu"
-                                className="icon-arrow"
+                                className={`icon-arrow ${isTransactionActive ? "fade-in" : "fade-out"}`}
                               />
                             )}
                           </div>

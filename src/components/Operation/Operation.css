@@ -13,7 +13,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #fff;
-  max-width: 80px;
+  max-width: 70px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
   cursor: text;

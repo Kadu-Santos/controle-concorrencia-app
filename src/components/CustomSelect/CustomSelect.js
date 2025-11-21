@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./CustomSelect.css";
+import downIcon from "../../assets/icons/down.png";
 
 export default function CustomSelect({
   value,
@@ -33,7 +34,11 @@ export default function CustomSelect({
         onClick={() => !disabled && setOpen((v) => !v)}
       >
         <span>{value || placeholder}</span>
-        <span className={`cs-arrow ${open ? "up" : "down"}`}>▾</span>
+        <img
+          src={downIcon}
+          alt="Toggle menu"
+          className={`cs-arrow ${open ? "up" : "down"}`}
+        />
       </div>
 
       {open && (

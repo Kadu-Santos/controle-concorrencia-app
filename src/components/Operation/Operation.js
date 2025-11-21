@@ -5,7 +5,7 @@ import './Operation.css';
 function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = false }) {
   const baseVariaveis = ['X', 'Y', 'Z', 'W', 'V'];
   const variaveis = baseVariaveis.slice(0, numVariaveis);
-  const opcoes = [...variaveis, 'Digite...'];
+  const opcoes = [...variaveis, 'Digite'];
 
   const [esquerda, setEsquerda] = useState('');
   const [direita, setDireita] = useState('');
@@ -61,7 +61,7 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = fa
   }, [esquerda, direita, operador, onOperacaoChange]);
 
   const handleSelect = (value, lado) => {
-    if (value === 'Digite...') {
+    if (value === 'Digite') {
       if (lado === 'esquerda') {
         setEsquerda('');
         setEsquerdaManual(true);

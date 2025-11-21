@@ -1,6 +1,6 @@
 .cs-wrapper {
   position: relative;
-  width: 90px;
+  width: 70px;
   font-size: 14px;
 }
 
@@ -14,6 +14,7 @@
   justify-content: space-between;
   user-select: none;
   transition: 0.2s ease;
+  align-items: center;
 }
 
 .cs-selected:hover {
@@ -21,12 +22,16 @@
 }
 
 .cs-arrow {
+  width: 12px;
+  height: 12px;
   margin-left: 8px;
+  object-fit: contain;
   transition: 0.2s ease;
+  align-items: center;
 }
 
 .cs-arrow.up {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 .cs-options {
@@ -58,7 +63,6 @@
 }
 
 .cs-disabled .cs-selected {
-  background: #f2f2f2;
   cursor: not-allowed;
   opacity: 0.6;
 }

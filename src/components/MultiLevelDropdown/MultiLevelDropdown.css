@@ -123,6 +123,18 @@
   transition: 0.2s ease;
 }
 
+.icon-arrow.rotated {
+  transform: rotate(-180deg);
+}
+
+.icon-arrow.fade-in {
+  opacity: 0.2;
+}
+
+.icon-arrow.fade-out {
+  opacity: 1;
+}
+
 .dropdown-display:hover {
   border-color: #888;
 }
