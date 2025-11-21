@@ -171,3 +171,15 @@
   display: flex;
   align-items: center;
 }
+
+.istructionText{
+  text-indent: 25px;
+  text-align: justify;
+}
+
+.selectExemple {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}

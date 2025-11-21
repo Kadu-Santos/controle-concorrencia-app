@@ -1,7 +1,7 @@
 
 export const exemplos = [
-  //Exemplo 1: DeadLock
   {
+    nome: "Deadlock simples (T1 e T2 em ciclo)",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: [],
@@ -22,6 +22,7 @@ export const exemplos = [
   },
 
   {
+    nome: "Deadlock com três transações",
     numTransacoes: 3,
     numVariaveis: 2,
     valoresVariaveis: [],
@@ -47,6 +48,7 @@ export const exemplos = [
   },
 
   {
+    nome: "Deadlock com RL e WL",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: [],
@@ -65,8 +67,9 @@ export const exemplos = [
     expressoes: {},
     erro: null
   },
-  // Exemplo 1: Sem erros
+
   {
+    nome: "Execução sem erros (2 transações)",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: ["10", "20"],
@@ -83,6 +86,7 @@ export const exemplos = [
   },
 
   {
+    nome: "Execução com 3 transações e expressões",
     numTransacoes: 3,
     numVariaveis: 2,
     valoresVariaveis: ["30", "40"],
@@ -102,6 +106,7 @@ export const exemplos = [
   },
 
   {
+    nome: "Escrita em Y e leitura em X",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: ["5", "15"],
@@ -117,8 +122,8 @@ export const exemplos = [
     erro: null
   },
 
-
   {
+    nome: "Escrita em X e Y com valores iniciais",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: ["100", "200"],
@@ -136,6 +141,7 @@ export const exemplos = [
   },
 
   {
+    nome: "Três transações com múltiplas operações",
     numTransacoes: 3,
     numVariaveis: 2,
     valoresVariaveis: ["7", "14"],
@@ -153,8 +159,8 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo A: espera simples (T2 aguarda X de T1)
   {
+    nome: "Espera simples (T2 aguarda X de T1)",
     numTransacoes: 2,
     numVariaveis: 1,
     valoresVariaveis: ["50"],
@@ -169,8 +175,8 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo B: múltiplos leitores (T2 e T3 lêem X após T1 liberar)
   {
+    nome: "Múltiplos leitores após liberação",
     numTransacoes: 3,
     numVariaveis: 1,
     valoresVariaveis: ["100"],
@@ -186,8 +192,8 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo C: upgrade de RL para WL (T1 faz upgrade)
   {
+    nome: "Upgrade de RL para WL",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: ["8", "20"],
@@ -203,8 +209,9 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo D: conflito em Y com WL bloqueando múltiplas transações
+
   {
+    nome: "Conflito em Y com WL bloqueando múltiplas transações",
     numTransacoes: 4,
     numVariaveis: 1,
     valoresVariaveis: ["60"],
@@ -221,8 +228,9 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo E: operação sem lock explícito (forma curta) e espera por X
+
   {
+    nome: "Operação sem lock explícito (forma curta) e espera por X",
     numTransacoes: 3,
     numVariaveis: 2,
     valoresVariaveis: ["12", "18"],
@@ -239,8 +247,8 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo F: várias esperas encadeadas (fila em X)
   {
+    nome: "Várias esperas encadeadas (fila em X)",
     numTransacoes: 4,
     numVariaveis: 1,
     valoresVariaveis: ["5"],
@@ -259,8 +267,8 @@ export const exemplos = [
     erro: null
   },
 
-  // Exemplo G: commit que libera múltiplos RLs e concede em lote
   {
+    nome: "Commit que libera múltiplos RLs e concede em lote",
     numTransacoes: 3,
     numVariaveis: 1,
     valoresVariaveis: ["3"],
@@ -277,15 +285,14 @@ export const exemplos = [
     erro: null
   },
 
-
-  // Exemplo J: caso com mistura de R e W sem bloqueios explícitos (testa normalização)
   {
+    nome: "Caso com mistura de R e W sem bloqueios explícitos (testa normalização)",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: null,
     operacoes: [
       "T1:R:X", "T1:X",
-      "T2:X", // forma curta que deverá ser normalizada para W
+      "T2:X",
       "T1:U:X", "T1:Commit",
       "T2:W:X", "T2:U:X", "T2:Commit"
     ],

@@ -13,6 +13,7 @@ import { format } from '../../utils/Valid';
 import ResultTable from '../../components/ResultTable/ResultTable';
 import SpeedControl from '../../components/SpeedControl/SpeedControl';
 import ScheduleEditor from '../../components/ScheduleEditor/ScheduleEditor';
+import ExampleDropdown from '../../components/ExampleDropdown/ExampleDropdown';
 
 import { useRunPageState } from '../../hooks/useRunPageState';
 
@@ -31,14 +32,15 @@ function RunPage() {
         mensagensEspera,
 
         setNumVariaveis, setNumTransacoes, setValoresVariaveis,
-        setValor, setOperacoesExecucao,setOperacoes,
+        setValor, setOperacoesExecucao, setOperacoes,
         setExpressoes,
 
         onSpeedChange,
-        executarExemploAleatorio,
+        executarExemplo,
         limparTudo,
         getStatus,
-        dropAtivo
+        dropAtivo,
+        getNamesExemples
     } = useRunPageState();
 
     return (
@@ -106,19 +108,29 @@ function RunPage() {
 
                     <div className="dividerBox">
                         <p className='titleDivider'>Como rodar um exemplo?</p>
-                        <p>Ao clicar em "Gerar Exemplo", será gerado um exemplo aleatório e
-                            os campos de configuração de execução serão preenchidos automaticamente.
-                            Em seguida, clique em "Gerar" para iniciar a execução.</p>
+                        <p className='istructionText'>Escolha um exemplo na lista ou clique em "Exemplo Aleatório"
+                            para preencher tudo automaticamente. Depois, basta clicar em
+                            "Gerar" para iniciar a execução.</p>
 
-                        <ButtonC
-                            texto="GERAR EXEMPLO"
-                            corFundo="#007bff"
-                            corTexto="#fff"
-                            onClick={executarExemploAleatorio}
-                            ativo={!executando}
-                        />
+                        <div className='selectExemple'>
+                            <ExampleDropdown
+                                examples={getNamesExemples()}
+                                onSelect={(index) => { executarExemplo(index) }}
+                                disabled={executando}
+                            />
+
+                            <ButtonC
+                                texto="EX. ALEATÓRIO"
+                                corFundo="#007bff"
+                                corTexto="#fff"
+                                onClick={executarExemplo}
+                                ativo={!executando}
+                                fontSize='20px'
+                                width='220px'
+                                height='45px'
+                            />
+                        </div>
                     </div>
-
                 </div>
 
 

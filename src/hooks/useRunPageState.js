@@ -104,9 +104,15 @@ export function useRunPageState() {
     };
 
 
-    // EXEMPLO ALEATÓRIO
-    const executarExemploAleatorio = () => {
-        const e = exemplos[Math.floor(Math.random() * exemplos.length)];
+    // GERAR EXEMPLO
+    const executarExemplo = (index = null) => {
+        const chosenIndex =
+            index !== null && index >= 0 && index < exemplos.length
+                ? index
+                : Math.floor(Math.random() * exemplos.length);
+
+        const e = exemplos[chosenIndex];
+
         setNumTransacoes(e.numTransacoes);
         setNumVariaveis(e.numVariaveis);
         setValoresVariaveis(e.valoresVariaveis || []);
@@ -114,6 +120,11 @@ export function useRunPageState() {
         setExpressoes(e.expressoes || {});
         setValor(!!e.valoresVariaveis?.length);
     };
+
+    // NOMES DOS EXEMPLOS
+    const getNamesExemples = () => exemplos.map(ex => ex.nome);
+
+
 
 
     // LIMPAR
@@ -167,9 +178,10 @@ export function useRunPageState() {
         handleOperacaoChange,
         adicionarOperacao,
         removerOperacao,
-        executarExemploAleatorio,
+        executarExemplo,
         limparTudo,
         getStatus,
+        getNamesExemples,
         setOperacoes,
         setExpressoes,
         dropAtivo
