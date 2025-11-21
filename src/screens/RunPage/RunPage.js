@@ -31,14 +31,13 @@ function RunPage() {
         mensagensEspera,
 
         setNumVariaveis, setNumTransacoes, setValoresVariaveis,
-        setValor, setOperacoesExecucao,
+        setValor, setOperacoesExecucao,setOperacoes,
+        setExpressoes,
 
         onSpeedChange,
         executarExemploAleatorio,
         limparTudo,
         getStatus,
-        setOperacoes,
-        setExpressoes,
         dropAtivo
     } = useRunPageState();
 
@@ -66,6 +65,7 @@ function RunPage() {
                             options={nOpTransacao}
                             onSelect={setNumTransacoes}
                             selectedValue={numTransacoes}
+                            disabled={executando}
                         />
 
                         <p>Número de variáveis:</p>
@@ -74,6 +74,7 @@ function RunPage() {
                             options={nOpVarivavel}
                             onSelect={setNumVariaveis}
                             selectedValue={numVariaveis}
+                            disabled={executando}
                         />
                     </div>
 
@@ -86,6 +87,7 @@ function RunPage() {
                                 setValor(v);
                                 if (v) setValoresVariaveis(Array(numVariaveis).fill(''));
                             }}
+                            disabled={executando}
                         />
 
                         <p>Valores iniciais:</p>
@@ -93,6 +95,7 @@ function RunPage() {
                             quantidade={valor ? numVariaveis : 0}
                             onChange={setValoresVariaveis}
                             valoresIniciais={valoresVariaveis}
+                            disabled={executando}
                         />
 
                         <SpeedControl
@@ -112,7 +115,7 @@ function RunPage() {
                             corFundo="#007bff"
                             corTexto="#fff"
                             onClick={executarExemploAleatorio}
-                            ativo
+                            ativo={!executando}
                         />
                     </div>
 

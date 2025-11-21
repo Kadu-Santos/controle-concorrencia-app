@@ -3,10 +3,10 @@ import './InputList.css';
 
 const letras = ['X:', 'Y:', 'Z:', 'W:', 'A:', 'B:', 'C:', 'D:'];
 
-function InputList({ quantidade, onChange, valoresIniciais = [] }) {
+function InputList({ quantidade, onChange, valoresIniciais = [], disabled = false }) {
 
-  const isDisabled = quantidade === 0;
-  const campos = isDisabled ? 3 : quantidade;
+   const isDisabledByQuantidade = quantidade === 0;
+  const campos = isDisabledByQuantidade ? 3 : quantidade;
 
   const [valores, setValores] = useState(() => Array(campos).fill(''));
 
@@ -20,13 +20,13 @@ function InputList({ quantidade, onChange, valoresIniciais = [] }) {
 
   useEffect(() => {
     const preenchidos = valores.every(v => v.trim() !== '');
-    if (preenchidos) {
+    if (preenchidos && !disabled) {
       onChange(valores);
     }
-  }, [valores, onChange]);
+  }, [valores, onChange, disabled]);
 
   const handleChange = (index, novoValor) => {
-    if (isDisabled) return;
+    if (isDisabledByQuantidade || disabled) return;
     setValores(prev => {
       const novos = [...prev];
       novos[index] = novoValor;
@@ -42,8 +42,8 @@ function InputList({ quantidade, onChange, valoresIniciais = [] }) {
           <input
             type="text"
             value={valores[i] || ''}
-            disabled={isDisabled}
-            className={isDisabled ? 'disabled-input' : ''}
+            disabled={isDisabledByQuantidade || disabled}
+            className={(isDisabledByQuantidade || disabled) ? 'disabled-input' : ''}
             onChange={(e) => handleChange(i, e.target.value)}
           />
         </div>

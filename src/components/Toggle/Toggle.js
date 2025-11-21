@@ -1,16 +1,16 @@
 import React from 'react';
 import './Toggle.css';
 
-function Toggle({ valor, onChange }) {
+function Toggle({ valor, onChange, disabled = false }) {
   return (
-    <div className="variaveis-toggle">
+    <div className={`variaveis-toggle ${disabled ? 'disabled' : ''}`}>
       <div className="radio-group">
 
         <label>
           <input
             type="radio"
             checked={valor}
-            onChange={() => onChange(true)}
+            onChange={() => !disabled && onChange(true)}
           />
           Sim
         </label>
@@ -19,7 +19,7 @@ function Toggle({ valor, onChange }) {
           <input
             type="radio"
             checked={!valor}
-            onChange={() => onChange(false)}
+            onChange={() => !disabled && onChange(false)}
           />
           Não
         </label>

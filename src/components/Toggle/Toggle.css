@@ -1,5 +1,7 @@
 .variaveis-toggle {
-  
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .radio-group {
@@ -21,4 +23,13 @@
   width: 18px;
   height: 18px;
   transform: translateY(2px); /* alinhar com o texto */
+}
+
+.variaveis-toggle.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.radio-group input[disabled] {
+  cursor: not-allowed;
 }
