@@ -59,7 +59,6 @@
 }
 
 .dropdown-item {
-  padding: 8px 5px;
   white-space: nowrap;
   position: relative;
 }
@@ -81,6 +80,7 @@
   align-items: center;
   width: 100%;
   padding-right: 8px;
+  padding: 8px 5px;
 }
 
 
@@ -106,6 +106,10 @@
 
 .dropdown-item.relative {
   position: relative;
+}
+
+.last-level {
+  padding: 8px 10px;
 }
 
 .dropdown-item.relative:hover > .submenu {

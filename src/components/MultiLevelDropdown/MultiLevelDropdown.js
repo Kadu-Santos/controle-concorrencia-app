@@ -114,7 +114,7 @@ function MultiLevelDropdown({
                               {variables.map((v) => (
                                 <div
                                   key={v}
-                                  className="dropdown-item"
+                                  className="dropdown-item last-level"
                                   onClick={() => handleClick(tx, a, v)}
                                 >
                                   {v}
