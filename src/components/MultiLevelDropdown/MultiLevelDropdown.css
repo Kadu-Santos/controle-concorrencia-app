@@ -8,12 +8,12 @@
 .dropdown-display {
   background-color: white;
   border: 1px solid #ccc;
-  padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* background-color: tomato; */
 }
 
 .dropdown-placeholder {
@@ -43,7 +43,6 @@
 }
 
 .dropdown-item {
-  padding: 8px 5px;
   cursor: pointer;
   white-space: nowrap;
   position: relative;
@@ -59,8 +58,24 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding-right: 8px;
+  background-color: tomato;
 }
+
+/* .tx-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  background-color: tomato;
+}
+
+.action-item {
+  display: flex;
+  background-color: aqua;
+} */
 
 .submenu-arrow {
   font-size: 12px;
@@ -77,9 +92,7 @@
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   min-width: 110px;
   display: none;
-  z-index: 1100;
   opacity: 0;
-  transform: translateX(10px);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
@@ -87,11 +100,13 @@
   position: relative;
 }
 
+
 .dropdown-item.relative:hover > .submenu {
   display: block;
   opacity: 1;
   transform: translateX(0);
 }
+
 
 .dropdown-item.commit .submenu-arrow {
   display: none;
