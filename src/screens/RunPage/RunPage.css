@@ -175,10 +175,12 @@
 .istructionText{
   text-indent: 25px;
   text-align: justify;
+  margin-bottom: 30px;
 }
 
 .selectExemple {
   display: flex;
+  flex-direction: column;
   gap: 5px;
   justify-content: center;
   align-items: center;

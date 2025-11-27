@@ -38,9 +38,8 @@ function ExampleDropdown({ examples, onSelect, disabled = false }) {
   return (
     <div className="example-dropdown" ref={dropdownRef}>
       <div
-        className={`example-dropdown__display ${
-          disabled ? "example-dropdown__display--disabled" : ""
-        }`}
+        className={`example-dropdown__display ${disabled ? "example-dropdown__display--disabled" : ""
+          }`}
         onClick={toggleMenu}
       >
         <span
@@ -56,14 +55,20 @@ function ExampleDropdown({ examples, onSelect, disabled = false }) {
         <img
           src={downIcon}
           alt="Toggle menu"
-          className={`example-dropdown__arrow ${
-            menuOpen ? "example-dropdown__arrow--rotated" : ""
-          }`}
+          className={`example-dropdown__arrow ${menuOpen ? "example-dropdown__arrow--rotated" : ""
+            }`}
         />
       </div>
 
       {menuOpen && (
         <div className="example-dropdown__menu">
+          <div
+            className="example-dropdown__item random"
+            onClick={() => handleSelect(Math.floor(Math.random() * examples.length))}
+          >
+            {"Exemplo aleatório"}
+          </div>
+
           {examples.map((ex, idx) => (
             <div
               key={idx}

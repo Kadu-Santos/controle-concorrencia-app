@@ -1,7 +1,7 @@
 .example-dropdown {
   position: relative;
   display: inline-block;
-  width: 250px;
+  width: 100%;
   font-size: 12px;
 }
 
@@ -39,6 +39,10 @@
   min-width: 160px;
   z-index: 1000;
   animation: fadeDropdown 0.15s ease-out;
+
+  /* Rolagem */
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 /* Item */
@@ -47,8 +51,7 @@
   cursor: pointer;
 }
 .example-dropdown__item:hover {
-  background-color: #f6f6f6;
-  border-radius: 4px;
+  background-color: #e0e0e0;
 }
 
 /* Seta */
@@ -70,6 +73,7 @@
   transition: color 0.25s ease;
   white-space: nowrap;
   overflow: hidden;
+  width: 100%;
   
   text-overflow: ellipsis;
   -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
@@ -83,6 +87,17 @@
 
 .example-dropdown__text {
   color: #333;
+}
+
+.example-dropdown__item.random {
+  background-color: #0049b6;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.example-dropdown__item.random:hover {
+  background-color: #0056d6;
 }
 
 /* Animação */

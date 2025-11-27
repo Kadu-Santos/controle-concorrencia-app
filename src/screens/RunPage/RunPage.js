@@ -112,24 +112,11 @@ function RunPage() {
                             para preencher tudo automaticamente. Depois, basta clicar em
                             "Gerar" para iniciar a execução.</p>
 
-                        <div className='selectExemple'>
-                            <ExampleDropdown
-                                examples={getNamesExemples()}
-                                onSelect={(index) => { executarExemplo(index) }}
-                                disabled={executando}
-                            />
-
-                            <ButtonC
-                                texto="EX. ALEATÓRIO"
-                                corFundo="#007bff"
-                                corTexto="#fff"
-                                onClick={executarExemplo}
-                                ativo={!executando}
-                                fontSize='20px'
-                                width='220px'
-                                height='45px'
-                            />
-                        </div>
+                        <ExampleDropdown
+                            examples={getNamesExemples()}
+                            onSelect={(index) => { executarExemplo(index) }}
+                            disabled={executando}
+                        />
                     </div>
                 </div>
 
