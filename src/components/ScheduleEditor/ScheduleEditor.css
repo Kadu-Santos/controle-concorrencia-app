@@ -1,12 +1,3 @@
-.dropdownsContainer {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px 20px 20px 20px;
-  margin: auto;
-  border-radius: 8px;
-  background-color: #e0eeff;
-  margin: 20px 0px;
-}
-
 .dropdownsBox {
   display: flex;
   flex-wrap: wrap;

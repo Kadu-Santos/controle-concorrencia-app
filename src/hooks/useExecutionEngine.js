@@ -12,6 +12,7 @@ export function useExecutionEngine(stepDelay = 1200) {
     const [executando, setExecutando] = useState(false);
     const [estadoOperacoes, setEstadoOperacoes] = useState({});
     const [mensagensEspera, setMensagensEspera] = useState({});
+    const [operacoesExecucao, setOperacoesExecucao] = useState([]);
 
     const stepDelayRef = useRef(stepDelay);
     const stoppedByUserRef = useRef(false);
@@ -245,12 +246,28 @@ export function useExecutionEngine(stepDelay = 1200) {
         }
     };
 
+    function extrairTransacao(opStr) {
+        if (!opStr) return null;
+        const match = opStr.match(/^T(\d+):/);
+        return match ? Number(match[1]) : null;
+    }
+
+    function filtrarPorTransacoes(instrRaw, activeTransactions) {
+        return instrRaw.filter(op => {
+            const t = extrairTransacao(op);
+            if (!t) return true; // operações sem transação (se existirem) permanecem
+            return activeTransactions[t - 1]; // mantém só as ativas
+        });
+    }
 
     // INICIAR EXECUÇÃO
-    const iniciarExecucao = (instrRaw) => {
+    const iniciarExecucao = (instrRaw, activeTransactions) => {
         if (!instrRaw?.length) return;
 
-        const instrucoes = normalizarInstrucoes(instrRaw);
+        const instrFiltradas = filtrarPorTransacoes(instrRaw, activeTransactions);
+
+        const instrucoes = normalizarInstrucoes(instrFiltradas);
+        setOperacoesExecucao(instrucoes)
         const { errors: resultadoErros } = verifier(instrucoes);
 
         const erroPorIndice = processarErros(instrucoes, resultadoErros);
@@ -258,21 +275,23 @@ export function useExecutionEngine(stepDelay = 1200) {
         setEstadoOperacoes({});
         setMensagensEspera({});
         setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
-
         highestIndexRef.current = -1;
         setPassoAtual(-1);
         setExecutando(true);
 
-        stoppedByUserRef.current = false;
 
-        const engine = new ExecutionEngine(instrucoes, scheduler, {
-            stepDelay: stepDelayRef.current,
-        });
+        setTimeout(() => {
+            stoppedByUserRef.current = false;
 
-        engineRef.current = engine;
-        registrarListeners(engine, erroPorIndice, resultadoErros, instrucoes);
+            const engine = new ExecutionEngine(instrucoes, scheduler, {
+                stepDelay: stepDelayRef.current,
+            });
 
-        engine.start();
+            engineRef.current = engine;
+            registrarListeners(engine, erroPorIndice, resultadoErros, instrucoes);
+
+            engine.start();
+        }, 1000)
     };
 
 
@@ -306,7 +325,7 @@ export function useExecutionEngine(stepDelay = 1200) {
     }, []);
 
 
-    // Retorno do hook organizado
+    // Retorno do hook
     return {
         iniciarExecucao,
         pararExecucao,
@@ -318,5 +337,7 @@ export function useExecutionEngine(stepDelay = 1200) {
         executando,
         estadoOperacoes,
         mensagensEspera,
+        operacoesExecucao,
+        setOperacoesExecucao
     };
 }

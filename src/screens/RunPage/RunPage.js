@@ -14,6 +14,7 @@ import ResultTable from '../../components/ResultTable/ResultTable';
 import SpeedControl from '../../components/SpeedControl/SpeedControl';
 import ScheduleEditor from '../../components/ScheduleEditor/ScheduleEditor';
 import ExampleDropdown from '../../components/ExampleDropdown/ExampleDropdown';
+import ChecklistInline from '../../components/ChecklistInline/ChecklistInline';
 
 import { useRunPageState } from '../../hooks/useRunPageState';
 
@@ -29,11 +30,11 @@ function RunPage() {
 
         iniciarExecucao, pararExecucao, linhasTerminal,
         passoAtual, errors, executando, estadoOperacoes,
-        mensagensEspera,
+        mensagensEspera, activeTransactions,
 
         setNumVariaveis, setNumTransacoes, setValoresVariaveis,
-        setValor, setOperacoesExecucao, setOperacoes,
-        setExpressoes,
+        setValor, setOperacoes,
+        setExpressoes, setActiveTransactions,
 
         onSpeedChange,
         executarExemplo,
@@ -69,6 +70,8 @@ function RunPage() {
                             selectedValue={numTransacoes}
                             disabled={executando}
                         />
+
+                        
 
                         <p>Número de variáveis:</p>
                         <HintButton texto="Número de variáveis" />
@@ -125,6 +128,13 @@ function RunPage() {
                 <h3 className='SubTitle'>Insira o Cronograma</h3>
 
                 <div className="dropdownsContainer">
+                    <ChecklistInline
+                        count={numTransacoes}
+                        disabled={!dropAtivo()}
+                        value={activeTransactions}
+                        onChange={(values) => setActiveTransactions(values)}
+                    />
+
                     <ScheduleEditor
                         operacoes={operacoes}
                         expressoes={expressoes}
@@ -133,6 +143,7 @@ function RunPage() {
                         numTransacoes={numTransacoes}
                         numVariaveis={numVariaveis}
                         disable={!dropAtivo()}
+                        activeTransactions={activeTransactions}
                     />
 
                     <div className='buttonsBox'>
@@ -143,8 +154,7 @@ function RunPage() {
                             corTexto="#fff"
                             onClick={() => {
                                 const instr = format(operacoes, expressoes, numVariaveis);
-                                setOperacoesExecucao(instr);
-                                iniciarExecucao(instr);
+                                iniciarExecucao(instr, activeTransactions);
                             }}
                             ativo={botaoAtivo && !executando}
                         />

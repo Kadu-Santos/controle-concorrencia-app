@@ -17,10 +17,19 @@ export default function ScheduleEditor({
     numTransacoes,
     numVariaveis,
     disable,
+    activeTransactions
 }) {
     // id generator (simples e deterministicamente único por instância)
     const idCounter = useRef(0);
     const genId = useCallback(() => `op_${Date.now().toString(36)}_${idCounter.current++}`, []);
+
+
+    // Extracts the transaction number from an operation string.
+    function extractTransaction(opStr) {
+        if (!opStr) return null;
+        const match = opStr.match(/^T(\d+):/);
+        return match ? Number(match[1]) : null;
+    }
 
     // Internal representation: [{ id, opStr, expressao }]
     const [items, setItems] = useState([]);
@@ -102,25 +111,30 @@ export default function ScheduleEditor({
         <div className="dropdownsBox">
             <p>S1:</p>
 
-            {items.map((it, index) => (
-                <div key={it.id} className="dropdown-item" id={`dropdown-${index}`}>
-                    <ScheduleRow
-                        id={it.id}
-                        index={index}
-                        opStr={it.opStr}
-                        expressao={it.expressao}
-                        numTransacoes={numTransacoes}
-                        numVariaveis={numVariaveis}
-                        disable={disable}
-                        onChangeOpStr={(v) => setOpStr(it.id, v)}
-                        onChangeExpressao={(v) => setExpressao(it.id, v)}
-                        onAddAfter={() => insertAfter(it.id)}
-                        onRemove={() => removeById(it.id)}
-                        isLast={index === items.length - 1}
-                        canRemove={operacoes.length > 1}
-                    />
-                </div>
-            ))}
+            {items.map((it, index) => {
+                const transaction = extractTransaction(it.opStr);
+                const shouldDisable = transaction && !activeTransactions[transaction - 1];
+
+                return (
+                    <div key={it.id} className="dropdown-item" id={`dropdown-${index}`}>
+                        <ScheduleRow
+                            id={it.id}
+                            index={index}
+                            opStr={it.opStr}
+                            expressao={it.expressao}
+                            numTransacoes={numTransacoes}
+                            numVariaveis={numVariaveis}
+                            disable={disable || shouldDisable}
+                            onChangeOpStr={(v) => setOpStr(it.id, v)}
+                            onChangeExpressao={(v) => setExpressao(it.id, v)}
+                            onAddAfter={() => insertAfter(it.id)}
+                            onRemove={() => removeById(it.id)}
+                            isLast={index === items.length - 1}
+                            canRemove={operacoes.length > 1}
+                        />
+                    </div>
+                );
+            })}
         </div>
     );
 }

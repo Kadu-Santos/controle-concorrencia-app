@@ -1,34 +1,30 @@
-import { useState } from "react";
 import "./ChecklistInline.css";
 
-function ChecklistInline({ count, disabled = false, onChange }) {
-
+function ChecklistInline({ count, disabled = false, value = [], onChange }) {
+    
     const safeCount = count > 0 ? count : 3;
 
-    const [values, setValues] = useState(() => Array(safeCount).fill(true));
+    // Garante que sempre temos o array no tamanho correto
+    const normalizedValues =
+        value.length === safeCount
+            ? value
+            : [
+                ...value,
+                ...Array(Math.max(0, safeCount - value.length)).fill(true)
+              ].slice(0, safeCount);
 
     const toggle = (index) => {
         if (disabled) return;
 
-        const updated = [...values];
+        const updated = [...normalizedValues];
         updated[index] = !updated[index];
-        setValues(updated);
+
         onChange && onChange(updated);
     };
 
-    let displayedValues = values;
-
-    if (values.length !== safeCount) {
-        if (values.length < safeCount) {
-            displayedValues = [...values, ...Array(safeCount - values.length).fill(false)];
-        } else {
-            displayedValues = values.slice(0, safeCount);
-        }
-    }
-
     return (
         <div className="checklist-inline">
-            {displayedValues.map((val, idx) => (
+            {normalizedValues.map((val, idx) => (
                 <div
                     key={idx}
                     className={`check-item-wrapper ${disabled ? "cl-disabled" : ""}`}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { format, isOperacaoMatematica } from "../utils/Valid";
 import { exemplos } from "../data/exemples";
 import { useExecutionEngine } from "./useExecutionEngine";
@@ -15,8 +15,13 @@ export function useRunPageState() {
     const [operacoes, setOperacoes] = useState([""]);
     const [expressoes, setExpressoes] = useState({});
     const [valor, setValor] = useState(false);
+    const [activeTransactions, setActiveTransactions] = useState([]);
 
-    const [operacoesExecucao, setOperacoesExecucao] = useState([]);
+    useEffect(() => {
+        setActiveTransactions(Array(numTransacoes).fill(true));
+    }, [numTransacoes]);
+
+    
 
     // Hook de execução (engine)
     const {
@@ -29,7 +34,9 @@ export function useRunPageState() {
         executando,
         estadoOperacoes,
         mensagensEspera,
-        setStepDelay
+        setStepDelay,
+        operacoesExecucao,
+        setOperacoesExecucao
     } = useExecutionEngine();
 
 
@@ -68,6 +75,8 @@ export function useRunPageState() {
     const botaoAtivo = useMemo(() => {
         if (!numVariaveis || !numTransacoes) return false;
 
+        if (activeTransactions.every(v => !v)) return false;
+
         const variaveisOk =
             !valor ||
             (valoresVariaveis.length === numVariaveis &&
@@ -81,7 +90,7 @@ export function useRunPageState() {
         });
 
         return variaveisOk && operacoesOk;
-    }, [numVariaveis, numTransacoes, valoresVariaveis, operacoes, expressoes, valor]);
+    }, [numVariaveis, numTransacoes, activeTransactions, valoresVariaveis, operacoes, expressoes, valor]);
 
     const dropAtivo = () => {
         //Durante a execução sempre desativado
@@ -119,12 +128,11 @@ export function useRunPageState() {
         setOperacoes(e.operacoes || [""]);
         setExpressoes(e.expressoes || {});
         setValor(!!e.valoresVariaveis?.length);
+        setActiveTransactions(Array(e.numTransacoes).fill(true));
     };
 
     // NOMES DOS EXEMPLOS
     const getNamesExemples = () => exemplos.map(ex => ex.nome);
-
-
 
 
     // LIMPAR
@@ -133,6 +141,7 @@ export function useRunPageState() {
         setExpressoes({});
         setOperacoesExecucao([]);
         resetUI();
+        setActiveTransactions(Array(numTransacoes).fill(true));
     };
 
 
@@ -172,7 +181,6 @@ export function useRunPageState() {
         setNumTransacoes,
         setValoresVariaveis,
         setValor,
-        setOperacoesExecucao,
         onSpeedChange,
         atualizarOperacao,
         handleOperacaoChange,
@@ -184,6 +192,8 @@ export function useRunPageState() {
         getNamesExemples,
         setOperacoes,
         setExpressoes,
-        dropAtivo
+        dropAtivo,
+        activeTransactions, 
+        setActiveTransactions
     };
 }
