@@ -55,7 +55,7 @@
 /* Estado marcado */
 .check-box.checked {
   background-color: #22c55e;      /* Verde moderno (Tailwind style) */
-  border-color: #16a34a;
+  border: 0px;
   color: white;
   transform: scale(1.1);
 }

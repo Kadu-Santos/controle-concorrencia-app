@@ -1,24 +1,38 @@
+/* ===============================
+   CARD BASE
+================================ */
 .integrante-card {
   display: flex;
   align-items: center;
   background-color: #f7f7f7;
   border-radius: 20px;
-  padding: 10px;
-  width: 40%;
-  max-width: 500px;
+  padding: 15px;
+  max-width: 600px;
+  max-height: 140px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 10px 10px;
+  margin: 15px 10px;
   transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
 }
 
+.integrante-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================
+   FOTO DO INTEGRANTE
+================================ */
 .integrante-foto {
-  width: 25%;
+  width: 120px;
   aspect-ratio: 1/1;
-  border-radius: 20px;
+  border-radius: 18px;
   object-fit: cover;
   margin-right: 15px;
 }
 
+/* ===============================
+   INFO
+================================ */
 .integrante-info {
   flex: 1;
   display: flex;
@@ -27,7 +41,7 @@
 }
 
 .integrante-nome {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
   margin: 0;
   text-align: center;
@@ -36,23 +50,91 @@
 .integrante-funcao {
   font-size: 1rem;
   color: #666;
-  margin: 5px 0 10px 0;
+  margin: 6px 0 12px 0;
   text-align: center;
 }
 
+/* Redes */
 .integrante-redes {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
 }
 
-.integrante-redes a {
-  font-size: 1.2rem;
-  color: #333;
-  transition: color 0.3s;
+.rede-logo {
+  width: 26px;
+  height: 26px;
+  transition: transform 0.25s ease;
 }
 
-.integrante-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+.rede-logo:hover {
+  transform: scale(1.15);
+}
+
+
+/* ===============================
+   RESPONSIVIDADE
+================================ */
+
+/* Tablets */
+@media (max-width: 1024px) {
+
+ .integrante-card {
+  width: 450px;
+ }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+
+  .integrante-card {
+  width: 350px;
+ }
+
+  .integrante-card {
+    text-align: center;
+  }
+
+  .integrante-foto {
+    width: 115px;
+    margin-right: 0;
+  }
+
+  .integrante-info {
+    align-items: center;
+  }
+
+  .integrante-nome {
+    font-size: 1rem;
+  }
+
+  .integrante-funcao {
+    font-size: 0.85rem;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+
+  .integrante-card {
+  width: 100%;
+ }
+
+  .integrante-foto {
+    width: 100px;
+
+  }
+
+  .rede-logo {
+    width: 22px;
+    height: 22px;
+  }
+
+  .integrante-nome {
+    font-size: 0.95rem;
+  }
+
+  .integrante-funcao {
+    font-size: 0.8rem;
+  }
 }

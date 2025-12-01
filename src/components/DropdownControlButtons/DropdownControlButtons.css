@@ -12,6 +12,7 @@
     opacity: 0;
     transform: translateX(6px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -55,4 +56,10 @@
   cursor: not-allowed;
   width: 35px;
   height: 35px;
+}
+
+.btn:hover {
+  filter: brightness(85%);
+  transform: scale(1.02);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
 }

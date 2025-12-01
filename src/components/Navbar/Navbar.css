@@ -5,17 +5,18 @@
   width: 85%;
   padding: 20px 40px;
   color: #fff;
-  position: absolute; /* fixa dentro do hero */
+  position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
-  z-index: 2;
+  z-index: 20;
 }
 
-/* Logo à esquerda */
+/* Logo */
 .logo-image {
   width: 200px;
+  cursor: pointer;
 }
 
 /* Espaço central */
@@ -23,25 +24,13 @@
   flex: 1;
 }
 
-/* Links à direita */
+/* Links desktop */
 .navbar-links {
   list-style: none;
   display: flex;
   gap: 30px;
   margin: 0;
   padding: 0;
-  
-}
-
-.navbar-links li a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.navbar-links li a:hover {
-  color: #ffcc00;
 }
 
 .navbar-links li {
@@ -54,18 +43,127 @@
 
 .navbar-links li:hover {
   background-color: #e0e0e0;
-  border-radius: 5px;
   color: black;
 }
 
-#destaque{
+/* Botão destacado */
+#destaque {
   background-color: #ffcc00;
-  border-radius: 6px;
   color: black;
+  border-radius: 6px;
 }
 
 #destaque:hover {
   filter: brightness(85%);
   transform: scale(1.02);
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================
+   MOBILE MENU
+============================ */
+
+/* Hambúrguer */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 28px;
+  height: 3px;
+  background: white;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+/* Menu mobile oculto */
+.mobile-menu {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  width: 60%;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(6px);
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 10px;
+  transform: translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
+  z-index: 50;
+}
+
+.mobile-menu li {
+  color: white;
+  font-size: 1.2rem;
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.mobile-menu li:hover {
+  color: #ffcc00;
+}
+
+/* Estado aberto */
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ============================
+   RESPONSIVIDADE
+============================ */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .logo-image {
+    width: 160px;
+  }
+
+  .navbar-links {
+    gap: 20px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  /* Esconder links desktop */
+  .navbar-links {
+    display: none;
+  }
+
+  /* Mostrar hambúrguer */
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar {
+    padding: 20px 10px;
+    width: 95%;
+  }
+
+  .logo-image {
+    width: 150px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 450px) {
+
+  .logo-image {
+    width: 130px;
+  }
+
+  .mobile-menu {
+    width: 80%;
+    right: 10%;
+  }
 }
