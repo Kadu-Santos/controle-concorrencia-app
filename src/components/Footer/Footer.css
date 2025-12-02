@@ -6,11 +6,12 @@
   display: flex;
   justify-content: center;
   margin-top: 70px;
+  margin-bottom: 0px;
 }
 
 /* Footer interno */
 .footer {
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,9 +24,6 @@
   transition: transform 0.3s ease;
 }
 
-.footer-logo:hover {
-  transform: scale(1.05);
-}
 
 /* ===============================
    RESPONSIVIDADE

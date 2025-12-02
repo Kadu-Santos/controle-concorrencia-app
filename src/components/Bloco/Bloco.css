@@ -69,3 +69,41 @@
     opacity: 0.9;
   }
 }
+
+/* ----------- 1200px ----------- */
+@media (max-width: 1200px) {
+  .operacao-bloco {
+    font-size: 0.95rem;
+    height: 32px;
+    padding: 6px 10px;
+  }
+}
+
+/* ----------- 1024px ----------- */
+@media (max-width: 1024px) {
+  .operacao-bloco {
+    font-size: 0.9rem;
+    height: 30px;
+    padding: 5px 8px;
+    align-items: center;
+  }
+}
+
+/* ----------- 768px (tablet) ----------- */
+@media (max-width: 768px) {
+  .operacao-bloco {
+    font-size: 0.85rem;
+    height: 28px;
+    padding: 5px 6px;
+    line-height: 1.2;
+  }
+}
+
+/* ----------- 480px (mobile) ----------- */
+@media (max-width: 480px) {
+  .operacao-bloco {
+    font-size: 0.78rem;
+    padding: 4px 5px;
+    min-height: 26px;
+  }
+}

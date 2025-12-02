@@ -2,7 +2,6 @@ import './RunPage.css';
 
 import Navbar from '../../components/Navbar/Navbar';
 import NumericDropdown from '../../components/NumericDropdown/NumericDropdown';
-import HintButton from '../../components/HintButton/HintButton';
 import InputList from '../../components/InputList.js/InputList';
 import ButtonC from '../../components/button/ButtonC';
 import Table from '../../components/Table/Table';
@@ -63,7 +62,6 @@ function RunPage() {
                         <p className='titleDivider'>Configuração de execução</p>
 
                         <p>Número de transações:</p>
-                        <HintButton texto="Aqui você pode visualizar detalhes." />
                         <NumericDropdown
                             options={nOpTransacao}
                             onSelect={setNumTransacoes}
@@ -71,10 +69,9 @@ function RunPage() {
                             disabled={executando}
                         />
 
-                        
+
 
                         <p>Número de variáveis:</p>
-                        <HintButton texto="Número de variáveis" />
                         <NumericDropdown
                             options={nOpVarivavel}
                             onSelect={setNumVariaveis}
@@ -182,6 +179,8 @@ function RunPage() {
                         estadoOperacoes={estadoOperacoes}
                         mensagensEspera={mensagensEspera}
                     />
+
+                    <h3 className='SubTitle Ex'>Terminal</h3>
                     <Terminal linhas={linhasTerminal} />
                 </div>
 
@@ -197,7 +196,7 @@ function RunPage() {
                     />
                 </div>
 
-                <Footer />
+                <div className="footer">  <Footer /> </div>
 
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import Logo from '../../assets/icons/logo-visualiza.png';
 import { useState } from 'react';
@@ -6,6 +6,9 @@ import { useState } from 'react';
 function Navbar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const isRunPage = location.pathname === "/RunPage";
+
 
   const scrollToSection = (sectionId) => {
     navigate('/');
@@ -31,11 +34,17 @@ function Navbar() {
         <li onClick={() => navigate('/')}>Início</li>
         <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
         <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
-        <li onClick={() => navigate('/RunPage')} id="destaque">Começar</li>
+        <li
+          onClick={() => !isRunPage && navigate('/RunPage')}
+          id="destaque"
+          className={isRunPage ? "disabled" : ""}
+        >
+          Começar
+        </li>
       </ul>
 
       {/* Menu Hambúrguer */}
-      <div className="hamburger" onClick={() => setOpen(!open)}>
+      <div className={`hamburger ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
         <span></span>
         <span></span>
         <span></span>
@@ -46,7 +55,13 @@ function Navbar() {
         <li onClick={() => navigate('/')}>Início</li>
         <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
         <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
-        <li onClick={() => navigate('/RunPage')} id="destaque">Começar</li>
+        <li
+          onClick={() => !isRunPage && navigate('/RunPage')}
+          id="destaque"
+          className={isRunPage ? "disabled" : ""}
+        >
+          Começar
+        </li>
       </div>
     </nav>
   );
