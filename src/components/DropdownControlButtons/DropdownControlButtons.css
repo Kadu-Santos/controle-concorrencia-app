@@ -36,11 +36,7 @@
 }
 
 .btn-add.disabled {
-  background-color: #ccc;
-  color: white;
-  cursor: not-allowed;
-  width: 35px;
-  height: 35px;
+    display: none;
 }
 
 .btn-remove.enabled {
@@ -51,11 +47,7 @@
 }
 
 .btn-remove.disabled {
-  background-color: #ccc;
-  color: white;
-  cursor: not-allowed;
-  width: 35px;
-  height: 35px;
+  display: none;
 }
 
 .btn:hover {
