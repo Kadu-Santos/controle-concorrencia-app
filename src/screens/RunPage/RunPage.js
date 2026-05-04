@@ -108,7 +108,7 @@ function RunPage() {
 
                     <div className="dividerBox">
                         <p className='titleDivider'>Como rodar um exemplo?</p>
-                        <p className='istructionText'>Escolha um exemplo na lista ou clique em "Exemplo Aleatório"
+                        <p className='istructionText'>Escolha um exemplo na lista ou clique em "Seleção Aleatória"
                             para preencher tudo automaticamente. Depois, basta clicar em
                             "Gerar" para iniciar a execução.</p>
 

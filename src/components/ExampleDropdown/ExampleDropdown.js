@@ -66,7 +66,7 @@ function ExampleDropdown({ examples, onSelect, disabled = false }) {
             className="example-dropdown__item random"
             onClick={() => handleSelect(Math.floor(Math.random() * examples.length))}
           >
-            {"Exemplo aleatório"}
+            {"Seleção aleatória"}
           </div>
 
           {examples.map((ex, idx) => (
