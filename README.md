@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+# Visualizador de Controle de Concorrencia
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicacao web interativa para visualizar passo a passo a execucao de transacoes concorrentes, compreender o uso de bloqueios e identificar situacoes como deadlocks e violacoes ao protocolo Two-Phase Locking (2PL).
 
-## Available Scripts
+## Como rodar na maquina
 
-In the project directory, you can run:
+Antes de comecar, tenha o [Node.js](https://nodejs.org/) instalado na maquina.
 
-### `npm start`
+1. Clone o repositorio:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+git clone https://github.com/Kadu-Santos/controle-concorrencia-app.git
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Acesse a pasta do projeto:
 
-### `npm test`
+```bash
+cd controle-concorrencia-app
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Instale as dependencias:
 
-### `npm run build`
+```bash
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Inicie a aplicacao:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Abra no navegador:
 
-### `npm run eject`
+```text
+http://localhost:3000
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Objetivo do projeto
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Esta ferramenta foi criada para auxiliar no ensino e na pratica do controle de concorrencia em bancos de dados. Ela permite visualizar graficamente a execucao de transacoes concorrentes, compreender bloqueios compartilhados e exclusivos, alem de identificar automaticamente situacoes de deadlock e violacoes ao protocolo 2PL.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Conceitos principais
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Controle de concorrencia:** quando varias transacoes acessam o banco de dados ao mesmo tempo, elas precisam fazer isso sem causar erros ou resultados inesperados. O controle de concorrencia garante que todas possam trabalhar simultaneamente de forma segura.
 
-## Learn More
+**Bloqueios:** antes de acessar um dado, uma transacao solicita um bloqueio para evitar conflitos. O bloqueio de leitura permite leituras simultaneas, enquanto o bloqueio de escrita garante exclusividade.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Execucao concorrente:** operacoes de diferentes transacoes podem ser executadas de forma intercalada. Essa ordem, chamada de escalonamento ou cronograma, influencia diretamente a consistencia dos dados.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Protocolo 2PL:** organiza o uso de bloqueios em duas fases. Na fase de crescimento, a transacao adquire bloqueios. Na fase de encolhimento, ela libera bloqueios e nao pode solicitar novos.
 
-### Code Splitting
+**Deadlock:** ocorre quando duas ou mais transacoes ficam esperando umas pelas outras para liberar bloqueios, criando um impasse.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Como usar a ferramenta
 
-### Analyzing the Bundle Size
+### 1. Configure a execucao
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Defina quantas transacoes deseja simular, quantas variaveis estarao disponiveis e a velocidade da execucao. Tambem e possivel informar valores iniciais para cada variavel.
 
-### Making a Progressive Web App
+![Configuracao da execucao](src/assets/tutorial/configuracao.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 2. Monte o cronograma
 
-### Advanced Configuration
+Crie a sequencia de operacoes de cada transacao. Adicione, remova ou edite livremente cada operacao para formar o escalonamento desejado.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![Montagem do cronograma](src/assets/tutorial/cronograma.gif)
 
-### Deployment
+### 3. Execute ou gere exemplos automaticos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Execute o escalonamento para visualizar sua execucao passo a passo ou gere exemplos automaticos com diferentes tipos de conflitos e comportamentos.
 
-### `npm run build` fails to minify
+![Exemplos automaticos](src/assets/tutorial/Exemplos.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 4. Acompanhe a simulacao
+
+Veja a aplicacao de bloqueios, operacoes em espera, concessao de locks, deadlocks e o comportamento completo do cronograma ilustrado na tabela.
+
+![Tabela de simulacao](src/assets/tutorial/tabela.gif)
+
+### 5. Analise o terminal
+
+O terminal lateral explica cada etapa da execucao, indicando conflitos, regras do protocolo 2PL, deteccao de deadlock e justificativas de cada acao.
+
+![Terminal da execucao](src/assets/tutorial/terminal.gif)
+
+## Formato das operacoes
+
+As operacoes seguem o formato:
+
+```text
+Transacao:Operacao:Variavel
+```
+
+Exemplos:
+
+```text
+T1:RL:X      // T1 solicita bloqueio de leitura em X
+T1:WL:X      // T1 solicita bloqueio de escrita em X
+T1:R:X       // T1 le X
+T1:W:X       // T1 escreve em X
+T1:X         // Atalho para escrita/expressao sobre X
+T1:U:X       // T1 libera X
+T1:Commit    // T1 confirma a transacao
+```
+
+Tambem e possivel trabalhar com expressoes, como:
+
+```text
+T1:X=X-10
+T2:X=X+1
+T3:X=X*2
+```
+
+
+## Responsaveis pelo projeto
+
+- Carlos Eduardo dos Santos - Desenvolvedor
+- Jefferson Silva Lopes - Professor orientador
