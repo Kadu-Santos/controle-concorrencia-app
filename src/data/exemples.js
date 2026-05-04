@@ -92,16 +92,16 @@ export const exemplos = [
     valoresVariaveis: ["30", "40"],
     operacoes: [
       "T1:WL:X", "T1:R:X", "T1:X",
-      "T2:RL:Y",
-      "T3:RL:X", "T3:R:X",
+      "T2:WL:Y", "T2:R:Y",
+      "T3:WL:X", "T3:R:X",
       "T1:W:X",
-      "T2:R:Y", "T2:Y",
+      "T2:Y", "T2:W:Y",
       "T3:X",
       "T1:U:X", "T1:Commit",
       "T2:U:Y", "T2:Commit",
-      "T3:U:X", "T3:Commit"
+      "T3:W:X", "T3:U:X", "T3:Commit"
     ],
-    expressoes: { 2: "X-5", 8: "Y+10", 9: "X*2" },
+    expressoes: { 2: "X-5", 8: "Y+10", 10: "X*2" },
     erro: null
   },
 
@@ -129,11 +129,11 @@ export const exemplos = [
     valoresVariaveis: ["100", "200"],
     operacoes: [
       "T1:WL:X", "T1:R:X", "T1:X",
-      "T2:RL:Y", "T2:R:Y",
+      "T2:WL:Y", "T2:R:Y",
       "T1:W:X",
       "T2:Y",
       "T1:U:X",
-      "T2:U:Y",
+      "T2:W:Y", "T2:U:Y",
       "T1:Commit", "T2:Commit"
     ],
     expressoes: { 2: "X+10", 6: "Y-50" },
@@ -148,12 +148,12 @@ export const exemplos = [
     operacoes: [
       "T1:RL:X", "T1:R:X",
       "T2:WL:Y", "T2:R:Y", "T2:Y",
-      "T3:RL:X", "T3:R:X", "T3:X",
+      "T3:WL:X", "T3:R:X", "T3:X",
       "T1:X",
       "T2:W:Y",
       "T1:U:X", "T1:Commit",
       "T2:U:Y", "T2:Commit",
-      "T3:U:X", "T3:Commit"
+      "T3:W:X", "T3:U:X", "T3:Commit"
     ],
     expressoes: { 4: "Y*53", 7: "X+X", 8: "X/4" },
     erro: null
@@ -165,11 +165,11 @@ export const exemplos = [
     numVariaveis: 1,
     valoresVariaveis: ["50"],
     operacoes: [
-      "T1:WL:X", "T1:R:X", "T1:X",
-      "T2:RL:X", "T2:R:X",
+      "T1:WL:X", "T1:R:X", "T1:X", "T2:WL:X",
+      "T2:R:X",
       "T1:W:X",
       "T1:U:X", "T1:Commit",
-      "T2:X", "T2:U:X", "T2:Commit"
+      "T2:X", "T2:W:X", "T2:U:X", "T2:Commit"
     ],
     expressoes: { 2: "X-20", 8: "X*3" },
     erro: null
@@ -195,8 +195,8 @@ export const exemplos = [
   {
     nome: "Upgrade de RL para WL",
     numTransacoes: 2,
-    numVariaveis: 2,
-    valoresVariaveis: ["8", "20"],
+    numVariaveis: 1,
+    valoresVariaveis: [],
     operacoes: [
       "T1:RL:X", "T1:R:X",
       "T2:RL:X", "T2:R:X",
@@ -205,7 +205,7 @@ export const exemplos = [
       "T1:U:X", "T1:Commit",
       "T2:U:X", "T2:Commit"
     ],
-    expressoes: { 2: "X+2", 5: "X-1", 6: "X*5" },
+    expressoes: { 5: "X+X"},
     erro: null
   },
 
