@@ -81,7 +81,7 @@ function Operation({ numVariaveis, onOperacaoChange, valorInicial, disabled = fa
   };
 
   return (
-    <div className={`operacao-montagem ${disabled ? 'disabled' : ''}`}>
+    <div className={`operacao-montagem ${disabled ? 'om_disabled' : ''}`}>
       <p>=</p>
       {esquerdaManual ? (
         <input

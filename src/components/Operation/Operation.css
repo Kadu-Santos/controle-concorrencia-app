@@ -24,10 +24,7 @@
   border-color: #888;
 }
 
-.operacao-montagem.disabled input {
+.operacao-montagem.om_disabled input {
   cursor: not-allowed;
-}
-
-.campo-input:disabled{
-  opacity: 0.6;
+  opacity: 0.4;
 }
