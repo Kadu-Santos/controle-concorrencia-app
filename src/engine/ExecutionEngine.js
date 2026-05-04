@@ -201,25 +201,7 @@ export class ExecutionEngine {
 
           // Se o scheduler concedeu locks/grants, emitir e reprocessar waits
           if (result.granted) {
-            const grants = Array.isArray(result.granted) ? result.granted : [result.granted];
-
-            for (const g of grants) {
-              // emitir grant imediatamente
-              this.emit('grant', g);
-
-              // reprocessar indices afetados por esse grant (resolve e chama _processWaitingChain)
-              const indicesToTry = this._resolveGrantToIndices(g);
-
-              for (const idx of indicesToTry) {
-                this._waiting.delete(idx);
-                if (!this._processed.has(idx)) {
-                  await this._processWaitingChain(idx);
-                }
-              }
-
-              // pequeno espaçamento entre grants para animação
-              await this.sleep(Math.max(50, Math.floor(this.stepDelay * 0.12)));
-            }
+            await this._handleGrantedLocks(result.granted);
           }
 
           // sleep dominante após execução da instrução atual
@@ -295,6 +277,31 @@ export class ExecutionEngine {
     return Array.from(indices);
   }
 
+  async _handleGrantedLocks(granted) {
+    const grants = Array.isArray(granted) ? granted : granted ? [granted] : [];
+    if (!grants.length) return;
+
+    // Anuncia todas as concessoes vindas da mesma liberacao antes de continuar.
+    for (const g of grants) {
+      this.emit('grant', g);
+    }
+
+    await this.sleep(Math.max(50, Math.floor(this.stepDelay * 0.12)));
+
+    for (const g of grants) {
+      const indicesToTry = this._resolveGrantToIndices(g);
+
+      for (const idx of indicesToTry) {
+        this._waiting.delete(idx);
+        if (!this._processed.has(idx)) {
+          await this._processWaitingChain(idx);
+        }
+      }
+
+      if (typeof g.lockIndex === 'number') this._waiting.delete(g.lockIndex);
+    }
+  }
+
   // processa um índice que estava em espera (reavalia via scheduler e emite eventos)
   async _processWaitingChain(lockIndex) {
     if (this._processed.has(lockIndex)) return;
@@ -325,24 +332,7 @@ export class ExecutionEngine {
     this.emit('execute', { index: lockIndex, instrucao: instr });
 
     if (result.granted) {
-      const grants = Array.isArray(result.granted) ? result.granted : [result.granted];
-      for (const g of grants) {
-        this.emit('grant', g);
-        // pequeno delay antes de reprocessar
-        await this.sleep(this._smallDelay());
-
-        const indicesToTry = this._resolveGrantToIndices(g);
-        for (const idx of indicesToTry) {
-          this._waiting.delete(idx);
-          if (!this._processed.has(idx)) {
-            await this._processWaitingChain(idx);
-          }
-        }
-
-        if (typeof g.lockIndex === 'number') this._waiting.delete(g.lockIndex);
-
-        await this.sleep(Math.max(50, Math.floor(this.stepDelay * 0.12)));
-      }
+      await this._handleGrantedLocks(result.granted);
     }
 
     // tentativa de avançar operações subsequentes do mesmo tid
@@ -374,22 +364,7 @@ export class ExecutionEngine {
       this.emit('execute', { index: j, instrucao: op });
 
       if (res.granted) {
-        const sub = Array.isArray(res.granted) ? res.granted : [res.granted];
-        for (const sg of sub) {
-          this.emit('grant', sg);
-          await this.sleep(this._smallDelay());
-
-          const subIndices = this._resolveGrantToIndices(sg);
-          for (const si of subIndices) {
-            this._waiting.delete(si);
-            if (!this._processed.has(si)) {
-              await this._processWaitingChain(si);
-            }
-          }
-
-          if (typeof sg.lockIndex === 'number') this._waiting.delete(sg.lockIndex);
-          await this.sleep(Math.max(50, Math.floor(this.stepDelay * 0.12)));
-        }
+        await this._handleGrantedLocks(res.granted);
       }
 
       j++;
