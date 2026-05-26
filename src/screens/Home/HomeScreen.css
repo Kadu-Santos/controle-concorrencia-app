@@ -442,14 +442,14 @@
 
   .imgAbstrata_1 {
     bottom: 35vh;
-    right: 2vh;
+    right: -3vh;
     width: 15vw;
     height: 15vw;
   }
 
   .imgAbstrata_2 {
-    bottom: 15vh;
-    left: 5vh;
+    bottom: 11vh;
+    left: -5vh;
     width: 30vw;
     height: 30vw;
   }
