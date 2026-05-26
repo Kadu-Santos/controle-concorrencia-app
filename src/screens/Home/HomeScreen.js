@@ -1,5 +1,6 @@
 // HomeScreen.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ArrowUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./HomeScreen.css";
 import ButtonC from "../../components/button/ButtonC";
@@ -12,8 +13,27 @@ import Imagem from "../../assets/img.png";
 
 function HomeScreen() {
   const navigate = useNavigate();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
   const goRunPage = () => {
     navigate("/RunPage");
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -222,6 +242,17 @@ O bloqueio de escrita (Write Lock) garante exclusividade, impedindo que outras t
       </div>
 
       <Footer />
+      {showBackToTop && (
+        <button
+          type="button"
+          className="back-to-top-button"
+          onClick={scrollToTop}
+          aria-label="Voltar ao topo"
+          title="Voltar ao topo"
+        >
+          <ArrowUp size={24} strokeWidth={2.5} />
+        </button>
+      )}
     </div>
     </div >
   );

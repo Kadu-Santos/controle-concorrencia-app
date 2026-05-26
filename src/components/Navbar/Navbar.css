@@ -13,6 +13,10 @@
   z-index: 20;
 }
 
+.navbar.menu-open {
+  z-index: 60;
+}
+
 /* Logo */
 .logo-image {
   width: 200px;
@@ -70,7 +74,8 @@
   flex-direction: column;
   gap: 6px;
   cursor: pointer;
-  z-index: 60; /* Para ficar acima do overlay */
+  z-index: 60;
+  /* Para ficar acima do overlay */
 }
 
 .hamburger span {
@@ -111,11 +116,12 @@
 .mobile-overlay.open {
   opacity: 1;
   pointer-events: auto;
+  z-index: 40;
 }
 
 /* Caixa principal do menu */
 .mobile-menu {
-  position: absolute;
+  position: fixed;
   top: 80px;
   right: 20px;
   width: 50%;
@@ -127,9 +133,9 @@
   gap: 10px;
 
   border-radius: 10px;
-  box-shadow: 
-      0 4px 15px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
 
   transform: translateY(-10px) scale(0.96);
   opacity: 0;
@@ -210,6 +216,10 @@
   .logo-image {
     width: 150px;
   }
+
+  .mobile-menu li {
+    font-size: 1rem;
+  }
 }
 
 /* Celulares pequenos */
@@ -222,5 +232,9 @@
   .mobile-menu {
     width: 80%;
     right: 10%;
+  }
+
+  .mobile-menu li {
+    font-size: 0.9rem;
   }
 }

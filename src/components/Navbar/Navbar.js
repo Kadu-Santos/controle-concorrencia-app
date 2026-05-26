@@ -19,42 +19,17 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-
-      {/* Logo */}
-      <div className="navbar-logo" onClick={() => navigate('/')}>
-        <img src={Logo} alt="Logo Visualiza" className="logo-image" />
-      </div>
-
-      {/* Espaço central */}
-      <div className="navbar-space"></div>
-
-      {/* Links Desktop */}
-      <ul className="navbar-links">
-        <li onClick={() => navigate('/')}>Início</li>
-        <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
-        <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
-        <li
-          onClick={() => !isRunPage && navigate('/RunPage')}
-          id="destaque"
-          className={isRunPage ? "disabled" : ""}
-        >
-          Começar
-        </li>
-      </ul>
-
-      {/* Menu Hambúrguer */}
-      <div className={`hamburger ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <>
+      <div
+        className={`mobile-overlay ${open ? "open" : ""}`}
+        onClick={() => setOpen(false)}
+      ></div>
 
       {/* Menu Mobile */}
       <div className={`mobile-menu ${open ? "open" : ""}`}>
-        <li onClick={() => navigate('/')}>Início</li>
-        <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
-        <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
+        <li onClick={() => { navigate('/'); setOpen(false); }}>Início</li>
+        <li onClick={() => { scrollToSection('objetivo'); setOpen(false); }}>Objetivo</li>
+        <li onClick={() => { scrollToSection('como-usar'); setOpen(false); }}>Como usar</li>
         <li
           onClick={() => !isRunPage && navigate('/RunPage')}
           id="destaque"
@@ -63,7 +38,39 @@ function Navbar() {
           Começar
         </li>
       </div>
-    </nav>
+
+      <nav className={`navbar ${open ? "menu-open" : ""}`}>
+
+        {/* Logo */}
+        <div className="navbar-logo" onClick={() => navigate('/')}>
+          <img src={Logo} alt="Logo Visualiza" className="logo-image" />
+        </div>
+
+        {/* Espaço central */}
+        <div className="navbar-space"></div>
+
+        {/* Links Desktop */}
+        <ul className="navbar-links">
+          <li onClick={() => navigate('/')}>Início</li>
+          <li onClick={() => scrollToSection('objetivo')}>Objetivo</li>
+          <li onClick={() => scrollToSection('como-usar')}>Como usar</li>
+          <li
+            onClick={() => !isRunPage && navigate('/RunPage')}
+            id="destaque"
+            className={isRunPage ? "disabled" : ""}
+          >
+            Começar
+          </li>
+        </ul>
+
+        {/* Menu Hambúrguer */}
+        <div className={`hamburger ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </>
   );
 }
 
