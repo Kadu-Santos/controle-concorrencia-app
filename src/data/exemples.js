@@ -184,7 +184,7 @@ export const exemplos = [
       "T2:U:Y", "T2:Commit",
       "T3:W:X", "T3:U:X", "T3:Commit"
     ],
-    expressoes: { 4: "Y*2", 7: "X+X", 8: "X/4" },
+    expressoes: { 4: "Y*2", 7: "X+2", 8: "X/4" },
     erro: null
   },
 
