@@ -48,7 +48,7 @@ export const exemplos = [
   },
 
   {
-    nome: "Deadlock com RL e WL",
+    nome: "Espera com RL e WL",
     numTransacoes: 2,
     numVariaveis: 2,
     valoresVariaveis: [],
