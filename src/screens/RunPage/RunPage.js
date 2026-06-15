@@ -25,7 +25,7 @@ function RunPage() {
     const {
         speedMs, numVariaveis, numTransacoes,
         valoresVariaveis, operacoes, expressoes, valor,
-        operacoesExecucao, botaoAtivo,
+        operacoesExecucao, ordemExecucao, botaoAtivo,
 
         iniciarExecucao, pararExecucao, linhasTerminal,
         passoAtual, errors, executando, estadoOperacoes,
@@ -192,6 +192,7 @@ function RunPage() {
                     <ResultTable
                         status={getStatus()}
                         operacoes={operacoesExecucao}
+                        ordemExecucao={ordemExecucao}
                         valoresIniciais={valoresVariaveis}
                     />
                 </div>

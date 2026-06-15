@@ -42,13 +42,15 @@ function aplicarOperacoes(operacoes, ordem, valoresIniciais, vars) {
   return estado;
 }
 
-function aplicarSimultaneo(operacoes, valoresIniciais, vars) {
+function aplicarSimultaneo(operacoes, ordemExecucao, valoresIniciais, vars) {
   const estado = {};
   vars.forEach((v, i) => (estado[v] = valoresIniciais[i] ?? 0));
 
   const pendente = {};
 
-  operacoes.forEach((opRaw) => {
+  const operacoesEfetivas = ordemExecucao?.length ? ordemExecucao : operacoes;
+
+  operacoesEfetivas.forEach((opRaw) => {
     const partes = opRaw.split(':');
     const tx = partes[0];
 
@@ -83,6 +85,7 @@ function estadosIguais(a, b, vars) {
 export default function ResultTable({
   status = "desativado", // "ativo" | "executando" | "desativado"
   operacoes = [],
+  ordemExecucao = [],
   valoresIniciais = [],
   quantidadeVariaveis = 4,
 }) {
@@ -120,8 +123,8 @@ export default function ResultTable({
       }
     }
 
-    return [aplicarSimultaneo(operacoes, valoresIniciais, vars), ...sequenciais];
-  }, [ordensSeq, operacoes, valoresIniciais, vars]);
+    return [aplicarSimultaneo(operacoes, ordemExecucao, valoresIniciais, vars), ...sequenciais];
+  }, [ordensSeq, operacoes, ordemExecucao, valoresIniciais, vars]);
 
   const resultadosVisiveis = mostrarTodas
     ? resultados

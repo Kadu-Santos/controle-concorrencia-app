@@ -13,6 +13,7 @@ export function useExecutionEngine(stepDelay = 1200) {
     const [estadoOperacoes, setEstadoOperacoes] = useState({});
     const [mensagensEspera, setMensagensEspera] = useState({});
     const [operacoesExecucao, setOperacoesExecucao] = useState([]);
+    const [ordemExecucao, setOrdemExecucao] = useState([]);
 
     const stepDelayRef = useRef(stepDelay);
     const stoppedByUserRef = useRef(false);
@@ -36,6 +37,7 @@ export function useExecutionEngine(stepDelay = 1200) {
         setExecutando(false);
         setEstadoOperacoes({});
         setMensagensEspera({});
+        setOrdemExecucao([]);
         highestIndexRef.current = -1;
         engineRef.current = null;
     };
@@ -94,6 +96,7 @@ export function useExecutionEngine(stepDelay = 1200) {
         // Evento: EXECUTION
         on("execute", ({ index, instrucao }) => {
             advancePasso(index);
+            setOrdemExecucao((prev) => [...prev, instrucao]);
 
             if (erroPorIndice[index]) {
                 const e = resultadoErros.find((err) => err.indices?.includes(index));
@@ -178,6 +181,7 @@ export function useExecutionEngine(stepDelay = 1200) {
             setExecutando(false);
             setEstadoOperacoes({});
             setMensagensEspera({});
+            setOrdemExecucao([]);
             highestIndexRef.current = -1;
 
             cleanup();
@@ -274,6 +278,7 @@ export function useExecutionEngine(stepDelay = 1200) {
 
         setEstadoOperacoes({});
         setMensagensEspera({});
+        setOrdemExecucao([]);
         setLinhasTerminal([{ texto: "🟡 Iniciando execução...", isErro: false }]);
         highestIndexRef.current = -1;
         setPassoAtual(-1);
@@ -338,6 +343,7 @@ export function useExecutionEngine(stepDelay = 1200) {
         estadoOperacoes,
         mensagensEspera,
         operacoesExecucao,
+        ordemExecucao,
         setOperacoesExecucao
     };
 }

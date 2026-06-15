@@ -1,6 +1,35 @@
 
 export const exemplos = [
   {
+    nome: "DeadLock - Navathe, pag 530",
+    numTransacoes: 2,
+    numVariaveis: 2,
+    valoresVariaveis: [],
+    operacoes: [
+        'T1:RL:Y', 'T1:R:Y', 'T2:RL:X', 'T2:R:X', 'T1:WL:X', 'T2:WL:Y'
+    ],
+    expressoes: {},
+    erro: null
+  },
+
+  {
+    nome: "Não 2PL - Navathe, pag 528",
+    numTransacoes: 2,
+    numVariaveis: 2,
+    valoresVariaveis: ["20", "30"],
+    operacoes: [
+      'T1:RL:Y', 'T1:R:Y', 'T1:U:Y', 'T2:RL:X', 'T2:R:X', 'T2:U:X', 'T1:WL:X', 
+      'T1:R:X', 'T1:X', 'T1:W:X', 'T1:U:X', 'T1:Commit', 'T2:WL:Y', 'T2:R:Y', 
+      'T2:Y', 'T2:W:Y', 'T2:U:Y', 'T2:Commit'
+    ],
+    expressoes: {8: "X+Y", 14: "X+Y"},
+    erro: null
+  },
+
+
+
+
+  {
     nome: "Deadlock simples (T1 e T2 em ciclo)",
     numTransacoes: 2,
     numVariaveis: 2,
@@ -155,7 +184,7 @@ export const exemplos = [
       "T2:U:Y", "T2:Commit",
       "T3:W:X", "T3:U:X", "T3:Commit"
     ],
-    expressoes: { 4: "Y*53", 7: "X+X", 8: "X/4" },
+    expressoes: { 4: "Y*2", 7: "X+X", 8: "X/4" },
     erro: null
   },
 

@@ -36,6 +36,7 @@ export function useRunPageState() {
         mensagensEspera,
         setStepDelay,
         operacoesExecucao,
+        ordemExecucao,
         setOperacoesExecucao
     } = useExecutionEngine();
 
@@ -161,7 +162,7 @@ export function useRunPageState() {
     return {
         // Estados
         speedMs, numVariaveis, numTransacoes, valoresVariaveis,
-        operacoes, expressoes, valor, operacoesExecucao,
+        operacoes, expressoes, valor, operacoesExecucao, ordemExecucao,
 
         // Derivados
         botaoAtivo,
